@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 5: Invertir y construir futuro — WiserPicture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  
+  /* Workbook specific styles */
+  .workbook-textarea { width: 100%; min-height: 120px; padding: 1.25rem; border: none; border-radius: 0.5rem; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; resize: vertical; background-color: #E8DED1; transition: all 0.2s; color: #1A1C1B; }
+  .workbook-textarea:focus { outline: none; box-shadow: 0 0 0 2px #334F2B; background-color: #EBE5DB; }
+  .workbook-input { width: 100%; padding: 0.75rem 1rem; border: none !important; border-radius: 0.5rem !important; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; background-color: #E8DED1 !important; transition: all 0.2s; color: #1A1C1B; outline: none !important; box-shadow: none !important; }
+  .workbook-input:focus { outline: none !important; box-shadow: 0 0 0 2px #334F2B !important; background-color: #EBE5DB !important; }
+  
+  .block-exercise { background-color: #FFFFFF; border: 1px solid #C8C8C5; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+  .block-definition { background-color: #F4F4F1; border-left: 4px solid #C9A84C; padding: 1.5rem; border-radius: 0 0.75rem 0.75rem 0; margin-bottom: 2rem; }
+  .block-insight { background-color: #F4F4F1; padding: 2rem; border-radius: 0.75rem; margin-bottom: 2rem; position: relative; }
+  
+  article p { font-size: 1.05rem; line-height: 1.7; color: #1A1C1B; margin-bottom: 1.5rem; }
+  article ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  article li { margin-bottom: 0.5rem; font-size: 1.05rem; line-height: 1.7; }
+</style>
+</head>
+<body class="font-body flex flex-col min-h-screen">
+
+<!-- Sticky Header with Nav -->
+<nav class="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-outline-variant/30">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+    
+    <!-- Module Links -->
+    <div class="flex gap-6 overflow-x-auto whitespace-nowrap w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+      <a href="portal.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Mi Portal</a>
+      <a href="modulo-1.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 1</a>
+      <a href="modulo-2.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 2</a>
+      <a href="modulo-3.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 3</a>
+      <a href="modulo-4.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 4</a>
+      <a href="modulo-5.html" class="text-sm font-medium text-primary border-b-2 border-secondary pb-1">Módulo 5</a>
+    </div>
+    
+    <!-- Utilities -->
+    <div class="flex items-center gap-4 self-end md:self-auto">
+      <div id="save-status" class="flex items-center gap-1.5 text-xs font-semibold text-[#1E8E3E] opacity-0 transition-opacity duration-300">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+        Guardado
+      </div>
+      
+      <div class="relative">
+        <button id="outline-toggle" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold bg-white border border-outline-variant/50 px-4 py-2 rounded-full shadow-sm hover:shadow-md">
+          <span class="material-symbols-outlined text-[1.1rem]">format_list_bulleted</span>
+          <span class="hidden sm:inline">Índice</span>
+        </button>
+        <!-- Dropdown Menu -->
+        <div id="outline-menu" class="absolute right-0 mt-2 w-64 bg-white border border-outline-variant/30 rounded-xl shadow-xl py-2 opacity-0 pointer-events-none transform scale-95 origin-top-right transition-all duration-200">
+          <div class="px-4 py-3 border-b border-outline-variant/20 mb-1 bg-surface-container-lowest rounded-t-xl">
+            <span class="text-xs font-bold text-secondary uppercase tracking-widest">Navegación del Módulo</span>
+          </div>
+          <a href="#intro" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">Introducción</a>
+          <a href="#seccion-1" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">1. Del ahorro a la inversión</a>
+          <a href="#seccion-2" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">2. Inversión ética con propósito</a>
+          <a href="#seccion-3" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">3. Riesgo, tiempo y paciencia</a>
+          <a href="#seccion-4" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">4. El ecosistema de inversión en México</a>
+          <a href="#seccion-5" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">5. Tu retiro y plan de acción</a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
+  
+  <!-- Cover Equivalent -->
+  <header class="mb-12 bg-[#6b5809] text-white rounded-2xl p-8 md:p-12 shadow-lg relative overflow-hidden">
+    <!-- Decorative Circle -->
+    <div class="absolute -right-16 -bottom-24 w-64 h-64 border-[1px] border-white/20 rounded-full"></div>
+    <div class="absolute -right-12 -bottom-20 w-64 h-64 border-[1px] border-white/10 rounded-full"></div>
+    
+    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+      <span class="text-7xl font-headline text-white/20 italic font-bold leading-none">05</span>
+      <div>
+        <span class="text-xs font-bold text-white/80 uppercase tracking-widest block mb-2">Módulo 5 — Edgar U. Chan</span>
+        <h1 class="font-headline text-4xl md:text-5xl font-bold italic text-white leading-tight" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.1);">Invertir y construir futuro</h1>
+        <p class="mt-2 text-white/90 text-xl font-headline italic">Invertir con sabiduría, no con miedo</p>
+      </div>
+    </div>
+    
+    <div class="relative z-10 border-l-4 border-secondary pl-4 mt-8">
+      <p class="text-lg italic font-headline mb-4 leading-snug">"Invierte en siete empresas, o incluso en ocho, porque no sabes qué desastres le esperan a esta tierra."</p>
+      <p class="text-secondary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Eclesiastés 11:2 NTV</p>
+    </div>
+  </header>
+
+<article>
+    <!-- Page 2 -->
+    <section id="intro" class="mb-16 scroll-mt-24">
+      
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Módulo 5</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1">Introducción</h2>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl mb-8">
+        <h3 class="text-on-surface font-headline italic text-xl mb-4 tracking-wide">Objetivo y Contenido del Módulo</h3>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-2">Al terminar este módulo serás capaz de:</p>
+        <ul class="list-disc pl-5 text-[1.05rem] leading-[1.7] text-on-surface space-y-1 mb-6">
+          <li>Entender la diferencia real entre ahorrar e invertir.</li>
+          <li>Definir metas de inversión con propósito.</li>
+          <li>Conocer opciones concretas y seguras para invertir en México desde poco dinero.</li>
+          <li>Dar tu primer paso sin pánico.</li>
+        </ul>
+        <div class="pt-4 border-t border-outline-variant/30">
+          <p class="text-on-surface text-[1.05rem] mb-2">⏱ <strong>Tiempo estimado: 90–100 minutos</strong></p>
+          <p class="text-on-surface-variant text-[1.05rem] leading-relaxed mb-0 italic">El módulo más largo del curso — y el que más mitos tiene que desmontar antes de llegar a lo práctico. Te sugiero 3 sesiones de 30 minutos, trabajando progresivamente en las secciones.</p>
+        </div>
+      </div>
+
+      <p class="mb-4">Seamos honestos: la palabra "inversión" probablemente te hace pensar una de estas tres cosas:</p>
+      <ul class="list-disc pl-5 text-[1.05rem] leading-[1.7] text-on-surface space-y-1 mb-6">
+        <li>Te da miedo — "¿y si pierdo todo lo que tengo?"</li>
+        <li>Te aburre — "eso es para los que salen en Forbes"</li>
+        <li>Te genera desconfianza — "seguro es algún fraude de esos de WhatsApp"</li>
+      </ul>
+      
+      <p>En México hemos crecido viendo esquemas piramidales disfrazados de "oportunidades de negocio únicas", videos de tipos con Lamborghini rentado prometiendo libertad financiera en 90 días. Entonces tiene todo sentido que tu instinto sea: mejor lo guardo debajo del colchón.</p>
+      
+      <p class="mb-12">Este módulo no es para hacerte rico de la noche a la mañana. Es para quitarte el miedo, darte claridad y dar el primer paso. Porque invertir no es para millonarios ni para especialistas: es para cualquiera que quiera ser un buen mayordomo de lo que Dios le ha confiado.</p>
+      
+      <div class="border-l-4 border-tertiary pl-6 mb-8">
+        <h3 class="font-bold text-tertiary text-lg mb-2 flex items-center gap-2">
+            <span class="material-symbols-outlined text-xl">warning</span>
+            Aviso importante
+        </h3>
+        <p class="text-[1.05rem] text-on-surface leading-[1.7] mb-0">Este módulo tiene fines estrictamente educativos y se basa en experiencia personal e investigaciones independientes. No constituye asesoría financiera personalizada. Antes de invertir, haz tu propia debida diligencia o consulta con un profesional certificado.</p>
+      </div>
+    </section>
+
+    <!-- Page 3 -->
+    <section id="seccion-1" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 5"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 1</p>
+      <div class="mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1">Del ahorro a la inversión</h2>
+      </div>
+
+      <p class="mb-8">Ahorrar bien no es lo mismo que invertir. Y la diferencia importa mucho cuando hablamos de construir patrimonio real a largo plazo — no solo de sobrevivir el mes sin llamarle a la familia con esa voz.</p>
+      
+      <div class="overflow-x-auto mb-10">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th class="p-4 font-semibold border-r border-[#4A6B41] w-1/3"></th>
+              <th class="p-4 font-semibold border-r border-[#4A6B41] w-1/3">Ahorro</th>
+              <th class="p-4 font-semibold w-1/3">Inversión</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Objetivo</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Proteger y tener disponible</td>
+              <td class="p-4 text-on-surface">Hacer crecer a largo plazo</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Plazo</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Corto plazo (0-2 años)</td>
+              <td class="p-4 text-on-surface">Mediano-largo plazo (2+ años)</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Riesgo</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Muy bajo</td>
+              <td class="p-4 text-on-surface">Variable según instrumento</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Rendimiento</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Modesto (superior a inflación)</td>
+              <td class="p-4 text-on-surface">Mayor potencial con más riesgo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-[#F4F4F1] border-t-4 border-t-secondary rounded-xl p-8 shadow-sm mb-12">
+        <h3 class="font-bold text-on-surface font-headline text-xl mb-4 tracking-wide">El orden correcto — La arquitectura financiera</h3>
+        <p class="text-[1.05rem] text-on-surface mb-6">Si aún no tienes tu fondo de emergencia y tus deudas de alto costo controladas, regresa ahí primero. La inversión es el cuarto piso; no puedes construirlo sin los tres primeros — y en México tenemos una tradición muy establecida de comenzar por el techo. No hagamos eso aquí.</p>
+        
+        <ul class="list-disc pl-5 text-[1.05rem] text-on-surface font-medium space-y-2 mb-0">
+          <li>Presupuesto y control (Módulo 2)</li>
+          <li>Salida de deudas (Módulo 3)</li>
+          <li>Fondo de emergencia + ahorro inteligente (Módulo 4)</li>
+          <li>¡Inversión a mediano y largo plazo! (Este módulo )</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Page 4 -->
+    <div class="mb-16">
+      <h3 class="text-2xl font-headline font-bold text-primary italic mb-8">1.1: El interés compuesto — La magia que trabaja mientras duermes</h3>
+
+      <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave: Interés compuesto</h3>
+        <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Es cuando los rendimientos que genera tu inversión también empiezan a generar rendimientos. Es decir, ganas intereses sobre los intereses. Con el tiempo, este efecto se acelera exponencialmente — por eso el tiempo en el mercado vale más que el monto inicial.</p>
+        
+      </div>
+      
+      <div class="bg-white border border-outline-variant/30 rounded-xl p-6 shadow-sm mb-8 mt-12">
+        <h4 class="text-primary font-bold mb-6 text-lg border-b border-outline-variant/30 pb-3">El costo de la espera: Invirtiendo $1,000 MXN al mes al 8% anual</h4>
+        
+        <div class="space-y-8">
+          <!-- Bar 1: Start 25 -->
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="font-bold text-on-surface">Empiezas a los 25 <span class="font-normal text-on-surface-variant hidden sm:inline">(40 años invirtiendo)</span></span>
+              <span class="font-bold text-primary text-base">~$3,490,000 MXN</span>
+            </div>
+            <div class="w-full bg-[#E8DED1]/40 rounded-lg h-10 flex overflow-hidden shadow-inner">
+              <!-- Total width is 100%. Aportacion is 480/3490 = 13.8%, Interes is 3010/3490 = 86.2% -->
+              <div class="bg-primary flex items-center justify-center text-white text-xs font-medium border-r border-white/20" style="width: 13.8%" title="Tu aportación total: $480,000">$480k</div>
+              <div class="bg-secondary flex items-center px-3 text-[#4A2B11] text-sm font-bold" style="width: 86.2%" title="Interés ganado: $3,010,000">$3.01M</div>
+            </div>
+          </div>
+
+          <!-- Bar 2: Start 35 -->
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="font-bold text-on-surface">Empiezas a los 35 <span class="font-normal text-on-surface-variant hidden sm:inline">(30 años invirtiendo)</span></span>
+              <span class="font-bold text-primary text-base">~$1,490,000 MXN</span>
+            </div>
+            <div class="w-full bg-[#E8DED1]/40 rounded-lg h-10 flex shadow-inner">
+              <!-- Total width relative to max is 1490/3490 = 42.7% -->
+              <div class="flex overflow-hidden rounded-lg shadow-sm" style="width: 42.7%">
+                <!-- Within this 42.7% bar: Aportacion 360/1490 = 24.2%, Interes 1130/1490 = 75.8% -->
+                <div class="bg-primary flex items-center justify-center text-white text-[10px] sm:text-xs font-medium border-r border-white/20" style="width: 24.2%" title="Tu aportación total: $360,000">$360k</div>
+                <div class="bg-secondary flex items-center px-2 text-[#4A2B11] text-xs font-bold" style="width: 75.8%" title="Interés ganado: $1,130,000">$1.13M</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bar 3: Start 45 -->
+          <div>
+            <div class="flex justify-between text-sm mb-2">
+              <span class="font-bold text-on-surface">Empiezas a los 45 <span class="font-normal text-on-surface-variant hidden sm:inline">(20 años invirtiendo)</span></span>
+              <span class="font-bold text-primary text-base">~$587,000 MXN</span>
+            </div>
+            <div class="w-full bg-[#E8DED1]/40 rounded-lg h-10 flex shadow-inner">
+              <!-- Total width relative to max is 587/3490 = 16.8% -->
+              <div class="flex overflow-hidden rounded-lg shadow-sm" style="width: 16.8%">
+                <!-- Within this 16.8% bar: Aportacion 240/587 = 40.9%, Interes 347/587 = 59.1% -->
+                <div class="bg-primary flex items-center justify-center text-white text-[9px] sm:text-[10px] font-medium border-r border-white/20" style="width: 40.9%" title="Tu aportación total: $240,000">$240k</div>
+                <div class="bg-secondary flex items-center justify-center text-[#4A2B11] text-[10px] font-bold" style="width: 59.1%" title="Interés ganado: $347,000">$347k</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-center items-center gap-6 mt-8 border-t border-outline-variant/30 pt-5">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-primary rounded-sm shadow-sm"></div>
+            <span class="text-[0.95rem] text-on-surface font-medium">Lo que tú aportas</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 bg-secondary rounded-sm shadow-sm"></div>
+            <span class="text-[0.95rem] text-on-surface font-medium">La magia del interés</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="mb-4">Lo invertido en 40 años es $480,000. Lo ganado es de $3,010,000. La diferencia de 3 millones de pesos es puro interés compuesto. Eso no es una opinión. Eso es matemática. Y la matemática no negocia.</p>
+      
+      <p class="mb-12">El tiempo que pierdes esperando "el momento correcto para invertir" no se recupera. El mejor momento fue ayer. El segundo mejor momento es hoy.</p>
+    </div>
+
+    <!-- Page 5 -->
+    <div class="mb-16">
+      <h3 class="text-2xl font-headline font-bold text-primary italic mb-8">1.2: Metas con propósito</h3>
+
+      <p class="mb-8">Hay una diferencia enorme entre "voy a invertir para hacerme rico algún día" y "voy a invertir para que en cinco años pueda dar el enganche de mi departamento." La primera es una fantasía. La segunda es una meta. Sin una intención clara, es muy fácil desviarse o darse por vencido.</p>
+
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12">
+        <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"Los planes bien pensados y el arduo trabajo llevan a la prosperidad, pero los atajos tomados a la carrera conducen a la pobreza."</p>
+        <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Proverbios 21:5 NTV</p>
+      </div>
+
+      <div class="space-y-6">
+        <div class="bg-[#F4F4F1] border-l-4 border-primary rounded-r-xl p-6 shadow-sm">
+          <h4 class="font-bold text-primary text-lg mb-2">Corto plazo (ya lo tienes del Módulo 4) — menos de 2 años</h4>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">El corto plazo es para metas concretas que tienen fecha: un viaje, un electrónico, una reparación que llevas posponiendo desde el sexenio pasado.</p>
+        </div>
+        
+        <div class="bg-[#F4F4F1] border-l-4 border-primary rounded-r-xl p-6 shadow-sm">
+          <h4 class="font-bold text-primary text-lg mb-2">Mediano plazo — 2 a 7 años</h4>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Este es el plazo que la mayoría subestima porque "todavía falta tiempo." Para metas con fecha visible: el enganche de una casa, montar un negocio, una boda, un posgrado. Aquí ya puedes aceptar un poco más de variación en el camino — porque tienes margen para recuperarte si algo baja antes de subir.</p>
+        </div>
+
+        <div class="bg-[#F4F4F1] border-l-4 border-primary rounded-r-xl p-6 shadow-sm">
+          <h4 class="font-bold text-primary text-lg mb-2">Largo plazo — 8 años o más</h4>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Este es el plazo que la mayoría ignora porque "todavía falta mucho." Y esa, exactamente, es la razón por la que muchas personas llegan a los 60 dependiendo de sus hijos o de la pensión — que, spoiler, no alcanza. El largo plazo es para el retiro, la independencia financiera, el patrimonio que quieres dejar.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 6 -->
+    <div class="bg-[#F4F4F1] border-t-4 border-secondary p-6 rounded-xl shadow-sm mb-12">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide">Historia real</h3>
+      <p class="mb-0 text-[1.05rem] leading-[1.7] text-on-surface">Mi hija nació en 2024. Ese mismo año mi esposa y yo abrimos un portafolio de inversiones a largo plazo para pagar su universidad. Porque yo sé lo que es trabajar y estudiar al mismo tiempo para pagar colegiaturas, no quiero que ella lo descubra por experiencia propia.</p>
+    </div>
+
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 1—¿Estoy listo para invertir? + Mi meta de inversión
+        </h3>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">1. Revisa que tienes sólidos los pisos anteriores:</p>
+        
+        <div class="space-y-3 mb-6">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej1_chk1" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">Tengo presupuesto activo y sé a dónde va mi dinero cada mes</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej1_chk2" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">No tengo deudas con tasas mayores al 20% anual</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej1_chk3" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">Tengo fondo de emergencia de al menos 3 meses de gastos</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej1_chk4" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">Tengo al menos $300-500 al mes que puedo comprometer a mediano/largo plazo</span>
+          </label>
+        </div>
+        
+        <p class="text-on-surface mb-6">Si marcaste los 4: ¡Excelente! Podemos comenzar a invertir.<br>Si no, trabaja primero los módulos anteriores.<br>Si estás listo para invertir contesta estas preguntas:</p>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">2. Define tu meta.</p>
+        
+        <div class="space-y-4">
+          <div>
+            <label for="m5_ej1_q1" class="block text-on-surface mb-2">¿Para qué invierto? (meta concreta)</label>
+            <input type="text" id="m5_ej1_q1" class="w-full bg-[#E8DED1]/50 border-none rounded-lg p-3 text-on-surface focus:ring-2 focus:ring-primary outline-none transition-shadow" placeholder="">
+          </div>
+          <div class="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+            <label for="m5_ej1_q2" class="text-on-surface whitespace-nowrap w-full sm:w-auto">¿Cuánto necesito acumular? $</label>
+            <input type="text" id="m5_ej1_q2" class="w-full sm:flex-1 bg-[#E8DED1]/50 border-none rounded-lg p-3 text-on-surface focus:ring-2 focus:ring-primary outline-none transition-shadow" placeholder="">
+          </div>
+          <div class="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+            <label for="m5_ej1_q3" class="text-on-surface whitespace-nowrap w-full sm:w-auto">¿Cuándo lo quiero lograr?</label>
+            <input type="text" id="m5_ej1_q3" class="w-full sm:flex-1 bg-[#E8DED1]/50 border-none rounded-lg p-3 text-on-surface focus:ring-2 focus:ring-primary outline-none transition-shadow" placeholder="">
+          </div>
+          <div class="flex items-center gap-4 flex-wrap sm:flex-nowrap">
+            <label for="m5_ej1_q4" class="text-on-surface whitespace-nowrap w-full sm:w-auto">¿Cuánto puedo apartar por mes? $</label>
+            <input type="text" id="m5_ej1_q4" class="w-full sm:flex-1 bg-[#E8DED1]/50 border-none rounded-lg p-3 text-on-surface focus:ring-2 focus:ring-primary outline-none transition-shadow" placeholder="">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 7 -->
+    <section id="seccion-2" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 5"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 2</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic mb-8 border-b-4 border-secondary inline-block pb-1">Inversión ética con propósito</h2>
+
+      <p class="mb-4">Una pregunta que los cursos de finanzas personales rara vez hacen, pero que nosotros sí debemos hacernos: ¿en qué tipo de negocios o empresas está trabajando tu dinero mientras tú duermes?</p>
+      
+      <p class="mb-10">Porque tu dinero está en algún lado, haciendo algo. La pregunta no es si trabaja — ya lo hace. La pregunta es para quién y para qué. Como creyentes, la coherencia entre nuestra fe y nuestras decisiones financieras importa.</p>
+      
+      <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: El criterio ESG</h3>
+        <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">En el mundo de las finanzas existe el concepto de inversión ESG (Environmental, Social, and Governance), que evalúa tres dimensiones:</p>
+        <ul class="list-disc pl-5 space-y-2 text-[1.05rem]">
+          <li>La empresa cuida el medio ambiente, tiene políticas de sostenibilidad y no contamina de manera irresponsable.</li>
+          <li>Trata bien a sus empleados, respeta comunidades, apoya derechos laborales, no usa trabajo infantil.</li>
+          <li>Opera con transparencia, sus directivos son responsables, no hay corrupción interna.</li>
+        </ul>
+      </div>
+      
+      <p class="mb-4">Como cristiano, también puedes añadir un criterio personal: evitar sectores incompatibles con tus valores, como tabaco, alcohol, pornografía, armamento o juegos de azar. Eso no te hace un inversionista "inferior" — te hace uno coherente.</p>
+      <p class="mb-12">En las opciones de inversión que exploraremos, estas incluirán el criterio ESG.</p>
+    </div>
+
+    <!-- Page 8 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 2—Mi postura de inversión ética
+        </h3>
+        
+        <p class="text-on-surface mb-6">Reflexiona sobre tus valores antes de invertir — esto te ayudará a elegir cuando llegues el momento.</p>
+        
+        <div class="space-y-3 mb-8">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej2_chk1" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">Entiendo qué es un filtro ESG y cómo funciona</span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej2_chk2" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">Tengo claro en qué sectores NO quiero que esté mi dinero</span>
+          </label>
+        </div>
+        
+        <div class="space-y-2">
+          <label for="m5_ej2_q1" class="block text-on-surface mb-2">¿Hay algún sector o tipo de empresa que específicamente quieras evitar?</label>
+          <input type="text" id="m5_ej2_q1" class="w-full bg-[#E8DED1]/50 border-none rounded-lg p-3 text-on-surface focus:ring-2 focus:ring-primary outline-none transition-shadow" placeholder="">
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 9 -->
+    <section id="seccion-3" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 5"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 3</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic mb-8 border-b-4 border-secondary inline-block pb-1">Riesgo, tiempo y paciencia</h2>
+
+      <p class="mb-6">El riesgo no es el enemigo. La ignorancia del riesgo sí lo es. Y aquí viene la relación que tienes que tatuar en tu mente, porque el mercado va a intentar convencerte de lo contrario en más de una ocasión:</p>
+      
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 mb-10">
+        <p class="text-[1.05rem] text-on-surface mb-0">A mayor rendimiento potencial, mayor riesgo. Siempre. Sin excepción.</p>
+      </div>
+
+      <h3 class="text-2xl font-headline font-bold text-primary italic mb-8">3.1: Señales de alerta — Lo que debes evitar</h3>
+      
+      <p class="mb-4">El fraude financiero en México tiene una presentación muy consistente: buena dicción, diapositivas bonitas y rendimientos que desafían las leyes de la física económica.</p>
+      <p class="mb-8">El que te promete 20% mensual garantizado sin riesgo no te está ofreciendo una inversión. Te está ofreciendo un fraude con muy buena presentación en PowerPoint.</p>
+      
+      <div class="overflow-x-auto mb-12">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#4A6B41] text-white">
+              <th class="p-4 font-semibold border-r border-[#3A5B31] w-1/2">Señal de alerta</th>
+              <th class="p-4 font-semibold w-1/2">Por qué es problema</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">"20% mensual garantizado"</td>
+              <td class="p-4 text-on-surface">Ninguna inversión legítima garantiza rendimientos así</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">"Solo por hoy" / "No te lo puedes perder"</td>
+              <td class="p-4 text-on-surface">La urgencia artificial elimina tu tiempo de análisis</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">"El gobierno no quiere que sepas esto"</td>
+              <td class="p-4 text-on-surface">Las inversiones legítimas no se ocultan del regulador</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Rendimientos que vienen de reclutar más personas</td>
+              <td class="p-4 text-on-surface">Estructura piramidal — ilegal en México</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">No aparece en el registro CNBV</td>
+              <td class="p-4 text-on-surface">No está autorizado para manejar tu dinero</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Page 10 -->
+    <div class="mb-16">
+      <h3 class="text-2xl font-headline font-bold text-primary italic mb-8">3.2: Cómo el tiempo reduce el riesgo</h3>
+
+      <p class="mb-8">El mercado tiene años malos. Tiene meses terribles. Tiene semanas que se ven en las noticias y dan ganas de retirar todo. Pero estadísticamente, en ningún período de 20 años el mercado accionario global ha terminado en pérdida neta. La paciencia no es solo una virtud espiritual: es una estrategia financiera comprobada.</p>
+      
+      <div class="bg-[#C1AA46] p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">eco</span> Ilustración: La metáfora del aguacate</h3>
+        <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Invertir a largo plazo es como plantar un aguacate. El primer año no ves casi nada — solo tierra y una varita que da lástima. El segundo año, un arbolito que tampoco impresiona. El quinto año, ya hay aguacates. El décimo, ya le estás dando bolsas al vecino.</p>
+        <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Nadie planta un árbol y al día siguiente exige cosecha. Las inversiones funcionan igual — y el error más costoso es arrancar el árbol en cuanto el mercado tiene su primera temporada mala.</p>
+
+      </div>
+      
+      <div class="bg-[#C0603A] p-8 rounded-xl shadow-md text-white mb-12">
+        <h3 class="text-white font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">warning</span> Advertencia: Cuando el mercado baje — y va a bajar</h3>
+        <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Uno de los mayores errores del inversionista principiante no es elegir el instrumento equivocado. Es retirarse cuando el mercado baja. Cuando eso pase, recuerda cuatro cosas:</p>
+        <ul class="list-disc pl-5 space-y-2 text-[1.05rem] font-medium">
+          <li>Una caída temporal no es una pérdida real a menos que la hagas efectiva.</li>
+          <li>Si tienes 10 años por delante, un año malo no define el resultado.</li>
+          <li>Cuando el mercado baja, tu dinero compra más unidades del mismo fondo. Eso se llama Dollar Cost Averaging y trabaja a tu favor.</li>
+          <li>Ver fluctuaciones diarias no te hace mejor inversionista, solo más ansioso.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Page 11 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 3— Mi perfil de inversionista
+        </h3>
+        
+        <div class="space-y-8 mb-8">
+          <div>
+            <p class="text-on-surface mb-3 font-medium">¿Cuánto tiempo puedes dejar sin tocar tu inversión?</p>
+            <div class="flex flex-wrap gap-4 md:gap-8">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q1" value="1-2" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">1-2 años</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q1" value="3-7" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">3-7 años</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q1" value="8+" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">8+ años</span>
+              </label>
+            </div>
+          </div>
+          
+          <div>
+            <p class="text-on-surface mb-3 font-medium">Si tu inversión baja 20% en un año, ¿qué harías?</p>
+            <div class="flex flex-wrap gap-4 md:gap-8">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q2" value="retiro" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Retiro todo</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q2" value="espero" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Espero</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q2" value="invierto" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Invierto más</span>
+              </label>
+            </div>
+          </div>
+          
+          <div>
+            <p class="text-on-surface mb-3 font-medium">¿Tu objetivo principal?</p>
+            <div class="flex flex-wrap gap-4 md:gap-8">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q3" value="no_perder" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">No perder capital</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q3" value="crecer" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Crecer gradual</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q3" value="maximizar" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Maximizar rendimiento</span>
+              </label>
+            </div>
+          </div>
+          
+          <div>
+            <p class="text-on-surface mb-3 font-medium">¿Tienes dependientes económicos?</p>
+            <div class="flex flex-wrap gap-4 md:gap-8">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q4" value="si_varios" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Sí, varios</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q4" value="si_pocos" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Sí, pocos</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej3_q4" value="no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">No</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="pt-8 border-t border-outline-variant/30 mt-8">
+          <p class="font-bold text-on-surface mb-4 text-[1.05rem]">Interpretación de tus respuestas:</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white border-l-4 border-l-secondary rounded-r-xl p-4 shadow-sm">
+              <p class="font-bold text-primary mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-lg text-secondary">shield</span> Perfil Conservador</p>
+              <p class="text-[0.95rem] text-on-surface-variant mb-0 leading-relaxed">Si marcaste mayoría de <strong class="text-on-surface">primeras opciones</strong>. Priorizas no perder capital aunque el crecimiento sea menor.</p>
+            </div>
+            <div class="bg-white border-l-4 border-l-primary rounded-r-xl p-4 shadow-sm">
+              <p class="font-bold text-primary mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-lg text-primary">balance</span> Perfil Moderado</p>
+              <p class="text-[0.95rem] text-on-surface-variant mb-0 leading-relaxed">Si marcaste mayoría de <strong class="text-on-surface">opciones del medio</strong>. Buscas un equilibrio entre crecimiento gradual y seguridad.</p>
+            </div>
+            <div class="bg-white border-l-4 border-l-tertiary rounded-r-xl p-4 shadow-sm">
+              <p class="font-bold text-primary mb-1 flex items-center gap-2"><span class="material-symbols-outlined text-lg text-tertiary">trending_up</span> Perfil Agresivo</p>
+              <p class="text-[0.95rem] text-on-surface-variant mb-0 leading-relaxed">Si marcaste mayoría de <strong class="text-on-surface">últimas opciones</strong>. Estás dispuesto a asumir volatilidad a cambio de maximizar rendimiento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 12 -->
+    <section id="seccion-4" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 5"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 4</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic mb-8 border-b-4 border-secondary inline-block pb-1">El ecosistema de inversión en México</h2>
+
+      <p class="mb-4">Antes de hablar de plataformas específicas, necesitas entender el mapa. El problema hoy no es la falta de información — es el exceso de ella. Hay miles de videos, podcasts y artículos sobre cómo invertir en México. Muchos son buenos. Muchos son peligrosos. Algunos son directamente fraude con buena edición de video.</p>
+      
+      <p class="mb-8">Lo que presentamos aquí son plataformas reguladas, verificadas y que se han usado directamente — no recomendaciones de inversión, sino puntos de partida educativos para que tú tomes tu propia decisión informada.</p>
+      
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12">
+        <p class="text-[1.05rem] text-on-surface mb-0 leading-relaxed">En México, la CNBV (Comisión Nacional Bancaria y de Valores) es el organismo que supervisa y autoriza a las instituciones financieras. Si una plataforma no aparece en su registro, no está autorizada para captar tu dinero. Antes de abrir cualquier cuenta de inversión, búscala ahí. Si no aparece, cierra la pestaña y sigue con tu vida.</p>
+      </div>
+
+      <h3 class="text-2xl font-headline font-bold text-primary italic mb-8">4.1: Opciones concretas para empezar</h3>
+      
+      <p class="mb-8">No necesitas usar las cuatro opciones que vienen. Elige la que corresponde a tu momento actual y empieza. Un paso real vale más que diez planes perfectos que nunca se ejecutan.</p>
+
+
+    </div>
+
+    <!-- Page 13 -->
+    <div class="mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-8 rounded-full bg-[#4A6B41] text-white flex items-center justify-center font-bold text-[1.05rem]">1</div>
+        <h3 class="text-xl font-headline font-bold text-primary">CETESDIRECTO.</h3>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl border-t-4 border-t-secondary mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-0">CetesDirecto es la plataforma del Gobierno Federal. Cuando inviertes le estás prestando dinero al Gobierno Federal para financiar gasto público: hospitales, infraestructura, programas sociales. Esta es la opción más sencilla y en nuestro filtro ético, esta es éticamente neutral para comenzar.</p>
+      </div>
+      
+      <div class="overflow-x-auto mb-8">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#4A6B41] text-white">
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Instrumento</th>
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Plazo</th>
+              <th class="p-4 font-semibold">Para qué sirve</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">BONDDIA</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Genera intereses diarios y puedes retirarlo cualquier día hábil.</td>
+              <td class="p-4 text-on-surface">Fondo de emergencia</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Cetes<br>(Certificados de la Tesorería)</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Títulos que compras por debajo de su valor real. Por ejemplo: pagas $9.60 hoy y al vencimiento recibes $10. Plazo de 28 días-2 años.</td>
+              <td class="p-4 text-on-surface">Ahorro de corto plazo</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Bondes</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Instrumentos a 5 años que te pagan intereses cada 28 días.</td>
+              <td class="p-4 text-on-surface">Meta a mediano plazo</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Bonos</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Instrumentos que te pagan intereses fijos cada 6 meses.<br>Plazos disponibles: 3, 5, 10, 20 y 30 años.</td>
+              <td class="p-4 text-on-surface">Meta a Largo plazo</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Udibonos</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Te pagan una tasa fija de interés cada seis meses, y además ajustan el valor de tu inversión según la inflación. Tienes plazos de 3 a 30 años.</td>
+              <td class="p-4 text-on-surface">Meta a Largo plazo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-r-xl border-l-4 border-secondary shadow-sm">
+        <ul class="list-disc pl-5 space-y-2 text-[1.05rem] italic font-medium">
+          <li>Puedes empezar desde $100 pesos.</li>
+          <li>Visita <a href="https://www.cetesdirecto.com" target="_blank" class="text-tertiary underline hover:text-tertiary/80">cetesdirecto.com.mx</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Page 14 -->
+    <div class="mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-8 rounded-full bg-[#4A6B41] text-white flex items-center justify-center font-bold text-[1.05rem]">2</div>
+        <h3 class="text-xl font-headline font-bold text-primary">FINTUAL.</h3>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl border-t-4 border-t-secondary mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-0">Fintual es una plataforma regulada por la CNBV que funciona como asesor de inversiones automatizado. Tú defines tu objetivo, plazo y tolerancia al riesgo — Fintual administra el resto. Es perfecto para quien quiere invertir de forma inteligente sin pasar horas estudiando instrumentos financieros, que es prácticamente todo el mundo.</p>
+      </div>
+      
+      <div class="overflow-x-auto mb-8">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#4A6B41] text-white">
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Fondo</th>
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Perfil</th>
+              <th class="p-4 font-semibold">Plazo</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Cash Up</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Deuda federal de corto plazo. Ganador Morningstar 5 años consecutivos.<br>Liquidez diaria. Rendimiento neto referencia: ~7.7-11% anual.</td>
+              <td class="p-4 text-on-surface">Corto plazo / Complemento al fondo de emergencia.</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Moderate<br>Portman</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Mezcla de renta fija + algo de renta variable global. Más diversificado. Rendimiento referencia: ~10%</td>
+              <td class="p-4 text-on-surface">Mediano plazo: 2-5 años. Para metas como el enganche o un proyecto grande.</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Risky Hayek</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Renta variable global. (principalmente ETFs de EE.UU.). Rendimiento referencia 1 año: ~14.62%</td>
+              <td class="p-4 text-on-surface">Largo plazo: 5+ años.<br>Para retiro u objetivos lejanos donde puedes tolerar volatilidad.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-r-xl border-l-4 border-secondary shadow-sm">
+        <ul class="list-disc pl-5 space-y-2 text-[1.05rem] italic font-medium">
+          <li>Empieza desde $5 pesos.</li>
+          <li>Sin plazos mínimos — puedes retirar cuando quieras.</li>
+          <li>Comisión baja: 0.40% - 1% anual.</li>
+          <li>El fondo High risk contiene instrumentos ESG para inversión ética.</li>
+          <li>Rendimientos pasados no garantizan desempeño futuro. Datos de Fintual.mx, octubre 2025.</li>
+          <li>Visita <a href="https://fintual.mx" target="_blank" class="text-tertiary underline hover:text-tertiary/80">fintual.mx</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Page 15 -->
+    <div class="mb-16">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-8 h-8 rounded-full bg-[#4A6B41] text-white flex items-center justify-center font-bold text-[1.05rem]">3</div>
+        <h3 class="text-xl font-headline font-bold text-primary">GBM</h3>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl border-t-4 border-t-secondary mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-4">GBM es una casa de bolsa mexicana, regulada por la CNBV. Es la opción más completa y poderosa de las tres, pero también la que más requiere de tu parte.</p>
+        <p class="text-[1.05rem] text-on-surface mb-2">¿Qué puedes hacer en GBM?</p>
+        <ul class="list-disc pl-5 space-y-1 text-[1.05rem]">
+          <li>Comprar acciones de empresas mexicanas e internacionales.</li>
+          <li>Comprar ETFs</li>
+        </ul>
+      </div>
+      
+      <div class="bg-primary p-6 rounded-xl shadow-md text-white mb-6">
+        <h3 class="text-secondary font-headline italic text-lg mb-3 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave: ¿Qué es una acción?</h3>
+        <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Cuando compras una acción, te conviertes en propietario de una pequeña parte de una empresa. Si la empresa crece y gana dinero, el valor de tu acción sube. Muchas empresas también reparten ganancias directamente: eso se llama dividendo.<br>Ejemplo: Si compras 1 acción de FEMSA a $200 pesos y la empresa crece, tu acción puede valer $250 el próximo año.</p>
+      </div>
+
+      <div class="bg-primary p-6 rounded-xl shadow-md text-white mb-6">
+        <h3 class="text-secondary font-headline italic text-lg mb-3 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave: ETF</h3>
+        <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Un ETF (Exchange-Traded Fund) es una canasta de muchas acciones empaquetadas en un solo instrumento. En lugar de comprar una sola empresa y rezar para que le vaya bien, compras una pequeña parte de cientos de empresas al mismo tiempo. Si una quiebra, el impacto en tu portafolio es mínimo. Es diversificación automática con una sola compra.</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl shadow-sm mb-6">
+        <h3 class="text-on-surface font-headline italic text-lg mb-3 tracking-wide">ETFs con filtro ESG</h3>
+        <p class="mb-0 text-[1.05rem] leading-[1.7] text-on-surface leading-relaxed">Los ETFs con filtro ESG invierten en empresas que cumplen criterios ambientales, sociales y de buen gobierno — con el filtro ético ya aplicado.</p>
+      </div>
+    </div>
+
+    <!-- Page 16 -->
+    <div class="mb-16">
+      <h3 class="text-lg font-headline font-bold text-primary mb-6">ETFs con filtro ESG disponibles en GBM:</h3>
+      
+      <div class="overflow-x-auto mb-8">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#4A6B41] text-white">
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">ETF</th>
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Lo que incluye</th>
+              <th class="p-4 font-semibold">Perfil</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">iShares<br>ESGU</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Empresas de EE.UU. con filtro ESG (S&P 500 filtrado)</td>
+              <td class="p-4 text-on-surface">Moderado-Agresivo ·<br>Largo plazo</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">iShares<br>ESGD</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Mercados desarrollados fuera de EE.UU. con filtro ESG</td>
+              <td class="p-4 text-on-surface">Moderado · Largo plazo</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">iShares<br>ESGE</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Mercados emergentes (Brasil, India, Taiwan) con filtro ESG</td>
+              <td class="p-4 text-on-surface">Agresivo · Largo plazo</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">ESGMEX</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Empresas mexicanas que cumplen criterios ESG en BMV</td>
+              <td class="p-4 text-on-surface">Moderado · Mediano-Largo</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">ICLN</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Empresas de energía limpia global</td>
+              <td class="p-4 text-on-surface">Agresivo · Largo plazo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-r-xl border-l-4 border-secondary shadow-sm">
+        <ul class="list-disc pl-5 space-y-2 text-[1.05rem] italic font-medium">
+          <li><strong>IMPORTANTE:</strong> GBM no es una plataforma para aprender invirtiendo dinero real con prueba y error. Si no entiendes qué es lo que estás comprando, no lo compres. Primero invierte tiempo en educarte — y este módulo es un buen punto de partida.</li>
+          <li>Visita <a href="https://gbm.com.mx" target="_blank" class="text-tertiary underline hover:text-tertiary/80">gbm.com.mx</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Page 17 -->
+    <div class="mb-16">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-8 h-8 rounded-full bg-[#4A6B41] text-white flex items-center justify-center font-bold text-[1.05rem]">4</div>
+        <h3 class="text-xl font-headline font-bold text-primary">Invierte en ti mismo</h3>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl border-t-4 border-t-secondary mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-0">Esta es la categoría de inversión que casi nadie menciona — y que en términos de retorno sobre la inversión puede superar cualquier instrumento financiero convencional. Antes de mover dinero hacia plataformas externas, la mayor palanca de ingresos disponible eres tú mismo: tus habilidades, tu conocimiento, tu capacidad de generar más valor.</p>
+      </div>
+      
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+        <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"El que adquiere sabiduría a sí mismo se ama; el que tiene entendimiento prosperará."</p>
+        <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Proverbios 19:8 NTV</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl border-t-4 border-t-[#4A6B41] mb-6">
+        <h4 class="text-[#4A6B41] font-bold mb-2">El inglés como multiplicador de ingresos</h4>
+        <p class="text-[1.05rem] text-on-surface mb-0">Hablar inglés en México no es un detalle curricular. Es una palanca de ingresos real y documentada. Los trabajadores bilingües pueden ganar entre un 20% y un 50% más que sus pares con el mismo perfil pero sin el idioma. Además, el inglés abre acceso a trabajo remoto con empresas internacionales.</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl mb-8">
+        <h4 class="text-on-surface font-bold mb-3">Habilidades de alto retorno en el mercado mexicano</h4>
+        <ul class="list-disc pl-5 space-y-2 text-[1.05rem] font-medium text-on-surface">
+          <li>Diseño UX, programación, análisis de datos, marketing digital.<br>Plataformas: Platzi, Coursera, LinkedIn Learning desde ~$3,000 MXN/año.</li>
+        </ul>
+      </div>
+      
+      <p class="mb-0 text-on-surface font-medium leading-relaxed">Si inviertes $5,000 pesos en un curso y eso te permite acceder a un trabajo que paga $3,000 pesos más al mes, recuperas la inversión en menos de 2 meses. A 12 meses, generaste $36,000 pesos adicionales. Ningún instrumento financiero convencional tiene ese retorno con esa velocidad.</p>
+    </div>
+
+    <!-- Page 18 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 4— Los instrumentos que consideraré
+        </h3>
+        
+        <div class="space-y-6 mb-10">
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">¿Qué opción(es) se ajustan mejor a tu perfil y momento actual?</p>
+          
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej4_cetes" name="m5_ej4_cetes" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">CetesDirecto (más conservador, más simple)</span>
+          </label>
+          
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej4_fintual" name="m5_ej4_fintual" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">Fintual (automatizado, sin seleccionar tú mismo)</span>
+          </label>
+          
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej4_gbm" name="m5_ej4_gbm" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">GBM+ (más control, más responsabilidad)</span>
+          </label>
+          
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="m5_ej4_inmismo" name="m5_ej4_inmismo" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">Invertir en mí mismo (habilidades / salud)</span>
+          </label>
+        </div>
+
+        <div>
+          <label class="block text-on-surface font-medium mb-3">¿Qué habilidad invertirías en desarrollar este año?</label>
+          <input type="text" id="m5_ej4_habilidad" name="m5_ej4_habilidad" class="w-full bg-[#E8DED1] border-none rounded-lg p-4 text-on-surface focus:ring-2 focus:ring-primary" placeholder="">
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 19 -->
+    <section id="seccion-5" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 5"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 5</p>
+      <div class="mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1">Tu retiro y plan de acción</h2>
+      </div>
+
+      <p class="mb-4">Hablemos con honestidad: el sistema de AFORE, tal como está diseñado, no va a darte una pensión que te permita vivir dignamente si dependes solo de él. Los reportes de CONSAR muestran que la pensión promedio que generaría un AFORE típico es menor al salario mínimo en muchos casos.</p>
+      
+      <p class="mb-4">Eso significa que el plan oficial para tu vejez, si no haces nada extra, es trabajar hasta que el cuerpo no aguante — o depender de tus hijos. Ninguna de las dos suena como el plan de un mayordomo sabio.</p>
+      
+      <p class="mb-8">Eso no significa que no debas tener AFORE — sí debes, y debes verificar que esté activo esta semana, no "cuando te acuerdes". Significa que tú tienes que tomar el control activo de tu retiro. Nadie más lo va a hacer por ti.</p>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl border-t-4 border-t-secondary mb-8">
+        <h3 class="text-[#4A6B41] font-headline italic text-lg mb-3">El PPR — Tu herramienta de retiro activo</h3>
+        <p class="text-[1.05rem] text-on-surface mb-0 font-medium">El Plan Personal para Retiro es la herramienta más poderosa para construir tu retiro en México fuera del AFORE. Tú lo controlas, tú eliges en qué invierte, y tiene beneficios fiscales directos. Es básicamente el gobierno diciéndote: "si ahorras para tu retiro, te devolvemos parte de tus impuestos." No es trampa. No es demasiado bueno para ser verdad. Es política pública. Y la mayoría de los mexicanos no lo aprovecha.</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-r-xl border-l-4 border-secondary shadow-sm mb-8">
+        <ul class="list-disc pl-5 space-y-2 text-[1.05rem] italic">
+          <li>Puedes deducir hasta 10% de tu ingreso anual o $152,000 pesos (lo que sea menor).</li>
+          <li>El dinero crece sin pagar ISR hasta el retiro.</li>
+          <li>Tú decides en qué se invierte.</li>
+          <li>Las plataformas Fintual y GBM cuentan con opción PPR</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Page 20 -->
+    <div class="mb-16">
+      <div class="border-l-4 border-[#8C3A20] pl-6 mb-10">
+        <h4 class="text-[#8C3A20] font-bold flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined">warning</span> Aviso importante
+        </h4>
+        <p class="text-[1.05rem] text-on-surface leading-[1.7] mb-0">Si retiras el dinero antes de los 65, pagas ISR normal más una penalización del 20%. El PPR es solo para el dinero que realmente no tocarás hasta el retiro.</p>
+      </div>
+
+      <h3 class="text-xl font-headline font-bold text-[#4A6B41] mb-4">Portafolio de referencia — Solo como ejemplo educativo</h3>
+      <p class="mb-4 leading-relaxed">Antes de ver los números, quiero aclarar: lo que sigue no es un plan de inversión — es un mapa de cómo se ve una distribución según el perfil de riesgo. Piénsalo como cuando tu médico te muestra una radiografía de referencia: no es tu radiografía, pero te ayuda a entender qué estás viendo.</p>
+      <p class="mb-6 text-on-surface">Con eso claro, así podría lucir una distribución básica:</p>
+      
+      <div class="overflow-x-auto mb-8">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#4A6B41] text-white">
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Instrumento</th>
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Perfil<br>conservador</th>
+              <th class="p-4 font-semibold border-r border-[#3A5B31]">Perfil<br>moderado</th>
+              <th class="p-4 font-semibold">Perfil<br>agresivo</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">Renta fija (CETES / Bonos)</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30 text-right">60%</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30 text-right">50%</td>
+              <td class="p-4 text-on-surface text-right">30%</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">ETF (ESGU / ESGD)</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30 text-right">20%</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30 text-right">30%</td>
+              <td class="p-4 text-on-surface text-right">50%</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface font-medium border-r border-outline-variant/30">PPR</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30 text-right">20%</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30 text-right">20%</td>
+              <td class="p-4 text-on-surface text-right">20%</td>
+            </tr>
+          </tbody>
+        </table>
+      <p class="text-[1.05rem] text-on-surface leading-relaxed mt-8">¿Y qué haces con esto? Lo observas. Notas el patrón: a mayor riesgo, menos renta fija y más renta variable. El PPR se mantiene constante porque su función no cambia con el perfil — siempre es el horizonte largo. Ese patrón es lo que llevas contigo, no los porcentajes exactos. Tu distribución real dependerá de tu situación, tus metas y el horizonte de tiempo que definiste en las páginas anteriores.</p>
+    </div>
+
+    <!-- Page 21 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 5—Mi plan de inversión completo
+        </h3>
+        
+        <div class="space-y-6 mb-8">
+          <div>
+            <p class="text-on-surface font-medium mb-3">Paso 1 — Mi perfil de inversionista:</p>
+            <div class="flex flex-wrap gap-4 md:gap-8">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej5_perfil" value="conservador" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Conservador</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej5_perfil" value="moderado" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Moderado</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej5_perfil" value="agresivo" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Agresivo</span>
+              </label>
+            </div>
+          </div>
+          
+          <div>
+            <p class="text-on-surface font-medium mb-3">Paso 2 — Mi horizonte de tiempo principal:</p>
+            <div class="flex flex-wrap gap-4 md:gap-8">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej5_horizonte" value="menos_3" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Menos de 3 años</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej5_horizonte" value="3_7" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">3-7 años</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="m5_ej5_horizonte" value="8_plus" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">8+ años</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="pt-4">
+            <p class="text-on-surface font-medium mb-1">Paso 3 — Sin presión: ¿cuánto podrías destinar a invertir hoy, con lo que tienes, sin afectar tu fondo de emergencia?</p>
+            <p class="text-on-surface-variant text-[0.95rem] mb-4">No lo que quisieras. Lo que sí puedes.</p>
+            <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+              <span class="text-on-surface font-medium text-lg">$</span>
+              <input type="text" id="m5_ej5_monto_realista" class="w-32 bg-[#E8DED1] border-none rounded-lg p-3 text-on-surface focus:ring-2 focus:ring-primary" placeholder="">
+              <span class="text-on-surface font-medium">MXN al mes <span class="text-on-surface-variant font-normal text-[0.95rem] ml-2">(puede ser $200 — eso ya cuenta)</span></span>
+            </div>
+          </div>
+          
+          <div class="pt-6">
+            <p class="text-on-surface font-medium mb-1">Paso 4 — Mi siguiente acción concreta</p>
+            <p class="text-on-surface-variant text-[0.95rem] mb-5">(Una sola. La más pequeña que puedas completar esta semana.)</p>
+            
+            <div class="space-y-4">
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="m5_ej5_accion_cetes" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Entrar a CetesDirecto.com y crear mi cuenta</span>
+              </label>
+              
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="m5_ej5_accion_afore" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Revisar mi AFORE en aforeweb.com.mx para saber cuánto llevo acumulado</span>
+              </label>
+              
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="m5_ej5_accion_leer" class="mt-1.5 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <div class="flex items-center gap-2 flex-wrap flex-1">
+                  <span class="text-on-surface">Leer sobre un instrumento que no entendí bien en este módulo:</span>
+                  <input type="text" id="m5_ej5_accion_leer_texto" class="w-full sm:w-48 bg-[#E8DED1] border-none rounded-lg p-2.5 text-on-surface focus:ring-2 focus:ring-primary" placeholder="">
+                </div>
+              </label>
+              
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="m5_ej5_accion_hablar" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <span class="text-on-surface">Hablar con alguien de confianza sobre empezar a invertir</span>
+              </label>
+
+              <label class="flex items-start gap-3 cursor-pointer">
+                <input type="checkbox" id="m5_ej5_accion_otro" class="mt-1.5 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+                <div class="flex items-center gap-2 flex-wrap flex-1">
+                  <span class="text-on-surface">Otro:</span>
+                  <input type="text" id="m5_ej5_accion_otro_texto" class="flex-1 min-w-[200px] bg-[#E8DED1] border-none rounded-lg p-2.5 text-on-surface focus:ring-2 focus:ring-primary" placeholder="">
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- Page 22 - Resumen -->
+    <section class="mb-16 pt-12 border-t border-outline-variant/30">
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-2">Módulo 5</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic mb-8 border-b-4 border-secondary inline-block pb-1">Resumen del Módulo</h2>
+
+      <p class="mb-10 text-on-surface leading-relaxed">Tomar el control activo de tu inversión y tu retiro no es incompatible con la fe. Es exactamente lo que la fe nos llama a hacer con lo que Dios nos ha confiado: administrarlo con sabiduría, paciencia y propósito.</p>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#4A6B41] text-white">
+              <th class="p-4 font-semibold border-r border-[#3A5B31] w-1/2">Lo que aprendiste</th>
+              <th class="p-4 font-semibold w-1/2">Herramienta Práctica</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Del ahorro a la inversión — la diferencia importa</td>
+              <td class="p-4 text-on-surface">Checklist de pisos financieros + meta de inversión</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Inversión ética con criterios ESG y valores cristianos</td>
+              <td class="p-4 text-on-surface">Mi postura de inversión ética</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Riesgo, tiempo y cómo evitar fraudes</td>
+              <td class="p-4 text-on-surface">Mi perfil de inversionista + señales de alerta</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">CetesDirecto, Fintual, GBM+ e invertir en ti mismo</td>
+              <td class="p-4 text-on-surface">Elección de instrumento + primer paso concreto</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">PPR y tu estrategia de retiro</td>
+              <td class="p-4 text-on-surface">Mi plan de inversión completo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Glosario Rápido (parte del Resumen) -->
+      <h3 class="text-xl font-headline font-bold text-primary mt-12 mb-2">Glosario Rápido</h3>
+      <p class="text-on-surface-variant text-[0.95rem] mb-8">Estos son los términos que necesitas entender para no perderte. No reemplazan las definiciones del módulo — son tu hoja de consulta rápida.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">Renta fija</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Instrumentos que pagan un rendimiento conocido o predecible, como CETES o bonos. Menor riesgo, menor rendimiento potencial a largo plazo.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">Renta variable</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Instrumentos cuyo valor sube y baja según el mercado, como acciones o ETFs. Mayor riesgo a corto plazo, mayor potencial de crecimiento a largo plazo.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">Acción</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Una fracción de propiedad en una empresa. Al comprar una acción, te conviertes en socio minoritario de esa compañía y participas en sus ganancias y pérdidas.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">ETF (Fondo cotizado en bolsa)</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Una canasta de acciones o bonos que se compra como si fuera una sola acción. Permite diversificar sin necesitar mucho capital. Ej: ESGU, ESGD.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">CETES</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Certificados de la Tesorería de la Federación. Es deuda del gobierno mexicano — una de las inversiones más seguras y accesibles del país. Disponibles desde $100 pesos en CetesDirecto.com.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">AFORE</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Administradora de Fondos para el Retiro. Es donde se acumula tu pensión de manera obligatoria si trabajas en el sector formal. Puedes consultarla en aforeweb.com.mx.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">PPR (Plan Personal para el Retiro)</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Cuenta de inversión con beneficios fiscales para el retiro. Lo controlas tú, no tu empleador. Permite deducir hasta el 10% de tu ingreso anual o $152,000 pesos.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">Interés compuesto</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Los rendimientos que generan, a su vez, más rendimientos. Funciona mejor entre más tiempo tienes. Por eso empezar hoy —aunque sea poco— tiene más impacto que esperar.</p>
+        </div>
+
+        <div class="bg-white border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+          <p class="font-bold text-primary mb-1">ESG</p>
+          <p class="text-on-surface text-[0.95rem] leading-relaxed">Environmental, Social and Governance. Criterios para evaluar si una empresa opera de forma ética y sostenible. Los fondos ESG filtran empresas según estos valores.</p>
+        </div>
+
+      </div>
+    </section>
+
+</article>
+
+  <!-- Navigation / Finish -->
+  <div class="mt-16 flex justify-between items-center border-t border-outline-variant/30 pt-8">
+    <button onclick="window.print()" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-[1.05rem] font-semibold">
+      <span class="material-symbols-outlined text-lg">print</span>
+      Guardar PDF / Imprimir
+    </button>
+    
+    <a href="portal.html" class="flex items-center gap-2 bg-primary text-white font-semibold py-3 px-6 rounded shadow hover:bg-primary/90 transition-colors">
+      Completar Sección <span class="material-symbols-outlined text-[1.05rem]">arrow_forward</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="bg-[#F4F4F1] py-8 text-center border-t border-outline-variant/30 mt-auto">
+  <p class="text-xs text-on-surface-variant">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Auth + Cloud Save -->
+<script src="js/supabase-auth.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const user = await WP.requireAuth();
+    if (!user) return;
+
+    // Outline Menu Toggle
+    const outlineToggle = document.getElementById('outline-toggle');
+    const outlineMenu = document.getElementById('outline-menu');
+    if(outlineToggle && outlineMenu) {
+      outlineToggle.addEventListener('click', () => {
+        const isClosed = outlineMenu.classList.contains('opacity-0');
+        if (isClosed) {
+          outlineMenu.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.add('opacity-100', 'scale-100');
+        } else {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      document.addEventListener('click', (e) => {
+        if (!outlineToggle.contains(e.target) && !outlineMenu.contains(e.target)) {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      outlineMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        });
+      });
+    }
+
+    // Load progress and setup auto-save
+    await WP.loadProgress();
+    WP.setupAutoSave();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Blog — WiserPicture</title>
+<meta name="description" content="Artículos y reflexiones sobre fe cristiana, carácter y cómo tomar mejores decisiones. Lee la serie testimonial Mi Viaje de Fe. WiserPicture.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "surface-container-low": "#F4F4F1",
+          "surface-container-high": "#E8E8E5",
+          "surface-container-highest": "#D8D8D5",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "secondary-fixed-dim": "#C9A84C",
+          "on-primary-container": "#2A3F22",
+          "on-primary": "#FFFFFF",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    }
+  }
+</script>
+<style>
+  body {
+    background-color: #F9F9F6;
+    color: #1A1C1B;
+    min-height: 100dvh;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .warm-card {
+    background: #FFFFFF;
+    border: 1px solid #E8E8E5;
+    box-shadow: 0 1px 3px rgba(45,51,25,0.06), 0 1px 2px rgba(45,51,25,0.04);
+  }
+  .warm-card:hover {
+    box-shadow: 0 4px 12px rgba(45,51,25,0.1);
+  }
+  .nav-drawer { transform: translateX(-100%); transition: transform 0.3s ease; }
+  .nav-drawer.open { transform: translateX(0); }
+  .nav-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+  .article-card:hover .read-arrow { transform: translateX(4px); }
+  .read-arrow { transition: transform 0.2s ease; }
+</style>
+</head>
+<body class="font-body selection:bg-primary/20 selection:text-on-surface">
+
+<!-- Header -->
+<header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 shadow-[0_1px_3px_rgba(45,51,25,0.08)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+  <div class="flex items-center gap-3">
+    <button id="menu-toggle" class="material-symbols-outlined text-primary md:hidden">menu</button>
+    <a href="index.html"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto"></a>
+  </div>
+  <div class="hidden md:flex flex-1 justify-center items-center gap-8">
+    <a class="text-primary font-medium text-sm tracking-wide" href="blog.html">Blog</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="podcast.html">Podcast</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="workbook.html">Workbook</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="recursos.html">Recursos</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <a href="workbook.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">Módulo Gratis</a>
+  </div>
+</div>
+</header>
+
+<div id="nav-overlay" class="nav-overlay fixed inset-0 bg-black/30 z-[55]"></div>
+<nav id="nav-drawer" class="nav-drawer fixed inset-y-0 left-0 z-[60] flex flex-col bg-[#F9F9F6]/98 backdrop-blur-2xl h-full w-80 shadow-2xl shadow-black/10">
+<div class="p-8">
+  <div class="flex justify-between items-center mb-10"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-14 w-auto"><button id="menu-close" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">close</button></div>
+  <div class="flex flex-col gap-2">
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="index.html"><span class="material-symbols-outlined">home</span><span class="font-medium font-body">Inicio</span></a>
+    <a class="text-[#1A1C1B] bg-gradient-to-r from-primary/10 to-transparent px-4 py-3 flex items-center gap-4 rounded-full border border-primary/20" href="blog.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">article</span><span class="font-medium font-body">Blog</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="podcast.html"><span class="material-symbols-outlined">mic</span><span class="font-medium font-body">Podcast</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="workbook.html"><span class="material-symbols-outlined">menu_book</span><span class="font-medium font-body">Workbook</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="recursos.html"><span class="material-symbols-outlined">handyman</span><span class="font-medium font-body">Recursos</span></a>
+  </div>
+</div>
+</nav>
+
+<main class="relative overflow-hidden">
+
+<!-- Global Background Decorations -->
+
+<!-- ========================= -->
+
+<!-- Page Hero -->
+<section class="px-6 pt-12 pb-10 max-w-7xl mx-auto">
+  <div class="warm-card rounded-3xl p-10 md:p-16 border border-tertiary/20 relative overflow-hidden bg-gradient-to-br from-surface to-surface-container-lowest">
+
+    <div class="relative z-10 max-w-2xl">
+      <span class="text-[0.65rem] font-bold text-tertiary uppercase tracking-widest mb-3 block">ARTÍCULOS</span>
+      <h1 class="text-4xl md:text-6xl font-headline italic text-on-surface mb-6">Blog</h1>
+      <p class="text-base md:text-lg text-on-surface-variant leading-relaxed">
+        Ideas para tomar mejores decisiones, fortalecer tu carácter y caminar con propósito. Explorando la fe a través de la sabiduría práctica.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Post -->
+<section class="px-6 pb-10 max-w-7xl mx-auto">
+  <a href="blog/consejos-gratis.html" class="article-card block warm-card rounded-2xl p-8 border border-tertiary/30 hover:border-tertiary/60 transition-all group">
+    <div class="flex flex-col md:flex-row md:items-center gap-6">
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="bg-tertiary/20 text-tertiary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full">Nuevo</span>
+          <span class="text-[0.65rem] text-on-surface-variant">Agosto 2025</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors">Consejos Gratis: De un padre a una hija</h2>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">Hay momentos en la vida que nos cambian para siempre. Ser padre es una aventura llena de preguntas. Un libro que mezcla los Proverbios bíblicos, refranes mexicanos y dichos kenianos como legado para mi hija.</p>
+        <span class="inline-flex items-center gap-2 text-tertiary font-semibold text-sm">Leer artículo <span class="material-symbols-outlined text-base read-arrow">arrow_forward</span></span>
+      </div>
+      <div class="w-full md:w-48 h-32 md:h-36 warm-card rounded-xl border border-tertiary/20 flex items-center justify-center flex-shrink-0">
+        <span class="material-symbols-outlined text-tertiary text-5xl" style="font-variation-settings:'FILL' 1">auto_stories</span>
+      </div>
+    </div>
+  </a>
+</section>
+
+<!-- Categoría: Mi Viaje de Fe -->
+<section class="px-6 pb-16 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6 border-b border-outline-variant/10 pb-4">
+    <h2 class="text-2xl font-headline italic text-on-surface">Mi Viaje de Fe</h2>
+    <span class="text-[0.6rem] font-medium text-on-surface-variant uppercase tracking-widest">Testimonios</span>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Article 1: En el desierto -->
+    <a href="blog/viaje-de-fe-parte-1.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-tertiary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-tertiary text-xl" style="font-variation-settings:'FILL' 1">wb_sunny</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Junio 2023 · Mi Viaje de Fe</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-tertiary transition-colors">Parte 1: En El Desierto</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">Nace a partir de una etapa en la que me sentía dando vueltas en el mismo lugar, sin avanzar.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-tertiary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+    <!-- Article 2: Inmerso en la Gracia -->
+    <a href="blog/viaje-de-fe-parte-2.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-tertiary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-tertiary text-xl" style="font-variation-settings:'FILL' 1">water_drop</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Junio 2023 · Mi Viaje de Fe</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-tertiary transition-colors">Parte 2: Inmerso en la Gracia</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">Representa una total dependencia en Dios. Después de comenzar mis estudios y adentrarme en aguas profundas.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-tertiary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+    <!-- Article 3: Coraje -->
+    <a href="blog/viaje-de-fe-parte-3.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-tertiary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-tertiary text-xl" style="font-variation-settings:'FILL' 1">landscape</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Junio 2023 · Mi Viaje de Fe</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-tertiary transition-colors">Parte 3: Coraje</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">Una imagen frente a una roca enorme que tenía que trepar sin cuerda ni equipo, solo fe en Dios.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-tertiary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+  </div>
+</section>
+
+<!-- Categoría: Sabiduría -->
+<section class="px-6 pb-16 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6 border-b border-outline-variant/10 pb-4">
+    <h2 class="text-2xl font-headline italic text-on-surface">Sabiduría</h2>
+    <span class="text-[0.6rem] font-medium text-on-surface-variant uppercase tracking-widest">3 Artículos</span>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Article 4: Decisiones -->
+    <a href="blog/tomando-una-buena-decision.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-primary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-tertiary text-xl" style="font-variation-settings:'FILL' 1">device_hub</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Junio 2021 · Sabiduría</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">Tomando una Buena Decisión — El Principio de la Sabiduría</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">¿Cómo saber cuál es la decisión correcta? Sabiduría es la habilidad de conducir tu vida de la mejor manera posible.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-primary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+    <!-- Article 6: Triunfar -->
+    <a href="blog/triunfar-favor-de-dios-esfuerzo-propio.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-primary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">emoji_events</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Enero 2021 · Sabiduría</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">Triunfar = Favor de Dios + Esfuerzo Propio</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">No puedes controlar el futuro. El Nobel Daniel Kahneman dice: Triunfo = Talento + Suerte. En la fe, le llamamos el favor de Dios.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-primary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+    <!-- Article 5: Ser Noble -->
+    <a href="blog/ser-noble-justo-fuerte-o-sabio.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-primary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings:'FILL' 1">shield</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Febrero 2021 · Sabiduría</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">Ser Noble, Justo, Fuerte o Sabio</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">Nadie es sin maldad ─ todos tenemos debilidades. Nadie es moralmente perfecto. ¿Qué nos llama a ser realmente la fe cristiana?</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-primary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+  </div>
+</section>
+
+<!-- Categoría: Carácter -->
+<section class="px-6 pb-20 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6 border-b border-outline-variant/10 pb-4">
+    <h2 class="text-2xl font-headline italic text-on-surface">Carácter</h2>
+    <span class="text-[0.6rem] font-medium text-on-surface-variant uppercase tracking-widest">3 Artículos</span>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Article 2: Cobrando Ánimos -->
+    <a href="blog/cobrando-animos.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-primary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-secondary text-xl" style="font-variation-settings:'FILL' 1">self_improvement</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Julio 2021 · Carácter</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">Cobrando Ánimos</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">Cobrar ánimos es acerca de perspectiva. Tener la convicción que Dios te sostiene, te conoce y está pendiente de ti en medio de las pruebas.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-primary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+    <!-- Article 3: Esperanza -->
+    <a href="blog/esperanza-en-las-dificultades.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-primary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">flare</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Junio 2021 · Carácter</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">Esperanza en las Dificultades</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">La expectativa errónea es creer que como Cristiano ninguna adversidad te vendrá. Aquí, una perspectiva más firme y honesta.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-primary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+    <!-- Article 9: Discípulos -->
+    <a href="blog/ser-discipulos.html" class="article-card warm-card rounded-2xl p-6 border border-outline-variant/30 hover:border-primary/30 transition-all group flex flex-col">
+      <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">group</span>
+      </div>
+      <span class="text-[0.6rem] text-on-surface-variant mb-2 block">Enero 2021 · Carácter</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">¿Ser Discípulos? A qué somos llamados</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">Somos llamados a seguir a Jesús, no solo a la superación personal. El buen discípulo persigue: Amor, Fe y Conocimiento.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-primary text-xs font-semibold">Leer <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-[#C0603A] py-16">
+<div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
+  <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto mb-8">
+
+  <!-- Footer Navigation -->
+  <div class="flex flex-wrap justify-center gap-6 mb-8">
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="blog.html">Blog</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="podcast.html">Podcast</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="workbook.html">Workbook</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="recursos.html">Recursos</a>
+  </div>
+
+
+
+  <!-- Social -->
+  <div class="flex gap-6 mb-8">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank">
+      <span class="material-symbols-outlined text-xl">photo_camera</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
+    </a>
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank">
+      <span class="material-symbols-outlined text-xl">public</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
+    </a>
+  </div>
+
+  <!-- Contact -->
+  <div class="mb-10">
+    <p class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/60 mb-2">Contacto</p>
+    <a class="text-white/80 hover:text-white transition-colors text-base" href="mailto:edgar@wiserpicture.com">
+      edgar@wiserpicture.com
+    </a>
+  </div>
+
+  <p class="text-[0.7rem] text-white/40">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</div>
+</footer>
+
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/30 z-50 flex justify-around items-center py-3 px-4 rounded-t-2xl">
+  <a href="index.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">home</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Inicio</span></a>
+  <a href="blog.html" class="flex flex-col items-center gap-0.5 text-primary relative"><div class="absolute -top-0.5 w-1 h-1 bg-primary rounded-full shadow-none"></div><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">article</span><span class="text-[0.55rem] font-bold tracking-widest uppercase">Blog</span></a>
+  <a href="podcast.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">mic</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Podcast</span></a>
+  <a href="workbook.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">menu_book</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Workbook</span></a>
+  <a href="recursos.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">handyman</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Recursos</span></a>
+</nav>
+<div class="h-20 md:hidden"></div>
+
+<script>
+  const toggle=document.getElementById('menu-toggle'),drawer=document.getElementById('nav-drawer'),overlay=document.getElementById('nav-overlay'),closeBtn=document.getElementById('menu-close');
+  function openMenu(){drawer.classList.add('open');overlay.classList.add('open')}
+  function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('open')}
+  toggle.addEventListener('click',openMenu);closeBtn.addEventListener('click',closeMenu);overlay.addEventListener('click',closeMenu);
+</script>
+</body></html>

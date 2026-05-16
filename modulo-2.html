@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 2: Orden y Presupuesto — WiserPicture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  
+  /* Workbook specific styles */
+  .workbook-textarea { width: 100%; min-height: 120px; padding: 1.25rem; border: none; border-radius: 0.5rem; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; resize: vertical; background-color: #E8DED1; transition: all 0.2s; color: #1A1C1B; }
+  .workbook-textarea:focus { outline: none; box-shadow: 0 0 0 2px #334F2B; background-color: #EBE5DB; }
+  .workbook-input { width: 100%; padding: 0.75rem 1rem; border: none !important; border-radius: 0.5rem !important; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; background-color: #E8DED1 !important; transition: all 0.2s; color: #1A1C1B; outline: none !important; box-shadow: none !important; }
+  .workbook-input:focus { outline: none !important; box-shadow: 0 0 0 2px #334F2B !important; background-color: #EBE5DB !important; }
+  
+
+  
+  /* Flowchart styles */
+  .flowchart-container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0; }
+  .flowbox { background-color: #C9A84C; color: #FFFFFF; font-family: "Lora", serif; font-style: italic; font-size: 1.1rem; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-align: center; flex: 1; min-width: 120px; }
+  .flowarrow { color: #C0603A; font-weight: bold; }
+  
+  /* Scale 1-5 Radio Group */
+  .scale-container { background-color: #C9A84C; border-radius: 0.5rem; padding: 0.5rem; display: flex; justify-content: space-between; margin-top: 1rem; margin-bottom: 0.5rem; }
+  .scale-label { flex: 1; text-align: center; color: white; font-weight: 600; font-family: "Manrope", sans-serif; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .scale-input { appearance: none; width: 1.25rem; height: 1.25rem; border: 2px solid white; border-radius: 50%; background: transparent; cursor: pointer; display: block; margin: 0 auto; transition: background 0.2s; }
+  .scale-input:checked { background: white; }
+  .scale-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(255,255,255,0.5); }
+  .scale-text-labels { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; margin-bottom: 2rem; }
+  
+  /* Checkboxes custom styling */
+  .custom-checkbox-wrapper { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer; }
+  .custom-checkbox { appearance: none; width: 1.2rem; height: 1.2rem; border: 1px solid #A0A0A0; border-radius: 0.25rem; background-color: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .custom-checkbox:checked { background-color: #C9A84C; border-color: #C9A84C; }
+  .custom-checkbox:checked::after { content: "✓"; color: #FFFFFF; font-size: 0.8rem; font-weight: bold; }
+  
+  /* Indicator Dots */
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; margin-bottom: 1rem; }
+  .dot-green { background-color: #4CAF50; }
+  .dot-yellow { background-color: #FFC107; }
+  .dot-red { background-color: #F44336; }
+  
+  article p { font-size: 1.05rem; line-height: 1.7; color: #1A1C1B; margin-bottom: 1.5rem; }
+  article ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  article li { margin-bottom: 0.5rem; font-size: 1.05rem; line-height: 1.7; }
+</style>
+</head>
+<body class="font-body flex flex-col min-h-screen">
+
+<!-- Sticky Header with Nav -->
+<nav class="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-outline-variant/30">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+    
+    <!-- Module Links -->
+    <div class="flex gap-6 overflow-x-auto whitespace-nowrap w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+      <a href="portal.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Mi Portal</a>
+      <a href="modulo-1.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 1</a>
+      <a href="modulo-2.html" class="text-sm font-medium text-primary border-b-2 border-secondary pb-1">Módulo 2</a>
+      <a href="modulo-3.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 3</a>
+      <a href="modulo-4.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 4</a>
+      <a href="modulo-5.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 5</a>
+    </div>
+    
+    <!-- Utilities -->
+    <div class="flex items-center gap-4 self-end md:self-auto">
+      <div id="save-status" class="flex items-center gap-1.5 text-xs font-semibold text-[#1E8E3E] opacity-0 transition-opacity duration-300">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+        Guardado
+      </div>
+      
+      <div class="relative">
+        <button id="outline-toggle" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold bg-white border border-outline-variant/50 px-4 py-2 rounded-full shadow-sm hover:shadow-md">
+          <span class="material-symbols-outlined text-[1.1rem]">format_list_bulleted</span>
+          <span class="hidden sm:inline">Índice</span>
+        </button>
+        <!-- Dropdown Menu -->
+        <div id="outline-menu" class="absolute right-0 mt-2 w-64 bg-white border border-outline-variant/30 rounded-xl shadow-xl py-2 opacity-0 pointer-events-none transform scale-95 origin-top-right transition-all duration-200">
+          <div class="px-4 py-3 border-b border-outline-variant/20 mb-1 bg-surface-container-lowest rounded-t-xl">
+            <span class="text-xs font-bold text-secondary uppercase tracking-widest">Navegación del Módulo</span>
+          </div>
+          <a href="#intro" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">Introducción</a>
+          <a href="#seccion-1" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">1. Conoce tus números</a>
+          <a href="#seccion-2" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">2. Sé intencional, no impulsivo</a>
+          <a href="#seccion-3" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">3. Los gastos que no ves venir</a>
+          <a href="#seccion-4" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">4. Construye tu Presupuesto</a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
+  
+  <!-- Cover Equivalent -->
+      <header class="mb-12 bg-[#7e2f0c] text-white rounded-2xl p-8 md:p-12 shadow-lg relative overflow-hidden">
+    <!-- Decorative Circle -->
+    <div class="absolute -right-16 -bottom-24 w-64 h-64 border-[1px] border-secondary/40 rounded-full"></div>
+    <div class="absolute -right-12 -bottom-20 w-64 h-64 border-[1px] border-secondary/20 rounded-full"></div>
+    
+    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+      <span class="text-7xl font-headline text-secondary/40 italic font-bold leading-none">02</span>
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-widest block mb-2">Módulo 2 — Edgar U. Chan</span>
+        <h1 class="font-headline text-3xl md:text-5xl font-bold italic text-white leading-tight">Orden y Presupuesto</h1>
+      </div>
+    </div>
+    
+    <div class="relative z-10 border-l-4 border-secondary pl-4 mt-8">
+      <p class="text-lg text-white/90 font-headline italic max-w-2xl font-bold mb-1">El Arte de Manejar lo que Tienes</p>
+      <p class="text-lg text-white/80 font-headline italic max-w-2xl">Porque tener dinero no es lo mismo que saber manejarlo.</p>
+    </div>
+    
+    <div class="relative z-10 mt-10 p-6 bg-black/10 border-l-4 border-secondary rounded-r-lg">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-white/95">"¿Quién comenzaría a construir un edificio sin primero calcular el costo para ver si hay suficiente dinero para terminarlo? De no ser así, tal vez termines solamente los cimientos antes de quedarte sin dinero, y entonces todos se reirán de ti."</p>
+      <p class="text-secondary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Lucas 14:28-30 NTV</p>
+    </div>
+  </header>
+
+  <!-- Interactive Content -->
+  <article>
+
+    <section id="intro" class="mb-16 scroll-mt-24">
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Módulo 2</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Introducción</h2>
+      </div>
+
+        <div class="bg-[#F4F4F1] p-6 rounded-xl mb-8">
+      <h3 class="text-on-surface font-headline italic text-xl mb-4 tracking-wide">Objetivo y Contenido del Módulo</h3>
+      <p class="mb-4">Este módulo es más práctico que el anterior. Menos reflexión, más lápiz en mano.</p>
+      <ul class="list-disc pl-5 text-[1.05rem] leading-[1.7] text-on-surface space-y-1 mb-6">
+        <li>Vas a construir tu presupuesto.</li>
+        <li>Vas a aprender a ser intencional con cada peso que entra y con cada peso que sale.</li>
+        <li>Aprenderás a simplificar lo que tienes.</li>
+        <li>Desarrollarás prácticas concretas que hagan del buen manejo del dinero algo que realmente puedas sostener en el día a día.</li>
+      </ul>
+      <div class="pt-4 border-t border-outline-variant/30">
+        <p class="text-on-surface text-[1.05rem] mb-2">⏱ <strong>Tiempo estimado: 60–75 minutos</strong></p>
+        <p class="text-on-surface-variant text-[1.05rem] leading-relaxed mb-0 italic">Este es el módulo más práctico del curso. Te sugiero dividirlo en 3 sesiones de 20–25 minutos, trabajando progresivamente en las secciones.</p>
+      </div>
+    </div>
+    
+    <p>Imagina a alguien que en enero hace sus propósitos de año nuevo: "Este año sí ahorro, este año sí me organizo, este año sí llevo mis cuentas." Mucha motivación, mucho ánimo, quizás hasta compró una libreta nueva para anotar todo. Pero para el día 18 del mes, la cuenta ya está en ceros y no sabe exactamente qué pasó. No hubo ningún gasto enorme. Nada dramático. Solo... se fue.</p>
+    
+    <p>Si te identificas, bienvenido al club. Es uno de los más grandes de México.</p>
+    
+    <p>El problema casi nunca es la falta de dinero. El problema es que comenzamos a construir sin sentarnos primero a calcular. Vivimos el mes de forma reactiva: gastamos lo que hay, pagamos lo urgente, y esperamos que al final sobre algo. Spoiler: casi nunca sobra. Y lo que sobra ya tiene dueño — solo que todavía no lo sabes.</p>
+
+
+    </section>
+
+    <section id="seccion-1" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 1</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Conoce tus números</h2>
+      </div>
+
+    <p>Antes de hablar de estrategias, necesitas conocer una sola cosa: la diferencia entre lo que entra y lo que sale.</p>
+
+    <p>Parece obvio. Y sin embargo, la mayoría de las personas no sabe con exactitud cuánto gasta al mes. Saben aproximadamente cuánto ganan, pero los gastos son ese territorio nebuloso donde el dinero simplemente "desaparece" — como la fruta que compras con buenas intenciones en el mercado y termina olvidada hasta que ya no sirve.</p>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      Según la Encuesta Nacional de Capacidades Financieras (ENSAFI) 2024, solo el 36% de los mexicanos planifica sus gastos mediante un presupuesto.
+    </div>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave — Presupuesto</h3>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Un presupuesto no es una camisa de fuerza ni una lista de cosas que no puedes tener. Es exactamente lo contrario: el presupuesto es tu permiso para gastar. Cuando decides de antemano a dónde va cada peso puedes gastarlo con total libertad y sin culpa, sabiendo que tus responsabilidades ya están cubiertas. Así de simple. Y aparentemente, así de radical para el 64% de nosotros.</p>
+      
+    </div>
+
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]">map</span> Ilustración: El mapa vs. el instinto</h3>
+      <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Imagina que vas a manejar de Chihuahua a la Ciudad de México sin mapa, sin GPS y sin preguntar. Solo con el instinto y la confianza de que "más o menos sé hacia dónde queda." Podrías llegar. O podrías terminar en Veracruz.</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Un presupuesto es el GPS de tus finanzas. No te quita el volante. No decide por ti. Solo te dice dónde estás, hacia dónde vas, y cuándo te estás saliendo del camino. Con esa información, tú decides.</p>
+      </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 1 — Tu mapa financiero del mes
+      </h3>
+      <p class="text-[1.05rem] leading-[1.7] mb-8">Completa cada paso con honestidad.</p>
+
+      <div class="flex items-start gap-3 mb-4">
+        <div class="bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-1">1</div>
+        <div>
+          <h4 class="font-bold text-primary text-lg mb-2">Conoce tu Ingreso Neto</h4>
+          <p class="text-[1.05rem] leading-[1.7] mb-4">Anota cuánto recibes realmente, ya descontados impuestos. Si eres freelance o tus ingresos varían, promedia los últimos tres meses.</p>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-2">Mi ingreso mensual total aproximado:</p>
+          <div class="relative w-full max-w-sm">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface">$</span>
+            <input type="text" id="m2_q1_ingreso" class="workbook-input pl-8 mb-0" placeholder="0.00">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3 mt-10 mb-4">
+        <div class="bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-1">2</div>
+        <div class="w-full">
+          <h4 class="font-bold text-primary text-lg mb-2">El Rastro del Dinero</h4>
+          <p class="text-[1.05rem] leading-[1.7] mb-4">Antes de planear, observa. Anota todo lo que gastas en el mes. Te sorprenderá cuánto se va en el OXXO, el Uber o las propinas que ni recuerdas haber dado.</p>
+          
+          <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl my-6">
+            <p class="text-on-surface mb-0"><span class="font-bold text-secondary">Pro tip:</span> Usa una app para rastrear tus gastos. Estas 2 recomendaciones estan disponibles en Android y IOS</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white border-t-4 border-tertiary p-5 rounded-b-lg shadow-sm">
+              <h4 class="font-headline font-bold text-tertiary text-lg mb-1">The Budgeting App</h4>
+              <p class="font-bold text-[1.05rem] leading-[1.7] mb-2">La más moderna y simple</p>
+              <p class="text-[1.05rem] leading-[1.7] mb-2">Interfaz limpia que te dice exactamente el total de tus gastos en el mes. Perfecta si te gusta ver el progreso visualmente.</p>
+              <p class="text-[1.05rem] leading-[1.7] text-on-surface-variant mb-0 italic">La version gratuita es suficiente para rastrear tus gastos.</p>
+            </div>
+            <div class="bg-white border-t-4 border-primary p-5 rounded-b-lg shadow-sm">
+              <h4 class="font-headline font-bold text-primary text-lg mb-1">Money Manager</h4>
+              <p class="font-bold text-[1.05rem] leading-[1.7] mb-2">La más completa</p>
+              <p class="text-[1.05rem] leading-[1.7] mb-2">Barras de progreso por categoría y reportes detallados. Interfaz más técnica, pero muy poderosa.</p>
+              <p class="text-[1.05rem] leading-[1.7] text-on-surface-variant mb-0 italic">La version gratuita tiene ads. Está disponible en un solo pago de por vida.</p>
+            </div>
+          </div>
+
+          <div class="bg-[#F4F4F1] border border-outline-variant/30 p-4 mt-6 rounded-lg">
+            <p class="text-[1.05rem] leading-[1.7] italic mb-0">Checa <a href="https://youtu.be/-c_MFxboims?si=VSLM4hHrFuIwJPcz" target="_blank" rel="noopener noreferrer" class="text-tertiary hover:underline font-bold not-italic">este video tutorial</a> de cómo configurar tus gastos en la app "Money Manager", puedes usar los mismos principios en "The Budgeting App"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- SECCIÓN 2: SÉ INTENCIONAL -->
+    </section>
+
+    <section id="seccion-2" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 2</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Sé intencional, no impulsivo</h2>
+      </div>
+
+    <p>Ya conoces tus números. Ahora viene la parte que incomoda a muchos: no todo lo que compramos lo necesitamos. Sé lo que estás pensando. "Yo no gasto en cosas innecesarias." Y quizás tengas razón. Pero también quizás tu historial bancario cuente una historia ligeramente diferente.</p>
+
+    <p>Vivimos rodeados de mensajes diseñados por profesionales muy bien pagados cuyo único trabajo es convencerte de que necesitas más, mejor y ahora. La publicidad no descansa, las notificaciones de ofertas no descansan, y el "¿por qué no darte un gustito?" tampoco descansa — especialmente a las 11 de la noche cuando estás aburrido con el teléfono en la mano y Mercado Libre está a un clic de distancia.</p>
+
+    <p>Ojo: aquí no estamos diciendo que los gustos son malos. La diferencia no está en lo que compras. Está en si tú lo decidiste, o si lo decidió el algoritmo por ti.</p>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave</h3>
+      <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]"><strong class="text-secondary">Gasto intencional:</strong> Decisión de compra alineada con tus valores y prioridades, que no comprometa tu estabilidad financiera. Puede ser una necesidad básica o un disfrute planeado. Ambos cuentan.</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]"><strong class="text-secondary">Gasto impulsivo:</strong> Compra no planeada, motivada por una emoción del momento (antojo, euforia, ansiedad, presión social) que frecuentemente genera arrepentimiento posterior.</p>
+      
+    </div>
+
+
+
+
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]">shopping_cart</span> Ilustración: La diferencia entre hambre y antojo</h3>
+      <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Imagina que estás en el supermercado con hambre. Con hambre, todo se ve necesario. El pan, las papas, el helado... Sales con el doble de lo que planeabas gastar y con cosas que, cuando llegas a casa, ya ni las quieres.</p>
+      <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Ahora imagina que entras al mismo supermercado con la despensa del mes ya planeada, con lista en mano y sin hambre. Ves lo mismo, pero puedes decidir con claridad qué necesitas y qué no.</p>
+      <p class="mb-0 text-[1.05rem] !text-white font-bold leading-[1.7]">Tu presupuesto es esa lista. El truco no es eliminar todos los gustos. Es entrar al supermercado de la vida con una lista clara de lo que quieres comprar.</p>
+      </div>
+
+    <h3 class="text-xl font-headline font-bold text-primary mt-12 mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined">bolt</span>
+      Aplicación práctica — La regla del 30/30
+    </h3>
+    
+    <p>Las plazas comerciales con sus "¡Oferta de hoy solamente!" y los pop-ups de Mercado Libre están diseñados exactamente para eliminar ese tiempo de espera. No les regales tu dinero por su urgencia. La urgencia es de ellos, no tuya. Cuando sientas el impulso de comprar algo que no estaba en tu presupuesto, no lo compres de inmediato. Anótalo y aplica esta regla según el monto:</p>
+
+    <div class="bg-[#F4F4F1] p-6 rounded-xl border border-outline-variant/30 mb-6">
+      <h4 class="font-bold text-lg mb-4 text-on-surface">Compra pequeña: espera 30 horas.</h4>
+      <p>Ese tiempo no es para torturarte. Es para dejar que el impulso se enfríe y que la razón entre en la conversación. La mayoría de las veces, después de 30 horas, ya ni te acordabas de lo que querías comprar. Y eso te dice todo lo que necesitas saber.</p>
+      <p class="mb-0">En cambio, si después de 30 horas todavía lo quieres, tal vez sí vale la pena comprarlo.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] p-6 rounded-xl border border-outline-variant/30 mb-12">
+      <h4 class="font-bold text-lg mb-4 text-on-surface">Compra grande: espera 30 días.</h4>
+      <p class="mb-0">Si al cabo del mes todavía lo quieres, sigue siendo relevante para tu vida y tienes el dinero para pagarlo de contado — date el gusto sin culpa. Ya es una decisión, no un impulso.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 2 — El Rastro del Dinero
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">Piensa en algo que has querido comprar recientemente. Puede ser ropa, tecnología, una cena, una suscripción, lo que sea.<br>¿Qué es?</p>
+      <input type="text" id="m2_q2_compra" class="workbook-input mb-6" placeholder="Escribe aquí...">
+
+      <p class="text-[1.05rem] leading-[1.7] mb-4 font-bold text-on-surface">Ahora responde con honestidad:</p>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">① ¿Esto mejora realmente mi vida o solo satisface un impulso del momento?</p>
+      <textarea id="m2_q3_mejora" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">② ¿Estoy sacrificando algo más importante (ofrenda, metas, estabilidad) para comprarlo?</p>
+      <textarea id="m2_q4_sacrificio" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">③ ¿Me estoy metiendo en deudas para comprarlo?</p>
+      <textarea id="m2_q5_deuda" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+    <div class="border-l-4 border-tertiary pl-6 py-2 my-12">
+      <p class="text-[1.05rem] leading-[1.7] font-bold mb-2">¿Cuál es tu veredicto?</p>
+      <ul class="list-disc pl-5 space-y-1 text-on-surface italic">
+        <li>Lo necesito y está contemplado en mi presupuesto — adelante, sin culpa.</li>
+        <li>Lo quiero, lo voy a agregar para el próximo mes.</li>
+        <li>La verdad... no lo necesito. El impulso ya pasó.</li>
+      </ul>
+    </div>
+
+
+    <!-- SECCIÓN 2.1: EL RETO DE LOS MEGA GASTOS -->
+    <h3 class="text-2xl font-headline font-bold text-primary mt-16 mb-6">2.1: El Reto de los 'Mega-Gastos'</h3>
+
+    <p>No todas las compras grandes son impulsivas. Algunas son eventos únicos, llenos de significado emocional, pero con un costo financiero devastador si no se manejan bien: bodas, XV años, bautizos, un coche.</p>
+
+    <p>Y aquí México tiene una particularidad cultural muy específica: somos extraordinariamente buenos organizando fiestas que no podemos pagar. El banquete de 200 personas, la renta del salón, el DJ, el photobooth, el brindis con bebidas de marca — y todo financiado con una tarjeta departamental a 18 meses sin intereses, que en realidad sí tiene intereses, pero eso se procesa emocionalmente después.</p>
+
+    <h3 class="text-xl font-headline font-bold text-primary mt-12 mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined">bolt</span>
+      Aplicación práctica — Reglas para un Mega-Gasto
+    </h3>
+
+    <div class="bg-[#F4F4F1] p-8 rounded-xl border border-outline-variant/30 mb-12">
+      <ol class="list-decimal pl-5 space-y-6">
+        <li><strong>La regla del Fondo vs. Deuda:</strong> Nunca te endeudes para un evento que dura un día. Si no puedes pagarlo con dinero que has ahorrado específicamente, pospón el evento. El banquete de tus sueños financiado a 36 meses no es el banquete de tus sueños. Es el banquete de tus pesadillas — que empieza el mes siguiente cuando llega el estado de cuenta.</li>
+        <li><strong>Define tu "No Negociable":</strong> Identifica el único elemento que es esencial para ti y sé implacable con todo lo demás. La música puede ser increíble. El pastel puede ser sencillo. Nadie recuerda el pastel.</li>
+        <li><strong>Divide y Vencerás:</strong> Un gasto de $100,000 pesos parece enorme. Pero si lo planeas con 24 meses de anticipación, solo necesitas $4,166 pesos al mes. Pasa de ser una crisis a ser una categoría de ahorro. Esa es exactamente la diferencia entre planear y reaccionar.</li>
+      </ol>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 2.1: El Mega-Gasto en el Horizonte
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-4">El gasto más importante que tengo en los próximos 3 años:</p>
+      
+      <div class="flex items-center gap-4 mb-4">
+        <span class="text-[1.05rem] text-on-surface-variant w-1/4">¿Qué es?</span>
+        <input type="text" id="m2_q6_mega_que" class="workbook-input mb-0 flex-1" placeholder="Escribe aquí...">
+      </div>
+
+      <div class="flex items-center gap-4 mb-4">
+        <span class="text-[1.05rem] text-on-surface-variant w-1/4">Costo aproximado: $</span>
+        <input type="text" id="m2_q7_mega_costo" class="workbook-input mb-0 flex-1" placeholder="Ej. 50,000">
+      </div>
+
+      <div class="flex items-center gap-4 mb-4">
+        <span class="text-[1.05rem] text-on-surface-variant w-1/2">En cuántos meses lo puedo lograr ahorrando:</span>
+        <input type="text" id="m2_q8_mega_meses" class="workbook-input mb-0 flex-1" placeholder="Meses">
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-6">¿Qué estoy dispuesto a sacrificar hoy para que este mega-gasto no se convierta en una deuda mañana?</p>
+      <textarea id="m2_q9_mega_sacrificio" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+    <!-- SECCIÓN 2.2: EL GUSTITO PLANEADO -->
+    <h3 class="text-2xl font-headline font-bold text-primary mt-16 mb-6">2.2: El Gustito Planeado — O "El Arte de Gastar sin Culpa"</h3>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"También es algo bueno recibir riquezas de parte de Dios y la buena salud para disfrutarlas. Disfrutar del trabajo y aceptar lo que depara la vida son verdaderos regalos de Dios."</p>
+      <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Eclesiastés 5:19 NTV</p>
+    </div>
+
+    <p>La Biblia habla de disfrutar lo que tienes. Aquí vamos a hablar de algo que muy pocos presupuestos incluyen, pero que es tan necesario como pagar la renta: una categoría dedicada exclusivamente a tu gozo. Porque si tu presupuesto es pura restricción y no tiene ni un peso para lo que te hace feliz, lo vas a abandonar antes del día 10. No porque seas indisciplinado, sino porque ningún ser humano normal mantiene voluntariamente un régimen de privación total. Nadie. Ni los que suben contenido motivacional a las 5 de la mañana.</p>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: Fondo de disfrute</h3>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Es una categoría dentro de tu presupuesto — con un monto definido de antemano — destinada exclusivamente a gastos que no son necesidades básicas, pero que son buenos para tu bienestar y tu alegría. Sin culpa. Ya estaba planeado. Esa es la diferencia entre gastar con paz y gastar con vergüenza.</p>
+      
+    </div>
+
+    <div class="bg-[#F4F4F1] border-t-4 border-secondary rounded-xl p-6 mb-10 relative">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide">Historia real</h3>
+      <p class="text-[1.05rem] leading-[1.7] mb-0 text-on-surface">- Mi esposa y yo tenemos una noche de cita cada semana. A veces la noche perfecta es quedarnos en casa viendo una película. Otras, salimos a cenar solos — los dos, sin niños. Lo tenemos en el presupuesto. Porque las cosas que importan no se improvisan — se planean.</p>
+    </div>
+
+    <p class="text-[1.05rem] leading-[1.7] font-bold mb-2">Empieza con lo que sea real y sostenible para ti. Lo importante es que exista la categoría.</p>
+    <ul class="list-disc pl-5 space-y-1 mb-8">
+      <li>Una cena especial con tu pareja o familia</li>
+      <li>Un libro, un taller, una clase de lo que te apasiona</li>
+    </ul>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 2.2: Diseña tu Fondo de Disfrute
+      </h3>
+      
+      <div class="flex items-center gap-4 mb-4">
+        <span class="text-[1.05rem] text-on-surface-variant w-1/3">¿Mi ingreso neto mensual: $</span>
+        <input type="text" id="m2_q10_disfrute_ingreso" class="workbook-input mb-0 flex-1" placeholder="">
+      </div>
+
+      <div class="flex items-center gap-4 mb-4">
+        <span class="text-[1.05rem] text-on-surface-variant w-1/2">El porcentaje que voy a asignar a mi Fondo de Disfrute:</span>
+        <input type="text" id="m2_q11_disfrute_porcentaje" class="workbook-input mb-0 w-24" placeholder="%">
+      </div>
+
+      <div class="flex items-center gap-4 mb-6">
+        <span class="text-[1.05rem] text-on-surface-variant">Eso equivale a $</span>
+        <input type="text" id="m2_q12_disfrute_pesos" class="workbook-input mb-0 w-32" placeholder="">
+        <span class="text-[1.05rem] text-on-surface-variant">pesos al mes.</span>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-4 text-on-surface-variant">¿En qué lo quiero usar? (escribe 2 o 3 cosas que genuinamente te dan alegría):</p>
+      
+      <div class="flex flex-col gap-3 mb-6">
+        <div class="flex items-center gap-2 bg-[#E8DED1] rounded-lg px-4 focus-within:ring-2 focus-within:ring-[#334F2B] transition-shadow">
+          <span class="text-on-surface-variant font-bold">1.</span> 
+          <input type="text" id="m2_q13_disfrute_item1" class="w-full bg-transparent border-none focus:ring-0 text-on-surface py-3 outline-none m-0" placeholder="">
+        </div>
+        <div class="flex items-center gap-2 bg-[#E8DED1] rounded-lg px-4 focus-within:ring-2 focus-within:ring-[#334F2B] transition-shadow">
+          <span class="text-on-surface-variant font-bold">2.</span> 
+          <input type="text" id="m2_q13_disfrute_item2" class="w-full bg-transparent border-none focus:ring-0 text-on-surface py-3 outline-none m-0" placeholder="">
+        </div>
+        <div class="flex items-center gap-2 bg-[#E8DED1] rounded-lg px-4 focus-within:ring-2 focus-within:ring-[#334F2B] transition-shadow">
+          <span class="text-on-surface-variant font-bold">3.</span> 
+          <input type="text" id="m2_q13_disfrute_item3" class="w-full bg-transparent border-none focus:ring-0 text-on-surface py-3 outline-none m-0" placeholder="">
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <!-- SECCIÓN 3: LOS GASTOS QUE NO VES VENIR -->
+    </section>
+
+    <section id="seccion-3" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 3</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Los gastos que no ves venir</h2>
+      </div>
+
+    <p>Hay un tipo de gasto que es especialmente peligroso precisamente porque parece insignificante. Se llaman <strong>gastos hormiga</strong>. Y en México tienen nombres muy específicos: el café de camino al trabajo, los chicharrones de la tiendita, el Uber porque "ya estaba muy cansado para caminar dos cuadras", el delivery porque "no había qué comer" aunque el refri tenía tres recipientes de sobras de la semana pasada.</p>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: Gastos hormiga</h3>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Pequeños gastos cotidianos, frecuentes y casi siempre impulsivos, que de forma individual parecen inofensivos pero que sumados al mes representan una fuga significativa de dinero.</p>
+      
+    </div>
+
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]">water_drop</span> Ilustración: El goteo que vacía la cubeta</h3>
+      <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Imagina una cubeta llena de agua con un pequeño agujero en el fondo. El agujero es tan pequeño que apenas ves las gotas salir. No parece urgente. No parece importante. Pero si la dejas toda la noche, amanece vacía.</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Tus gastos hormiga son ese agujero. Un café de $60 pesos al día parece nada. Pero son $1,800 pesos al mes. Son $21,600 pesos al año. Con eso podrías haber comenzado un fondo de emergencia.</p>
+      </div>
+
+    <p>La solución no es volverse miserable y no tomar café nunca — porque eso tampoco es vida, y Eclesiastés ya nos dijo que el gozo es un regalo. La solución es identificar el agujero y decidir conscientemente si vale la pena. Que sea tu decisión — no un hábito automático que se lleva tu dinero sin pedirte permiso.</p>
+
+    <p>Hay una versión digital del gasto hormiga que es especialmente tramposa: las suscripciones que no usas: Netflix, Spotify, Disney+, Amazon Prime. ¿Cuántas tienes activas? ¿Cuántas usas de verdad? Si esos dos números no coinciden, ya sabes lo que sigue: cancelar. Sin drama, sin nostalgia, sin "pero qué tal si la uso pronto." No la vas a usar.</p>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 3: Caza tus gastos hormiga
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-4 text-on-surface">1. Rastrea y anota todos los gastos pequeños del mes (menos de $200 pesos). No te juzgues, solo observalos.</p>
+      
+      <div class="grid grid-cols-12 gap-2 mb-2 px-2">
+        <div class="col-span-6 text-[1.05rem] text-on-surface">Gasto identificado</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface text-center">Monto al mes</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface text-center">¿Vale la pena?</div>
+      </div>
+      
+      <div class="flex flex-col gap-3 mb-8">
+        <!-- Row 1 -->
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-6"><input type="text" id="m2_q14_gasto1" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q14_monto1" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q14_vale1_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q14_vale1_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-6"><input type="text" id="m2_q14_gasto2" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q14_monto2" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q14_vale2_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q14_vale2_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 3 -->
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-6"><input type="text" id="m2_q14_gasto3" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q14_monto3" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q14_vale3_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q14_vale3_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 4 -->
+        <div class="grid grid-cols-12 gap-2 items-center extra-gasto hidden">
+          <div class="col-span-6"><input type="text" id="m2_q14_gasto4" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q14_monto4" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q14_vale4_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q14_vale4_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 5 -->
+        <div class="grid grid-cols-12 gap-2 items-center extra-gasto hidden">
+          <div class="col-span-6"><input type="text" id="m2_q14_gasto5" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q14_monto5" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q14_vale5_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q14_vale5_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" class="text-primary font-bold text-sm uppercase tracking-widest -mt-4 mb-8 hover:opacity-80 transition-opacity flex items-center gap-1" onclick="document.querySelector('.extra-gasto.hidden')?.classList.remove('hidden')">
+        <span class="material-symbols-outlined text-lg">add_circle</span> Agregar otro gasto
+      </button>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-4 text-on-surface">2. Mis suscripciones activas:</p>
+      
+      <div class="grid grid-cols-12 gap-2 mb-2 px-2">
+        <div class="col-span-6 text-[1.05rem] text-on-surface">Suscripción</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface text-center">Costo mensual</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface text-center">¿La uso?</div>
+      </div>
+
+      <div class="flex flex-col gap-3 mb-8">
+        <!-- Row 1 -->
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-6"><input type="text" id="m2_q15_sub1" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q15_costo1" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q15_uso1_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q15_uso1_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-6"><input type="text" id="m2_q15_sub2" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q15_costo2" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q15_uso2_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q15_uso2_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 3 -->
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-6"><input type="text" id="m2_q15_sub3" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q15_costo3" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q15_uso3_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q15_uso3_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 4 -->
+        <div class="grid grid-cols-12 gap-2 items-center extra-sub hidden">
+          <div class="col-span-6"><input type="text" id="m2_q15_sub4" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q15_costo4" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q15_uso4_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q15_uso4_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+        <!-- Row 5 -->
+        <div class="grid grid-cols-12 gap-2 items-center extra-sub hidden">
+          <div class="col-span-6"><input type="text" id="m2_q15_sub5" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3"><input type="text" id="m2_q15_costo5" class="workbook-input mb-0 w-full text-center" placeholder="$"></div>
+          <div class="col-span-3 flex justify-center gap-2">
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="si" id="m2_q15_uso5_si" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> Sí</label>
+            <label class="text-[1.05rem] flex items-center gap-1"><input type="checkbox" value="no" id="m2_q15_uso5_no" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> No</label>
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" class="text-primary font-bold text-sm uppercase tracking-widest -mt-4 mb-8 hover:opacity-80 transition-opacity flex items-center gap-1" onclick="document.querySelector('.extra-sub.hidden')?.classList.remove('hidden')">
+        <span class="material-symbols-outlined text-lg">add_circle</span> Agregar otra suscripción
+      </button>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          // Show hidden rows if they have saved content
+          document.querySelectorAll('.extra-gasto').forEach(row => {
+            const inputs = row.querySelectorAll('input[type="text"]');
+            const hasData = Array.from(inputs).some(input => localStorage.getItem(input.id));
+            if(hasData) row.classList.remove('hidden');
+          });
+          document.querySelectorAll('.extra-sub').forEach(row => {
+            const inputs = row.querySelectorAll('input[type="text"]');
+            const hasData = Array.from(inputs).some(input => localStorage.getItem(input.id));
+            if(hasData) row.classList.remove('hidden');
+          });
+        });
+      </script>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-4 text-on-surface">3. Comprométete con una acción concreta esta semana:</p>
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">Un gasto hormiga que voy a controlar o eliminar:</p>
+      <input type="text" id="m2_q16_accion" class="workbook-input mb-0 w-full" placeholder="Escribe aquí...">
+    </div>
+
+
+    <!-- SECCIÓN 4: CONSTRUYE TU PRESUPUESTO -->
+    </section>
+
+    <section id="seccion-4" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 4"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 4</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Construye tu Presupuesto</h2>
+      </div>
+
+    <p class="text-[1.05rem] leading-[1.7] text-on-surface">Ya tienes el trabajo duro hecho: conoces tu ingreso, identificaste tus categorías reales, cazaste algunos gastos hormiga y le asignaste un lugar a tu Fondo de Disfrute. Lo que falta es juntar todo en un solo lugar.</p>
+    <p class="text-[1.05rem] leading-[1.7] text-on-surface">Para eso existe el formato de presupuesto incluido en el curso.</p>
+    <p class="font-bold text-on-surface text-[1.05rem]">¿Cómo funciona?</p>
+    <p class="text-[1.05rem] leading-[1.7] text-on-surface">Es una hoja de cálculo sencilla — sin fórmulas raras ni columnas que no entiendes. Está organizada en tres bloques:</p>
+    <ul class="list-disc pl-5 mb-4 text-[1.05rem] text-on-surface space-y-2">
+      <li><strong>Ingresos:</strong> todo lo que entra al mes, en un solo número claro.</li>
+      <li><strong>Gastos fijos y variables:</strong> separados por categorías que ya llenaste en la tabla anterior. Solo trasladas los números.</li>
+      <li><strong>Flujo de efectivo:</strong> la hoja lo calcula sola. Te dice si terminas el mes positivo o negativo, y cuánto.</li>
+    </ul>
+    <p class="mb-8 text-[1.05rem] leading-[1.7] text-on-surface">Eso es todo. No necesitas saber de contabilidad. Necesitas ser honesto con los números.</p>
+
+    <div class="bg-primary/5 p-6 rounded-xl border border-primary/20 mb-12">
+      <h4 class="font-bold text-on-surface text-[1.05rem] mb-2">¿Ya tienes un presupuesto propio?</h4>
+      <p class="mb-4 text-[1.05rem] leading-[1.7] text-on-surface">Bien por ti — en serio. Eso ya te pone delante del 64% de México.</p>
+      <p class="mb-0 text-[1.05rem] leading-[1.7] text-on-surface">Abre el formato de todas formas y dale un vistazo. No para que lo copies, sino para ver si hay algo que puedas tomar prestado: quizás una categoría que no tenías, la separación de gastos irregulares anuales, o el bloque del Fondo de Disfrute que a veces los presupuestos tradicionales no incluyen. Usa lo que te sirva y deja lo que no. Tu sistema es el que funciona para ti.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 5 — Tu Presupuesto
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-8">Completa cada paso con honestidad.</p>
+
+      <div class="flex items-start gap-3 mb-8">
+        <div class="bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-1">1</div>
+        <div class="w-full">
+          <h4 class="font-bold text-primary text-lg mb-2">Categoriza con realismo</h4>
+          <p class="text-[1.05rem] mb-4">Las categorías genéricas como "entretenimiento" o "varios" son los agujeros negros del presupuesto: ahí cabe todo y al final no sabes nada.</p>
+          <ul class="list-disc pl-5 space-y-1 mb-6 text-[1.05rem] text-on-surface-variant">
+            <li>Amante del café "Café y desayunos fuera" (no "salidas")</li>
+            <li>Tienes mascotas "Gastos de fifi"</li>
+            <li>Tienes hijos en la escuela "Útiles y colegiaturas"</li>
+          </ul>
+
+          <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl my-6">
+            <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-1"><span class="font-bold text-secondary">Pro tip:</span> Gastos irregulares — los olvidados del presupuesto</p>
+            <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Tenencia, regalo de Navidad, renovación del seguro, la suscripción anual. Divídelos entre 12 y guarda esa cantidad cada mes en un ahorro separado. Agrégalo a una categoría del presupuesto "Gastos irregulares-anual"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+      <!-- Tabla de Presupuesto (Page 16) -->
+      <div class="grid grid-cols-12 gap-2 mb-2 px-2 mt-8">
+        <div class="col-span-8 text-[1.05rem] text-on-surface font-bold">Categoría</div>
+        <div class="col-span-4 text-[1.05rem] text-on-surface text-center font-bold">Monto</div>
+      </div>
+      
+      <div id="categorias-container" class="flex flex-col gap-3 mb-4">
+        <div class="grid grid-cols-12 gap-2 items-center categoria-row">
+          <div class="col-span-8"><input type="text" id="m2_q20_cat1" class="workbook-input mb-0 w-full" placeholder="Categoría 1"></div>
+          <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m2_q20_monto1" class="workbook-input mb-0 w-full pl-7 cat-amount" placeholder="0.00">
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center categoria-row">
+          <div class="col-span-8"><input type="text" id="m2_q20_cat2" class="workbook-input mb-0 w-full" placeholder="Categoría 2"></div>
+          <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m2_q20_monto2" class="workbook-input mb-0 w-full pl-7 cat-amount" placeholder="0.00">
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center categoria-row">
+          <div class="col-span-8"><input type="text" id="m2_q20_cat3" class="workbook-input mb-0 w-full" placeholder="Categoría 3"></div>
+          <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m2_q20_monto3" class="workbook-input mb-0 w-full pl-7 cat-amount" placeholder="0.00">
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center categoria-row">
+          <div class="col-span-8"><input type="text" id="m2_q20_cat4" class="workbook-input mb-0 w-full" placeholder="Categoría 4"></div>
+          <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m2_q20_monto4" class="workbook-input mb-0 w-full pl-7 cat-amount" placeholder="0.00">
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center categoria-row">
+          <div class="col-span-8"><input type="text" id="m2_q20_cat5" class="workbook-input mb-0 w-full" placeholder="Categoría 5"></div>
+          <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m2_q20_monto5" class="workbook-input mb-0 w-full pl-7 cat-amount" placeholder="0.00">
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center categoria-row">
+          <div class="col-span-8"><input type="text" id="m2_q20_cat6" class="workbook-input mb-0 w-full" placeholder="Categoría 6"></div>
+          <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m2_q20_monto6" class="workbook-input mb-0 w-full pl-7 cat-amount" placeholder="0.00">
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex justify-start mb-6">
+        <button id="add-categoria-btn" class="text-primary font-bold flex items-center gap-1 hover:underline text-[1.05rem]">
+          <span class="material-symbols-outlined text-[20px]">add_circle</span>
+          Agregar Categoría
+        </button>
+      </div>
+
+      <div class="grid grid-cols-12 gap-2 items-center mb-8">
+        <div class="col-span-8 text-[1.05rem] font-bold text-on-surface text-right pr-4">Total Gastos:</div>
+        <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-primary">$</span>
+             <input type="text" id="m2_q20_total" class="workbook-input mb-0 w-full pl-7 font-bold text-primary text-lg" placeholder="0.00" readonly>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4 mt-8">
+        <span class="text-[1.05rem] leading-[1.7] text-on-surface whitespace-nowrap">Mi flujo de efectivo (Ingreso - Gastos): $</span>
+        <input type="text" id="m2_q21_flujo" class="workbook-input mb-0 w-full sm:w-48" placeholder="">
+      </div>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">¿Qué te dice ese número? ¿Sorpresa, alivio, preocupación?</p>
+      <textarea id="m2_q22_reaccion" class="workbook-textarea mb-8" placeholder="Escribe aquí..."></textarea>
+
+      <!-- Page 17 (Crea tu Presupuesto) -->
+      <div class="flex items-start gap-3 mt-12 mb-8">
+        <div class="bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-1">2</div>
+        <div class="w-full">
+          <h4 class="font-bold text-primary text-lg mb-2">Crea tu Presupuesto</h4>
+          <p class="text-[1.05rem] mb-6 text-on-surface-variant">Usa el link para abrir el formato de presupuesto incluido aquí. Crea una copia y llénalo con los datos de la tabla anterior.</p>
+          
+          <div class="flex justify-center mb-8">
+            <a href="https://docs.google.com/spreadsheets/d/1RcwczRL3m2JtzYXtuCf3peJsv_39UEBbkqnVqGDV3-g/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="bg-tertiary text-white font-bold py-3 px-8 rounded-full hover:bg-tertiary/90 transition-colors shadow-md flex items-center gap-2">
+              <span class="material-symbols-outlined">link</span>
+              Link Presupuesto
+            </a>
+          </div>
+
+          <p class="text-[1.05rem] mb-8 text-on-surface-variant">Recuerda: Tu presupuesto no es una ley grabada en piedra — es un documento vivo. El mes que viene no va a ser idéntico a este, y está bien. Los que realmente sostienen un presupuesto no son los que lo hacen perfecto: son los que aprenden a ajustarlo cuando la vida, como siempre, hace lo suyo.</p>
+
+          <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl my-6">
+            <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-2"><span class="text-secondary font-bold">Pro Tip:</span></p>
+            <ul class="list-disc pl-5 space-y-2 text-[1.05rem] text-on-surface mb-0">
+              <li><strong>Apps de Bancos:</strong> Revolut o Nu por ejemplo tienen apartados/cajitas que te ayudan a separar el dinero apenas te cae la quincena.</li>
+              <li><strong>Regla de oro:</strong> No dejes todo el dinero en la cuenta de débito principal; "escóndelo" en apartados para no gastarlo por error.</li>
+            </ul>
+          </div>
+
+          <p class="text-[1.05rem] mt-6 mb-0 text-on-surface">La mejor manera de empezar es hoy, no el próximo lunes. No busques la perfección, busca la constancia.</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- RESUMEN DEL MÓDULO -->
+    </section>
+
+    <section id="resumen" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar Final -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Resumen</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Resumen del Módulo</h2>
+      </div>
+
+    <p class="mb-8">Lucas 14:28 no es solo un consejo de construcción. Es una filosofía de vida: siéntate primero, calcula, y luego actúa. Esa pausa entre el impulso y la acción es donde vive la sabiduría.</p>
+
+    <!-- Table Resumen -->
+    <div class="mb-12 border border-outline-variant/30 rounded-lg overflow-hidden shadow-sm">
+      <div class="grid grid-cols-2 bg-[#334f2b] text-white">
+        <div class="p-3 font-bold text-[1.05rem]">Hábito</div>
+        <div class="p-3 font-bold text-[1.05rem] border-l border-white/20">Herramienta Práctica</div>
+      </div>
+      <div class="flex flex-col bg-white">
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">Conoce tus números</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Rastrea tus gastos del mes</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">Distingue necesidad de deseo</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Pregúntate las tres preguntas antes de comprar</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">El gasto intencional incluye alegría</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Una cena o un hobby planeados son tan válidos como la despensa</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">Controla los gastos hormiga</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Identifica y elimina los goteos invisibles que no te aportan nada</div>
+        </div>
+        <div class="grid grid-cols-2">
+          <div class="p-3 text-[1.05rem] text-on-surface">Simplifica tus posesiones</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Aplica la regla 90/90 a un área de tu vida</div>
+        </div>
+      </div>
+    </div>
+
+
+</section>
+</article>
+  <!-- Navigation / Finish -->
+  <div class="mt-16 flex justify-between items-center border-t border-outline-variant/30 pt-8">
+    <button onclick="window.print()" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-[1.05rem] font-semibold">
+      <span class="material-symbols-outlined text-lg">print</span>
+      Guardar PDF / Imprimir
+    </button>
+    
+    <a href="portal.html" class="flex items-center gap-2 bg-primary text-white font-semibold py-3 px-6 rounded shadow hover:bg-primary/90 transition-colors">
+      Completar Sección <span class="material-symbols-outlined text-[1.05rem]">arrow_forward</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="bg-[#F4F4F1] py-8 text-center border-t border-outline-variant/30 mt-auto">
+  <p class="text-xs text-on-surface-variant">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Auth + Cloud Save -->
+<script src="js/supabase-auth.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Require authentication
+    const user = await WP.requireAuth();
+    if (!user) return;
+
+    // Outline Menu Toggle
+    const outlineToggle = document.getElementById('outline-toggle');
+    const outlineMenu = document.getElementById('outline-menu');
+    
+    if(outlineToggle && outlineMenu) {
+      outlineToggle.addEventListener('click', () => {
+        const isClosed = outlineMenu.classList.contains('opacity-0');
+        if (isClosed) {
+          outlineMenu.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.add('opacity-100', 'scale-100');
+        } else {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!outlineToggle.contains(e.target) && !outlineMenu.contains(e.target)) {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      
+      const outlineLinks = outlineMenu.querySelectorAll('a');
+      outlineLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        });
+      });
+    }
+
+    // Ejercicio 5: Categories Calculation and Add Row
+    const calcTotal = () => {
+      let total = 0;
+      document.querySelectorAll('.cat-amount').forEach(input => {
+        const val = parseFloat(input.value) || 0;
+        total += val;
+      });
+      const totalInput = document.getElementById('m2_q20_total');
+      if (totalInput) totalInput.value = total.toFixed(2);
+      
+      // Update Flujo de efectivo
+      const flujoInput = document.getElementById('m2_q21_flujo');
+      const ingresoInput = document.getElementById('m2_q1_ingreso');
+      if (flujoInput && ingresoInput) {
+         const ingreso = parseFloat(ingresoInput.value) || 0;
+         flujoInput.value = (ingreso - total).toFixed(2);
+      }
+    };
+
+    document.getElementById('categorias-container')?.addEventListener('input', (e) => {
+      if (e.target.classList.contains('cat-amount')) {
+        calcTotal();
+      }
+    });
+
+    const addCatBtn = document.getElementById('add-categoria-btn');
+    if (addCatBtn) {
+      addCatBtn.addEventListener('click', () => {
+        const container = document.getElementById('categorias-container');
+        const count = container.querySelectorAll('.categoria-row').length + 1;
+        const div = document.createElement('div');
+        div.className = 'grid grid-cols-12 gap-2 items-center categoria-row';
+        div.innerHTML = `
+          <div class="col-span-8"><input type="text" id="m2_q20_cat${count}" class="workbook-input mb-0 w-full" placeholder="Categoría ${count}"></div>
+          <div class="col-span-4 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m2_q20_monto${count}" class="workbook-input mb-0 w-full pl-7 cat-amount" placeholder="0.00">
+          </div>
+        `;
+        container.appendChild(div);
+        
+        // Re-attach auto-save to new dynamic inputs
+        const newInputs = div.querySelectorAll('input');
+        newInputs.forEach(input => {
+          input.addEventListener('input', () => {
+            WP.queueSave(input.id, input.value, input.type === 'number' ? 'number' : 'text');
+            localStorage.setItem(input.id, input.value);
+          });
+        });
+      });
+    }
+
+    // Load saved progress from Supabase (or localStorage fallback)
+    await WP.loadProgress();
+
+    // Initial calc on load
+    setTimeout(calcTotal, 500);
+
+    // Setup auto-save for all inputs (Supabase + localStorage)
+    WP.setupAutoSave();
+  });
+</script>
+
+</body>
+</html>

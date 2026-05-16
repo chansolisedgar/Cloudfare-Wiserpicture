@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 4: Ahorrar y Protegerse — WiserPicture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  
+  /* Workbook specific styles */
+  .workbook-textarea { width: 100%; min-height: 120px; padding: 1.25rem; border: none; border-radius: 0.5rem; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; resize: vertical; background-color: #E8DED1; transition: all 0.2s; color: #1A1C1B; }
+  .workbook-textarea:focus { outline: none; box-shadow: 0 0 0 2px #334F2B; background-color: #EBE5DB; }
+  .workbook-input { width: 100%; padding: 0.75rem 1rem; border: none !important; border-radius: 0.5rem !important; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; background-color: #E8DED1 !important; transition: all 0.2s; color: #1A1C1B; outline: none !important; box-shadow: none !important; }
+  .workbook-input:focus { outline: none !important; box-shadow: 0 0 0 2px #334F2B !important; background-color: #EBE5DB !important; }
+  
+  .block-exercise { background-color: #FFFFFF; border: 1px solid #C8C8C5; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+  .block-definition { background-color: #F4F4F1; border-left: 4px solid #C9A84C; padding: 1.5rem; border-radius: 0 0.75rem 0.75rem 0; margin-bottom: 2rem; }
+  .block-insight { background-color: #F4F4F1; padding: 2rem; border-radius: 0.75rem; margin-bottom: 2rem; position: relative; }
+  
+  article p { font-size: 1.05rem; line-height: 1.7; color: #1A1C1B; margin-bottom: 1.5rem; }
+  article ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  article li { margin-bottom: 0.5rem; font-size: 1.05rem; line-height: 1.7; }
+</style>
+</head>
+<body class="font-body flex flex-col min-h-screen">
+
+<!-- Sticky Header with Nav -->
+<nav class="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-outline-variant/30">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+    
+    <!-- Module Links -->
+    <div class="flex gap-6 overflow-x-auto whitespace-nowrap w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+      <a href="portal.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Mi Portal</a>
+      <a href="modulo-1.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 1</a>
+      <a href="modulo-2.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 2</a>
+      <a href="modulo-3.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 3</a>
+      <a href="modulo-4.html" class="text-sm font-medium text-primary border-b-2 border-secondary pb-1">Módulo 4</a>
+      <a href="modulo-5.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 5</a>
+    </div>
+    
+    <!-- Utilities -->
+    <div class="flex items-center gap-4 self-end md:self-auto">
+      <div id="save-status" class="flex items-center gap-1.5 text-xs font-semibold text-[#1E8E3E] opacity-0 transition-opacity duration-300">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+        Guardado
+      </div>
+      
+      <div class="relative">
+        <button id="outline-toggle" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold bg-white border border-outline-variant/50 px-4 py-2 rounded-full shadow-sm hover:shadow-md">
+          <span class="material-symbols-outlined text-[1.1rem]">format_list_bulleted</span>
+          <span class="hidden sm:inline">Índice</span>
+        </button>
+        <!-- Dropdown Menu -->
+        <div id="outline-menu" class="absolute right-0 mt-2 w-64 bg-white border border-outline-variant/30 rounded-xl shadow-xl py-2 opacity-0 pointer-events-none transform scale-95 origin-top-right transition-all duration-200">
+          <div class="px-4 py-3 border-b border-outline-variant/20 mb-1 bg-surface-container-lowest rounded-t-xl">
+            <span class="text-xs font-bold text-secondary uppercase tracking-widest">Navegación del Módulo</span>
+          </div>
+          <a href="#intro" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">Introducción</a>
+          <a href="#seccion-1" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">1. Ahorrar no es falta de fe</a>
+          <a href="#seccion-2" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">2. El Fondo de Emergencia</a>
+          <a href="#seccion-3" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">3. ¿Dónde guardar tu dinero?</a>
+          <a href="#seccion-4" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">4. Ahorrar cuando no alcanza</a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
+  
+  <!-- Cover Equivalent -->
+    <header class="mb-12 bg-[#C0603A] text-white rounded-2xl p-8 md:p-12 shadow-lg relative overflow-hidden">
+    <!-- Decorative Circle -->
+    <div class="absolute -right-16 -bottom-24 w-64 h-64 border-[1px] border-white/40 rounded-full"></div>
+    <div class="absolute -right-12 -bottom-20 w-64 h-64 border-[1px] border-white/20 rounded-full"></div>
+    
+    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+      <span class="text-7xl font-headline text-black/10 italic font-bold leading-none">04</span>
+      <div>
+        <span class="text-xs font-bold text-white/80 uppercase tracking-widest block mb-2">Módulo 4 — Edgar U. Chan</span>
+        <h1 class="font-headline text-4xl md:text-5xl font-bold italic text-white leading-tight" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.1);">Ahorrar y Protegerse</h1>
+      </div>
+    </div>
+    
+    <div class="relative z-10 border-l-4 border-white pl-4 mt-8">
+      <p class="text-lg text-white/90 font-headline italic max-w-2xl font-bold mb-1">Paz financiera ante lo inesperado.</p>
+    </div>
+
+    <div class="relative z-10 mt-10 p-6 bg-black/10 border-l-4 border-white rounded-r-lg">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-white/95">"Los planes bien pensados y el arduo trabajo llevan a la prosperidad, pero los atajos tomados a la carrera conducen a la pobreza."</p>
+      <p class="text-secondary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Proverbios 21:5 NTV</p>
+    </div>
+  </header>
+
+<article>
+    <!-- Page 2 -->
+    <section id="intro" class="mb-16 scroll-mt-24">
+      
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Módulo 4</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1">Introducción</h2>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl mb-8">
+        <h3 class="text-on-surface font-headline italic text-xl mb-4 tracking-wide">Objetivo y Contenido del Módulo</h3>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-3">Al terminar este módulo podrás:</p>
+        <ul class="list-disc pl-5 text-[1.05rem] leading-[1.7] text-on-surface space-y-1 mb-6">
+          <li>Entender por qué ahorrar es un acto de fe y no una falta de ella</li>
+          <li>Calcular cuánto necesitas en tu fondo de emergencia</li>
+          <li>Saber dónde guardar tu dinero en México para que rinda</li>
+          <li>Tener estrategias reales para ahorrar aunque "no alcance"</li>
+        </ul>
+        <div class="pt-4 border-t border-outline-variant/30">
+          <p class="text-on-surface text-[1.05rem] mb-2">⏱ <strong>Tiempo estimado: 45–60 minutos</strong></p>
+          <p class="text-on-surface-variant text-[1.05rem] leading-relaxed mb-0 italic">Tiene más páginas pero menos ejercicios de escritura. Funciona bien en 2 sesiones de 25–30 minutos, o en tres si prefieres un ritmo más tranquilo.</p>
+        </div>
+      </div>
+
+      <p>Antes de entrar a los números, necesitamos hablar de algo que vive en la cabeza de muchos cristianos. Suena más o menos así:</p>
+      
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-8">
+        <p class="mb-0 text-on-surface text-[1.05rem] leading-[1.7]">Si confío en Dios, no necesito preocuparme por ahorrar. Él provee.</p>
+      </div>
+      
+      <p>Y mira, tiene algo de verdad. Dios sí provee. Ya lo vimos en el Módulo 1. Pero hay una diferencia enorme entre confiar en Dios y ser imprudente con lo que Él ya nos dio.</p>
+      
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-8">
+        <h4 class="font-bold text-on-surface mb-3">La realidad en México según la ENSAFI 2023:</h4>
+        <ul class="list-disc pl-5 text-[1.05rem] leading-[1.7] text-on-surface space-y-2 mb-0">
+          <li><span class="italic">Solo el 52% de la población mexicana tiene algún tipo de ahorro.</span></li>
+          <li><span class="italic">El 36.6% ahorra exclusivamente en tandas, alcancías o bajo el colchón.</span></li>
+          <li><span class="italic">Ante falta de dinero, el 41.6% pide prestado a familiares y el 32% consume sus ahorros previos.</span></li>
+        </ul>
+      </div>
+      
+      <p class="mb-12">El problema no es que Dios no provea. El problema es que muchos vivimos sin margen, sin previsión y sin plan. Y cuando llega el imprevisto — la enfermedad, el carro descompuesto, la quincena que no alcanza — caemos en pánico, en deudas, o en llamarle a la familia con esa voz que todos reconocemos inmediatamente y nadie quiere recibir.</p>
+    </section>
+
+    <!-- Page 3 -->
+    <section id="seccion-1" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 4"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-2">Módulo 4 — Sección 1</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Ahorrar no es falta de fe</h2>
+
+      <p>La Biblia tiene un personaje favorito cuando habla de finanzas: la hormiga. No tiene jefe, no tiene app de presupuesto, no tiene título universitario en administración. Pero observa lo que hace:</p>
+      
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+        <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">“Tú, holgazán, aprende una lección de las hormigas. ¡Aprende de lo que hacen y hazte sabio! A pesar de que no tienen príncipe ni gobernador ni líder que las haga trabajar, se esfuerzan todo el verano, juntando alimento para el invierno.”</p>
+        <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Proverbios 6:6-8 NTV</p>
+      </div>
+      
+      <p>Que quede claro, yo no te llamé holgazán, fue el sabio de Proverbios.</p>
+      <p>La hormiga no sabe exactamente cuándo llegará el invierno. Tampoco sabe qué tan duro será. Pero planifica de todas formas — aunque tiene cerebro del tamaño de un punto, aún así entiende algo que muchos humanos adultos todavía no: que el verano no dura para siempre.</p>
+      
+      <h3 class="font-headline font-bold text-primary text-xl mt-10 mb-6">Dos extremos que debemos evitar</h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div class="bg-[#F4F4F1] border-t-4 border-t-tertiary rounded-xl p-6 shadow-sm">
+          <h4 class="font-bold text-tertiary text-lg mb-3">El ansioso:</h4>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Vive obsesionado con el dinero. Acumula por miedo, no por propósito. Su seguridad está en los ceros de su cuenta bancaria, que revisa tres veces al día.</p>
+        </div>
+        <div class="bg-[#F4F4F1] border-t-4 border-t-primary rounded-xl p-6 shadow-sm">
+          <h4 class="font-bold text-primary text-lg mb-3">La "fe" sin acción:</h4>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Dice confiar en Dios, pero en realidad evita la responsabilidad. Cuando llega el imprevisto, culpa a Dios o pide prestado sin plan de pago — y el plan de pago tampoco llega.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 4 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 1 — Revisa tu mentalidad
+        </h3>
+        
+        <p class="text-[1.05rem] text-on-surface-variant mb-6">Honestidad total. Esto es solo para ti.</p>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">¿Cuál de los dos extremos describe mejor tu relación actual con el ahorro?</p>
+        
+        <div class="space-y-3 mb-8">
+          <label class="flex items-start cursor-pointer group">
+            <input type="checkbox" name="m4_extremos_ahorro" value="ansioso" class="mt-1 mr-3 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2 m4-ej1-checkbox">
+            <span class="text-on-surface group-hover:text-secondary transition-colors">El ansioso (ahorro por miedo)</span>
+          </label>
+          <label class="flex items-start cursor-pointer group">
+            <input type="checkbox" name="m4_extremos_ahorro" value="fe_sin_accion" class="mt-1 mr-3 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2 m4-ej1-checkbox">
+            <span class="text-on-surface group-hover:text-secondary transition-colors">"Fe" sin acción (no ahorro casi nada)</span>
+          </label>
+          <label class="flex items-start cursor-pointer group">
+            <input type="checkbox" name="m4_extremos_ahorro" value="punto_medio" class="mt-1 mr-3 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2 m4-ej1-checkbox">
+            <span class="text-on-surface group-hover:text-secondary transition-colors">Estoy en el punto medio</span>
+          </label>
+        </div>
+        
+        <label class="block text-[1.05rem] leading-[1.7] text-on-surface mb-3" for="m4_excusa_ahorro">¿Qué excusa usas más para no ahorrar?</label>
+        <textarea id="m4_excusa_ahorro" class="workbook-textarea mb-0 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+      </div>
+    </section>
+    
+    <!-- Page 5 -->
+    <section id="seccion-2" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 4"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-2">Módulo 4 — Sección 2</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">El Fondo de Emergencia</h2>
+      
+      <p>Primero aclaremos algo: no estamos hablando del "ahorro para las vacaciones" ni del "guardadito para el iPhone nuevo". Eso es ahorro con meta. El fondo de emergencia es diferente. Es el dinero que existe exclusivamente para cuando la vida decide sorprenderte sin avisar, que es siempre.</p>
+
+      <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: Fondo de Emergencia</h3>
+        <p class="mb-0 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">Fondo de Emergencia:</span> Es dinero apartado exclusivamente para imprevistos reales: el carro se descompone de camino al trabajo, te enfermas y los gastos médicos llegan sin avisar, pierdes tu empleo y necesitas cubrir gastos mientras buscas otro, un familiar necesita ayuda urgente. La "cuesta de enero" deja de ser noticia si tienes este fondo.</p>
+        </div>
+
+      <h3 class="font-headline font-bold text-primary text-xl mt-12 mb-6">Cuanto Necesito</h3>
+      
+      <p class="mb-6">La recomendación estándar es tener entre 3 y 6 meses de gastos esenciales cubiertos. No de tu sueldo completo: de tus gastos básicos (renta, comida, transporte, deudas mínimas).</p>
+
+      <div class="overflow-x-auto mb-12">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#334f2b] text-white">
+              <th class="p-4 font-semibold w-1/3">Tu Situación</th>
+              <th class="p-4 font-semibold w-1/3">Meta Recomendada</th>
+              <th class="p-4 font-semibold w-1/3">¿Por qué?</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface">Empleo estable, sin dependientes</td>
+              <td class="p-4 text-on-surface font-bold">3 meses</td>
+              <td class="p-4 text-on-surface-variant">Riesgo moderado</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface">Ingresos variables o informales</td>
+              <td class="p-4 text-on-surface font-bold">4-5 meses</td>
+              <td class="p-4 text-on-surface-variant">Mayor incertidumbre</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface">Con dependientes o negocio propio</td>
+              <td class="p-4 text-on-surface font-bold">5-6 meses</td>
+              <td class="p-4 text-on-surface-variant">Más responsabilidades</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Page 6 -->
+    <div class="bg-[#F4F4F1] border-t-4 border-secondary p-6 rounded-xl shadow-sm mb-12">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide">Historia real</h3>
+      <p class="mb-0 text-[1.05rem] leading-[1.7] text-on-surface">Cuando me casé, la iglesia y nuestra comunidad fueron muy generosos con nosotros. Y en lugar de gastar todo en muebles, lo pusimos en nuestro fondo de emergencia. Casi cuatro años después, ese fondo nos ha rescatado más veces de las que esperábamos. Sigue ahí. Sigue funcionando.</p>
+    </div>
+
+    <div class="mb-16">
+      <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]">tire_repair</span> Ilustración: La llanta de repuesto</h3>
+        <p class="mb-4 text-[1.05rem] text-white leading-[1.7]">¿Tienes llanta de repuesto? Probablemente sí. ¿La usas seguido? Esperemos que no. ¿Piensas en ella todos los días? Para nada. Está ahí, tranquilamente ignorada, esperando el momento en que la necesites.</p>
+        <p class="mb-4 text-[1.05rem] text-white leading-[1.7]">El fondo de emergencia es exactamente eso: tu llanta de repuesto financiera. No lo ves, casi te olvidas de que existe, y eso está perfecto. Porque cuando llegue el bache — la enfermedad, el trabajo perdido, el gasto que nadie vio venir — lo único que te evita quedarte varado a la orilla del camino es haberlo preparado antes de necesitarlo.</p>
+        <p class="mb-0 text-[1.05rem] text-white leading-[1.7]">Y al igual que con la llanta: si esperas a poncharte para comprarla, ya es demasiado tarde. Ahí ya solo queda llamarle a alguien con esa voz.</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 2 — Calcula tu meta de fondo de emergencia
+        </h3>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">Mira en tu presupuesto que creaste anteriormente ¿Cuanto gastas al mes en lo esencial?</p>
+        <div class="flex items-center mb-8">
+          <span class="text-xl font-bold mr-2">$</span>
+          <input type="text" id="m4_q2_gastos" class="workbook-input mb-0 w-full sm:w-1/2 bg-[#E8DED1]" placeholder="0.00">
+        </div>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">Mi meta de fondo de emergencia (multiplica por 3, 4, 5 o 6 según tu situación):</p>
+        
+        <div class="flex flex-col sm:flex-row items-center gap-4 bg-[#F9F9F6] p-4 rounded-xl border border-outline-variant/30">
+          <div class="flex items-center w-full sm:w-auto">
+            <span class="font-bold mr-2 text-on-surface-variant">$</span>
+            <input type="text" id="m4_q2_gasto_base" class="workbook-input mb-0 w-full sm:w-32 bg-[#E8DED1]" placeholder="Gasto">
+          </div>
+          <span class="font-bold text-on-surface-variant hidden sm:inline">x</span>
+          <div class="flex items-center w-full sm:w-auto">
+            <input type="text" id="m4_q2_meses" class="workbook-input mb-0 w-full sm:w-20 text-center bg-[#E8DED1]" placeholder="Meses">
+            <span class="ml-2 text-[1.05rem] leading-[1.7] text-on-surface-variant">meses</span>
+          </div>
+          <span class="font-bold text-on-surface-variant hidden sm:inline">=</span>
+          <div class="flex items-center w-full sm:w-auto">
+            <span class="font-bold mr-2 text-secondary">$</span>
+            <input type="text" id="m4_q2_meta" class="workbook-input mb-0 w-full sm:w-40 border-secondary focus:border-secondary bg-white font-bold" placeholder="0.00" readonly>
+            <span class="ml-2 font-bold text-secondary tracking-widest text-[1.05rem]">META</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 7 -->
+    <section id="seccion-3" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:bg-outline-variant/50 transition-colors" title="Sección 4"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-2">Módulo 4 — Sección 3</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">¿Dónde guardar tu dinero?</h2>
+      
+      <p class="text-on-surface font-medium mb-6">Spoiler: no es bajo el colchón</p>
+      
+      <p class="mb-8">Aquí viene algo que nadie te explica — y que muchas personas descubren demasiado tarde: guardar tu dinero en el lugar equivocado puede hacerte perder dinero sin gastar ni un solo peso. ¿Cómo? Por la inflación. Ese fenómeno silencioso que trabaja 24 horas al día, 365 días al año, sin días de asueto ni aguinaldo.</p>
+
+      <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: Inflación</h3>
+        <p class="mb-4 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">Inflación:</span> Es el aumento generalizado de los precios en un periodo de tiempo. Es decir, con la misma cantidad de billetes que tenías ayer, hoy puedes comprar menos cosas. De hecho no es que las cosas "valgan más", sino que tu moneda vale menos.</p>
+        <p class="mb-0 text-[1.05rem] text-white leading-[1.7]">Si la inflación es del 4% anual y tu dinero guardado gana 0%, en un año perdiste el 4% de su valor real. Tu dinero está ahí, intacto, bien guardado — pero alcanza para menos.</p>
+        
+      </div>
+
+      <p class="mb-12">En México, a marzo de 2026, la inflación ronda el 3.5-4% anual. Eso significa que si guardas $10,000 pesos bajo el colchón hoy, el año que viene ese dinero tendrá el poder adquisitivo de unos $9,600. Perdiste $400 sin gastar ni un peso. Sin salir de compras. El colchón te cobró $400 por guardar ahí tu dinero.</p>
+    </div>
+
+    <!-- Page 8 -->
+    <div class="mb-16">
+      <h3 class="font-headline font-bold text-primary text-2xl italic mb-6">Las opciones para empezar hoy</h3>
+      
+      <div class="bg-[#F4F4F1] border-t-4 border-t-tertiary rounded-xl p-6 shadow-sm mb-8">
+        <h4 class="font-bold text-tertiary text-lg mb-3">La trampa de la tanda</h4>
+        <p class="text-[1.05rem] text-on-surface mb-4">La tanda es parte de la cultura mexicana y tiene algo genuinamente bueno: crea el hábito de apartar dinero de forma regular. Le ha funcionado a generaciones enteras de familias. Pero tiene dos problemas que no podemos ignorar.</p>
+        
+        <p class="text-[1.05rem] text-on-surface mb-4"><strong class="font-bold text-on-surface">Sin garantía legal:</strong> si el organizador desaparece, perdiste tu dinero. No hay número de queja. Solo hay el grupo de WhatsApp en silencio que ya nadie contesta.</p>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0"><strong class="font-bold text-on-surface">Pierde contra la inflación:</strong> si recibes tu turno en el mes 10, el poder adquisitivo de ese dinero es menor que cuando empezaste a pagar en el mes 1. Guardaste fiel, llegaste puntual, y aun así perdiste — en silencio, sin que nadie te avisara.</p>
+      </div>
+
+      <p class="mb-6">Las herramientas que te presento aquí no son una lista sacada de un blog. He usado personalmente — no como experto financiero, sino como alguien que abrió la app, movió su dinero y vio qué pasó. Eso me da experiencia real. Y desde ahí te las comparto.</p>
+      
+      <p class="mb-12">Lo que no te voy a decir es que son las mejores opciones para ti, porque honestamente no lo sé — tu situación, tus ingresos y tus hábitos son distintos a los míos. También existen otras plataformas que quizás valga la pena que explores por tu cuenta: Finsus, Klar, Ualá, entre otras. El punto es que elijas con información, no porque alguien en YouTube dijo que era buenísima.</p>
+    </div>
+
+    <!-- Page 9 -->
+    <div class="mb-16">
+      <div class="overflow-x-auto mb-8">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-[#334f2b] text-white">
+              <th class="p-4 font-semibold border-r border-[#4A6B41]">Instrumento</th>
+              <th class="p-4 font-semibold border-r border-[#4A6B41]">Rendimiento</th>
+              <th class="p-4 font-semibold border-r border-[#4A6B41]">Liquidez</th>
+              <th class="p-4 font-semibold border-r border-[#4A6B41]">Protección</th>
+              <th class="p-4 font-semibold">¿Supera la<br>Inflación?</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Colchón / Casa</td>
+              <td class="p-4 text-on-surface text-center border-r border-outline-variant/30">0</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Alta</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Ninguna</td>
+              <td class="p-4 text-on-surface">⚠️ Pierde vs inflación</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Tanda</td>
+              <td class="p-4 text-on-surface text-center border-r border-outline-variant/30">0</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Baja</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Ninguna</td>
+              <td class="p-4 text-on-surface">⚠️ Pierde vs inflación</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Banco tradicional</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">0.5-1%</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Alta</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">IPAB</td>
+              <td class="p-4 text-on-surface">⚠️ Pierde vs inflación</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Cetes (Bonddia)</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">~6.8%</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Alta</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Gobierno</td>
+              <td class="p-4 text-on-surface font-bold text-primary">Lo Supera</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Sofipos</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">7-15%</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Alta</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">PROSOFIPO</td>
+              <td class="p-4 text-on-surface font-bold text-primary">Lo Supera</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <p class="mb-12 text-on-surface">El enfoque de este módulo para ahorrar se centra en CETES y SOFIPOs — que, como muestra la tabla, son los únicos instrumentos que le ganan a la inflación. Eso es exactamente lo que queremos: que nuestro dinero crezca, no que se quede quieto mientras la inflación lo come en silencio.</p>
+    </div>
+
+    <!-- Page 10 -->
+    <div class="mb-16">
+      <div class="flex items-center mb-6">
+        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0">1</div>
+        <h3 class="font-headline font-bold text-primary text-xl">BONDDIA — CetesDirecto Gobierno Federal de México</h3>
+      </div>
+      
+      <div class="bg-[#F4F4F1] border-t-4 border-t-secondary rounded-xl p-8 shadow-sm mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-4">BONDDIA es un instrumento de deuda gubernamental disponible a través de CetesDirecto — la plataforma oficial del Gobierno Federal. Lo que eso significa en términos prácticos: le prestas tu dinero al gobierno mexicano, el gobierno te paga intereses diarios, y tu capital está respaldado por la misma institución que imprime los pesos. No hay empresa detrás. No hay inversionistas. No hay CEO que pueda salir corriendo con tu dinero. Es el instrumento de ahorro más seguro que existe en México — sin discusión.</p>
+        
+        <p class="text-[1.05rem] text-on-surface mb-4">¿El único "pero"? Las solicitudes de retiro se procesan en días hábiles, lo que significa que si necesitas el dinero un viernes a las 6 de la tarde, no lo tienes ese momento. Para el fondo de emergencia puro y duro, eso es algo a considerar — aunque para la mayoría de los imprevistos reales, tener el dinero disponible en 24-48 horas es más que suficiente.</p>
+        
+        <p class="text-[1.05rem] text-on-surface mb-3">Ideal si buscas la opción más segura de México. Empieza desde $100 pesos. Necesitas CURP, RFC y cuenta bancaria con CLABE. Registro 100% digital en menos de 10 minutos.</p>
+        
+        <p class="text-on-surface text-[1.05rem]">Visita <a href="https://cetesdirecto.com" target="_blank" class="text-tertiary hover:text-[#A04D2D] font-medium underline underline-offset-2">cetesdirecto.com</a></p>
+      </div>
+
+      <div class="overflow-x-auto mb-12">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-tertiary text-white">
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Rendimiento</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Límite</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Liquidez</th>
+              <th class="p-4 font-semibold">Protección</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">~6.8% anual</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Sin límite máximo</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Alta (días hábiles)</td>
+              <td class="p-4 text-on-surface">Gobierno Federal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Page 11 -->
+    <div class="mb-16">
+      <div class="flex items-center mb-6">
+        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0">2</div>
+        <h3 class="font-headline font-bold text-primary text-xl">Sofipos</h3>
+      </div>
+      
+      <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: Sofipo</h3>
+        <p class="mb-4 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">SOFIPO:</span> Significa Sociedad Financiera Popular. Son instituciones financieras reguladas por la CNBV que ofrecen servicios de ahorro e inversión, generalmente con rendimientos más altos que los bancos tradicionales.</p>
+        <p class="mb-4 text-[1.05rem] text-white leading-[1.7]">¿La diferencia con un banco?</p>
+        <p class="mb-0 text-[1.05rem] text-white leading-[1.7]">Los bancos están protegidos por el IPAB (hasta ~$3.4 millones de pesos). Las SOFIPOs están protegidas por el Fondo PROSOFIPO (hasta ~$216,000 pesos en 2026). El límite de protección es menor, pero para un fondo de emergencia inicial, más que suficiente.</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] border-t-4 border-t-secondary rounded-xl p-8 shadow-sm mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-4">
+          <span class="text-tertiary font-bold text-lg mb-2 block">Nu (Nubank) SOFIPO.</span>
+          Nu es la que más uso en el día a día. La "Cajita de Ahorros" de Nu es exactamente lo que suena: una cajita separada de tu saldo principal donde metes dinero y empieza a generar intereses automáticamente, sin que tengas que hacer nada más.
+        </p>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">Un dato importante que no quiero que pase desapercibido: el rendimiento del 13% aplica solo hasta $25,000 pesos. Por encima de esa cantidad, la tasa es de 6.75%. Así que si tu fondo de emergencia ya creció más allá de eso, tiene sentido complementar con otro instrumento.</p>
+
+        <p class="text-on-surface text-[1.05rem]">Visita <a href="https://nu.com.mx" target="_blank" class="text-tertiary hover:text-[#A04D2D] font-medium underline underline-offset-2">nu.com.mx</a></p>
+      </div>
+
+      <div class="overflow-x-auto mb-12">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-tertiary text-white">
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Rendimiento</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Límite Protegido</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Liquidez</th>
+              <th class="p-4 font-semibold">Protección</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">6.75-13% anual</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Hasta $216,000 MXN</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Inmediata (24/7)</td>
+              <td class="p-4 text-on-surface">Fondo PROSOFIPO</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Page 12 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border-t-4 border-t-primary rounded-xl p-8 shadow-sm mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-4">
+          <span class="text-tertiary font-bold text-lg mb-2 block">Revolut (Banco).</span>
+          Revolut es la que más me sorprendió cuando empecé a usarla. La aplicación tiene un nivel de detalle que pocas fintechs mexicanas igualan: bóvedas separadas, conversión de divisas, estadísticas de gasto, y un rendimiento que es de los más competitivos del mercado.
+        </p>
+        
+        <p class="text-[1.05rem] text-on-surface mb-4">El punto clave de Revolut es entender cómo funciona su sistema escalonado, funciona así: tus primeros $25,000 pesos generan un 15% anual. Lo que tengas por encima de esa cantidad genera 7%. No es un promedio — son dos tasas distintas aplicadas por tramos. Si tienes $50,000 guardados, los primeros $25,000 ganan al 15% y los otros $25,000 ganan al 7%.</p>
+        
+        <p class="text-[1.05rem] text-on-surface mb-4">Si tu fondo de emergencia está en formación y todavía no llega a los $25,000, Revolut es una de las opciones que más rinde proporcionalmente. Por encima de esa cantidad, conviene evaluar si el excedente estaría en otro instrumento. En lo personal combino mi fondo con NU.</p>
+
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">Revolut está registrada como un banco. Su protección viene del IPAB — el mismo fondo que protege a los bancos tradicionales.</p>
+
+        <p class="text-on-surface text-[1.05rem]">Visita <a href="https://revolut.com" target="_blank" class="text-tertiary hover:text-[#A04D2D] font-medium underline underline-offset-2">revolut.com</a></p>
+      </div>
+
+      <div class="overflow-x-auto mb-12">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-tertiary text-white">
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Rendimiento</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Límite Protegido</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Liquidez</th>
+              <th class="p-4 font-semibold">Protección</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">15% (hasta $25K) 7% (hasta 1M)<br>4.5% (Arriba de 1M)</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Hasta ~$3.4 millones de pesos</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Inmediata (24/7)</td>
+              <td class="p-4 text-on-surface">IPAB</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Page 13 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border-t-4 border-t-primary rounded-xl p-8 shadow-sm mb-8">
+        <p class="text-[1.05rem] text-on-surface mb-4">
+          <span class="text-tertiary font-bold text-lg mb-2 block">Mercado Pago ( SOFIPO )</span>
+          Mercado Pago es la que casi nadie considera como herramienta de ahorro. Pero el saldo que tienes ahí genera rendimiento diario invertido en fondos regulados por GBM.
+        </p>
+        
+        <p class="text-[1.05rem] text-on-surface mb-4">Lo que vale la pena entender es el sistema de dos tasas que maneja: La tasa base es del 6% anual y aplica a cualquier usuario con cuenta validada, sin condiciones ni trucos. Esa tasa está disponible desde el primer día.<br>
+        La tasa promocional sube hasta el 13% anual sobre saldos de hasta $25,000 pesos, pero tiene una condición: necesitas ingresar al menos $3,000 pesos netos al mes vía transferencia o depósito. Una vez que cumples el reto, la tasa del 13% aplica por el resto del mes y se reinicia el día 1 del siguiente.</p>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">Es buena para dinero que quieres que rinda mientras lo tienes disponible para gastos del mes — no para el dinero que necesitas proteger y no tocar. En otras palabras como complemento, no como tu fondo de emergencia.</p>
+
+        <p class="text-on-surface text-[1.05rem]">Visita <a href="https://mercadopago.com.mx" target="_blank" class="text-tertiary hover:text-[#A04D2D] font-medium underline underline-offset-2">mercadopago.com.mx</a></p>
+      </div>
+
+      <div class="overflow-x-auto mb-8">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-tertiary text-white">
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Rendimiento</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Límite Protegido</th>
+              <th class="p-4 font-semibold border-r border-[#A04D2D]">Liquidez</th>
+              <th class="p-4 font-semibold">Protección</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">7% base / hasta 13% con reto</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Hasta $25,000 MXN</td>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Inmediata (24/7)</td>
+              <td class="p-4 text-on-surface">Fondo PROSOFIPO</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-8">
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Los rendimientos y límites de protección cambian con el tiempo. Antes de abrir cualquier cuenta, verifica en la página oficial de cada plataforma. Los datos aquí son de marzo 2026.</p>
+      </div>
+    </div>
+
+    <!-- Page 14 -->
+    <div class="mb-16">
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 3—Elige tu instrumento de ahorro
+        </h3>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">1. ¿Dónde tienes guardado tu dinero actualmente?</p>
+        <input type="text" id="m4_q3_actual" class="workbook-input mb-8 bg-[#E8DED1]" placeholder="">
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">2. ¿Ese instrumento le gana a la inflación? (¿Rinde más del 4% anual?)</p>
+        <input type="text" id="m4_q3_inflacion" class="workbook-input mb-8 bg-[#E8DED1]" placeholder="">
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">3. ¿A qué instrumento considerarías migrar tu ahorro?</p>
+        <input type="text" id="m4_q3_migrar" class="workbook-input mb-4 bg-[#E8DED1]" placeholder="">
+      </div>
+    </section>
+
+    <!-- Page 15 -->
+    <section id="seccion-4" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-opacity" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-opacity" title="Sección 4"></a>
+      </div>
+
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-2">Módulo 4 — Sección 4</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Ahorrar cuando “no alcanza”</h2>
+
+      <p class="mb-4">"Cuando gane más, empiezo a ahorrar."</p>
+      <p class="mb-6">Esta frase ha sido pronunciada por prácticamente el 100% de las personas que no ahorran. Tiene un problema pequeño: ese momento casi nunca llega. ¿Por qué? Porque el gasto tiende a crecer exactamente al mismo ritmo que el ingreso. Si hoy con $10,000 no sobra nada, con $15,000 tampoco sobrará — solo gastarás en cosas más grandes, más caras, y con más cuotas mensuales. El resultado final es el mismo: cero.<br>
+      Esto tiene nombre. Se llama inflación de estilo de vida.</p>
+      
+      <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+        <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: Inflación de estilo de vida</h3>
+        <p class="mb-0 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">Inflación de estilo de vida:</span> Fenómeno donde, al ganar más, los gastos también aumentan de forma proporcional. El resultado: sin importar cuánto ganes, nunca "alcanza" para ahorrar.</p>
+      </div>
+      
+      <p class="mb-8">La solución no es ganar más (aunque no está de más). La solución es cambiar el orden de las cosas.</p>
+
+      <h3 class="font-headline font-bold text-primary text-xl mb-6">El principio "Págate primero a ti mismo"</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div class="bg-[#F4F4F1] border-t-4 border-t-secondary rounded-xl p-6 shadow-sm">
+          <h4 class="font-bold text-tertiary text-lg mb-3">Lo que hacemos</h4>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Ingreso → Gastos → ¿Qué sobra? → (casi nunca nada) → Ahorro: $0</p>
+        </div>
+        <div class="bg-[#F4F4F1] border-t-4 border-t-primary rounded-xl p-6 shadow-sm">
+          <h4 class="font-bold text-primary text-lg mb-3">Lo que debemos hacer</h4>
+          <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Ingreso → Ahorro primero (mínimo 5-10%) → Luego gastos con lo que queda</p>
+        </div>
+      </div>
+    </div>
+
+      <!-- Page 16 -->
+      <div class="bg-[#F4F4F1] p-8 rounded-xl mb-12">
+        <h3 class="font-headline font-bold text-on-surface text-lg mb-4">¿Y si de verdad no alcanza ni para comer?</h3>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0 leading-relaxed">Hay contextos donde el reto es real. En México, con el salario mínimo rondando los $12,500 pesos mensuales en Chihuahua, no podemos ignorar que la desigualdad existe. Pero incluso en esas situaciones, hay estrategias. Aquí van seis — no tienes que aplicarlas todas al mismo tiempo. Empieza con una:</p>
+      </div>
+
+      <div class="mb-10">
+        <div class="flex items-center mb-4">
+          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0 text-[1.05rem]">1</div>
+          <h4 class="font-bold text-primary text-lg">Empieza ridículamente pequeño — en serio</h4>
+        </div>
+        <p class="text-on-surface mb-6">No necesitas ahorrar el 20% para que cuente. Empieza con el 1%. Si ganas $10,000 pesos, eso son $100. ¿Puedes vivir sin $100? Probablemente sí — y si no puedes, eso también es información importante sobre tus finanzas. La clave no es el monto: es instalar el hábito. Una vez que el hábito existe, subir el porcentaje es mucho más fácil.</p>
+        <div class="border-l-4 border-secondary pl-4 py-1">
+          <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"El que es fiel en lo poco, también lo será en lo mucho."</p>
+          <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Lucas 16:10 NTV</p>
+        </div>
+      </div>
+
+      <div class="mb-16">
+        <div class="flex items-center mb-4">
+          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0 text-[1.05rem]">2</div>
+          <h4 class="font-bold text-primary text-lg">Caza una sola fuga — no diez</h4>
+        </div>
+        <p class="text-on-surface mb-0">Encuentra una sola fuga este mes y elimínala. Revisa tus últimos 30 días y busca algo que se repita que no recuerdas haber disfrutado conscientemente: suscripciones olvidadas, snacks de conveniencia, comida pedida por flojera cuando el refri tenía sobras perfectamente funcionales. Una fuga de $200 al mes son $2,400 al año. Dos fugas son casi $5,000 — ya es un fondo de emergencia inicial.</p>
+      </div>
+    </div>
+
+    <!-- Page 17 -->
+    <div class="mb-16">
+      <div class="mb-10">
+        <div class="flex items-center mb-4">
+          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0 text-[1.05rem]">3</div>
+          <h4 class="font-bold text-primary text-lg">El sistema de "sobres" adaptado</h4>
+        </div>
+        <p class="text-on-surface mb-0">El método de sobres es viejo pero funciona: divides tu dinero en categorías desde el primer día. La versión moderna son cuentas o "cajitas" separadas dentro de tus apps: Una cuenta para los gastos del mes, una cajita para el fondo de emergencia que no tocas aunque te tiemble la mano, una cajita para una meta específica. Revolut tiene bóvedas, Nu tiene cajitas separadas, en CetesDirecto puedes tener varios instrumentos. Lo que no ves mezclado con tus gastos del día, no lo gastas. Así de simple es el truco.</p>
+      </div>
+
+      <div class="mb-10">
+        <div class="flex items-center mb-4">
+          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0 text-[1.05rem]">4</div>
+          <h4 class="font-bold text-primary text-lg">El reto de las quincenas "extras"</h4>
+        </div>
+        <p class="text-on-surface mb-0">En México, algunos meses caen tres quincenas en lugar de dos. También está el aguinaldo, un bono, una chamba extra, la devolución del SAT. Esos ingresos inesperados tienden a desaparecer sin dejar rastro, como si tuvieran un radar especial para encontrar en qué gastarse solos. El compromiso: cada ingreso extra, la mitad va directo al fondo de emergencia. No toda, para que no se sienta como castigo — pero al menos la mitad. Es dinero que no estabas contando, así que no la extrañarás.</p>
+      </div>
+
+      <div class="mb-16">
+        <div class="flex items-center mb-4">
+          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0 text-[1.05rem]">5</div>
+          <h4 class="font-bold text-primary text-lg">Ponle nombre y cara a tu meta</h4>
+        </div>
+        <p class="text-on-surface mb-0">Es mucho más fácil no tocar el dinero cuando sabes exactamente para qué es. "Fondo de emergencia" suena abstracto y frío. "El dinero que necesito si pierdo mi trabajo" suena a algo que vale proteger. Algunos le ponen literalmente una foto o un nombre a su cajita de ahorro: "Para cuando el carro truene", "Por si me enfermo", "Para no pedirle a nadie."</p>
+      </div>
+    </div>
+
+    <!-- Page 18 -->
+    <div class="mb-16">
+      <div class="mb-12">
+        <div class="flex items-center mb-4">
+          <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-3 shrink-0 text-[1.05rem]">6</div>
+          <h4 class="font-bold text-primary text-lg">Habla de dinero con alguien de confianza</h4>
+        </div>
+        <p class="text-on-surface mb-0">El ahorro en solitario es difícil. No imposible, pero difícil. La rendición de cuentas lo hace más llevadero — y también más honesto. Encuentra a alguien con quién revisar mensualmente si cumpliste tu meta de ahorro. No para juzgarse, sino para acompañarse.<br>En la fe cristiana, la comunidad existe precisamente para que no cargemos solos lo que es difícil. Las finanzas no son la excepción.</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+        <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+          <span class="material-symbols-outlined text-2xl">edit</span>
+          Ejercicio 4—Tu plan de ahorro realista
+        </h3>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">Mi ingreso mensual aproximado:</p>
+        <input type="text" id="m4_q4_ingreso" class="workbook-input mb-8 bg-[#E8DED1]" placeholder="">
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">El porcentaje que me comprometo a ahorrar desde este mes:</p>
+        <div class="flex flex-wrap items-center gap-4 mb-8">
+          <label class="custom-checkbox-wrapper mb-0 flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="m4_q4_porcentaje" value="1" class="m4-ej4-checkbox mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">1%</span>
+          </label>
+          <label class="custom-checkbox-wrapper mb-0 flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="m4_q4_porcentaje" value="3" class="m4-ej4-checkbox mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">3%</span>
+          </label>
+          <label class="custom-checkbox-wrapper mb-0 flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="m4_q4_porcentaje" value="5" class="m4-ej4-checkbox mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">5%</span>
+          </label>
+          <label class="custom-checkbox-wrapper mb-0 flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="m4_q4_porcentaje" value="10" class="m4-ej4-checkbox mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+            <span class="text-on-surface">10%</span>
+          </label>
+          <div class="flex items-center gap-2">
+            <label class="custom-checkbox-wrapper mb-0 flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="m4_q4_porcentaje" value="otro" class="m4-ej4-checkbox mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+              <span class="text-on-surface">otro</span>
+            </label>
+            <input type="text" id="m4_q4_porcentaje_otro" class="w-16 p-2 border border-outline-variant/50 rounded text-center bg-[#E8DED1] focus:outline-none focus:border-secondary transition-colors" placeholder="%">
+          </div>
+        </div>
+        
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">Una fuga de dinero que voy a eliminar este mes para ahorrar más:</p>
+        <textarea id="m4_q4_fuga" class="workbook-textarea mb-8 bg-[#E8DED1]" placeholder=""></textarea>
+
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">¿Cómo voy a automatizar mi ahorro? (cajitas, bovedas, transferencia el día de pago...)</p>
+        <textarea id="m4_q4_automatizar" class="workbook-textarea mb-0 bg-[#E8DED1]" placeholder=""></textarea>
+      </div>
+    </section>
+
+    <!-- Page 19 -->
+    <section id="resumen" class="mb-16 scroll-mt-24 border-t border-outline-variant/30 pt-12">
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-2">Módulo 4</p>
+      <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Resumen del Módulo</h2>
+
+      <p class="mb-8">La hormiga de Proverbios no esperó a que llegara el verano ideal — empezó a juntar con lo que había, cuando había. Tú tampoco necesitas condiciones perfectas para empezar. Solo necesitas empezar. Hoy. Con lo que tienes. Sin esperar el momento perfecto que, entre paréntesis, no existe.</p>
+
+      <div class="overflow-x-auto mb-8">
+        <table class="w-full text-left border-collapse rounded-lg overflow-hidden shadow-sm">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th class="p-4 font-semibold border-r border-[#4A6B41]">Lo que aprendiste</th>
+              <th class="p-4 font-semibold">Herramienta Práctica</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Ahorrar = Mayordomía, no falta de fe</td>
+              <td class="p-4 text-on-surface">Revisa tu mentalidad respecto al ahorro</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">El Fondo de Emergencia</td>
+              <td class="p-4 text-on-surface">Crea un meta: 3-6 meses de gastos esenciales.</td>
+            </tr>
+            <tr class="border-b border-outline-variant/30">
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">¿Dónde guardar?</td>
+              <td class="p-4 text-on-surface">CETES y SOFIPOs reguladas le ganan a la inflación.</td>
+            </tr>
+            <tr>
+              <td class="p-4 text-on-surface border-r border-outline-variant/30">Ahorra aunque no alcance</td>
+              <td class="p-4 text-on-surface">Empieza con lo poco. Automatiza. Elimina una fuga.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+</article>
+
+  <!-- Navigation / Finish -->
+  <div class="mt-16 flex justify-between items-center border-t border-outline-variant/30 pt-8">
+    <button onclick="window.print()" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-[1.05rem] font-semibold">
+      <span class="material-symbols-outlined text-lg">print</span>
+      Guardar PDF / Imprimir
+    </button>
+    
+    <a href="portal.html" class="flex items-center gap-2 bg-primary text-white font-semibold py-3 px-6 rounded shadow hover:bg-primary/90 transition-colors">
+      Completar Sección <span class="material-symbols-outlined text-[1.05rem]">arrow_forward</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="bg-[#F4F4F1] py-8 text-center border-t border-outline-variant/30 mt-auto">
+  <p class="text-xs text-on-surface-variant">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Auth + Cloud Save -->
+<script src="js/supabase-auth.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const user = await WP.requireAuth();
+    if (!user) return;
+
+    // Outline Menu Toggle
+    const outlineToggle = document.getElementById('outline-toggle');
+    const outlineMenu = document.getElementById('outline-menu');
+    if(outlineToggle && outlineMenu) {
+      outlineToggle.addEventListener('click', () => {
+        const isClosed = outlineMenu.classList.contains('opacity-0');
+        if (isClosed) {
+          outlineMenu.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.add('opacity-100', 'scale-100');
+        } else {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      document.addEventListener('click', (e) => {
+        if (!outlineToggle.contains(e.target) && !outlineMenu.contains(e.target)) {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      outlineMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        });
+      });
+    }
+
+    // M4 Ejercicio 1 Exclusive Checkboxes
+    const ej1Checkboxes = document.querySelectorAll('.m4-ej1-checkbox');
+    ej1Checkboxes.forEach(cb => {
+      cb.addEventListener('click', () => {
+        if (cb.checked) {
+          ej1Checkboxes.forEach(other => { if (other !== cb) other.checked = false; });
+          WP.queueSave('m4_extremos_ahorro', cb.value, 'radio');
+          localStorage.setItem('m4_extremos_ahorro', cb.value);
+        } else {
+          localStorage.removeItem('m4_extremos_ahorro');
+        }
+        WP.showSaveIndicator();
+      });
+    });
+
+    // M4 Ejercicio 4 Exclusive Checkboxes
+    const ej4Checkboxes = document.querySelectorAll('.m4-ej4-checkbox');
+    ej4Checkboxes.forEach(cb => {
+      cb.addEventListener('click', () => {
+        if (cb.checked) {
+          ej4Checkboxes.forEach(other => { if (other !== cb) other.checked = false; });
+          WP.queueSave('m4_q4_porcentaje', cb.value, 'radio');
+          localStorage.setItem('m4_q4_porcentaje', cb.value);
+        } else {
+          localStorage.removeItem('m4_q4_porcentaje');
+        }
+        WP.showSaveIndicator();
+      });
+    });
+
+    // M4 Ejercicio 2 Meta Calculation
+    const q2GastoBase = document.getElementById('m4_q2_gasto_base');
+    const q2Meses = document.getElementById('m4_q2_meses');
+    const q2Meta = document.getElementById('m4_q2_meta');
+
+    function calculateMeta() {
+      if (!q2GastoBase || !q2Meses || !q2Meta) return;
+      const gasto = parseFloat(q2GastoBase.value.replace(/[^0-9.-]+/g,"")) || 0;
+      const meses = parseFloat(q2Meses.value) || 0;
+      const meta = gasto * meses;
+      if (gasto > 0 && meses > 0) {
+        q2Meta.value = meta.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      } else {
+        q2Meta.value = '';
+      }
+    }
+
+    if (q2GastoBase && q2Meses) {
+      q2GastoBase.addEventListener('input', calculateMeta);
+      q2Meses.addEventListener('input', calculateMeta);
+    }
+
+    // Load progress then restore custom states
+    await WP.loadProgress();
+
+    // Restore exclusive checkboxes from loaded data
+    const savedEj1 = localStorage.getItem('m4_extremos_ahorro');
+    if (savedEj1) ej1Checkboxes.forEach(cb => { if (cb.value === savedEj1) cb.checked = true; });
+    const savedEj4 = localStorage.getItem('m4_q4_porcentaje');
+    if (savedEj4) ej4Checkboxes.forEach(cb => { if (cb.value === savedEj4) cb.checked = true; });
+
+    // Run meta calc after data is loaded
+    setTimeout(calculateMeta, 100);
+
+    WP.setupAutoSave();
+  });
+</script>
+
+</body>
+</html>

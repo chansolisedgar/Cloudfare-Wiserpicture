@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Iniciar Sesión — WiserPicture</title>
+<meta name="description" content="Accede a tu Workbook de Finanzas con Propósito.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body class="font-body flex flex-col min-h-screen items-center justify-center px-6">
+
+<div class="w-full max-w-md">
+  <!-- Logo -->
+  <div class="text-center mb-10">
+    <a href="index.html">
+      <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-16 w-auto mx-auto mb-6">
+    </a>
+    <h1 class="text-2xl font-headline text-on-surface mb-2">Accede a tu Workbook</h1>
+    <p class="text-sm text-on-surface-variant">Ingresa tu email y te enviaremos un link de acceso directo — sin contraseña.</p>
+  </div>
+
+  <!-- Login Form -->
+  <div id="login-form" class="bg-white rounded-2xl p-8 border border-outline-variant/30 shadow-sm">
+    <form id="magic-link-form" class="flex flex-col gap-4">
+      <label class="text-sm font-semibold text-on-surface" for="email">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        required 
+        placeholder="tu@email.com" 
+        class="w-full bg-[#F4F4F1] border border-outline-variant/40 rounded-lg py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-all"
+      >
+      <button 
+        type="submit" 
+        id="submit-btn"
+        class="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-transform text-sm flex items-center justify-center gap-2"
+      >
+        <span class="material-symbols-outlined text-lg">mail</span>
+        Enviar link de acceso
+      </button>
+    </form>
+
+    <!-- Loading state -->
+    <div id="loading-state" class="hidden text-center py-4">
+      <div class="inline-block w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin mb-3"></div>
+      <p class="text-sm text-on-surface-variant">Enviando...</p>
+    </div>
+
+    <!-- Success state -->
+    <div id="success-state" class="hidden text-center py-4">
+      <span class="material-symbols-outlined text-primary text-5xl mb-4 block" style="font-variation-settings:'FILL' 1">mark_email_read</span>
+      <h2 class="text-lg font-headline text-on-surface mb-2">¡Revisa tu email!</h2>
+      <p class="text-sm text-on-surface-variant mb-4">Te enviamos un link de acceso a <strong id="sent-email" class="text-on-surface"></strong></p>
+      <p class="text-xs text-on-surface-variant">Si no lo ves, revisa tu carpeta de spam. El link expira en 1 hora.</p>
+      <button 
+        onclick="resetForm()" 
+        class="mt-6 text-primary text-sm font-semibold hover:underline"
+      >
+        ← Intentar con otro email
+      </button>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden text-center py-4">
+      <span class="material-symbols-outlined text-tertiary text-4xl mb-3 block">error</span>
+      <p class="text-sm text-tertiary font-semibold mb-2">Algo salió mal</p>
+      <p id="error-message" class="text-xs text-on-surface-variant mb-4"></p>
+      <button 
+        onclick="resetForm()" 
+        class="text-primary text-sm font-semibold hover:underline"
+      >
+        Intentar de nuevo
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <div class="text-center mt-8">
+    <p class="text-xs text-on-surface-variant">
+      ¿Aún no tienes acceso? 
+      <a href="workbook.html#precios" class="text-primary font-semibold hover:underline">Obtén tu Workbook aquí</a>
+    </p>
+  </div>
+</div>
+
+<!-- Supabase Auth Script -->
+<script src="js/supabase-auth.js"></script>
+<script>
+  // If already logged in, redirect to portal
+  document.addEventListener('DOMContentLoaded', async () => {
+    const user = await WP.getUser();
+    if (user) {
+      const redirectUrl = sessionStorage.getItem('wp_redirect_after_login') || '/portal.html';
+      sessionStorage.removeItem('wp_redirect_after_login');
+      window.location.href = redirectUrl;
+      return;
+    }
+
+    // Listen for auth state changes (handles magic link callback)
+    WP.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        const redirectUrl = sessionStorage.getItem('wp_redirect_after_login') || '/portal.html';
+        sessionStorage.removeItem('wp_redirect_after_login');
+        window.location.href = redirectUrl;
+      }
+    });
+  });
+
+  // Handle form submission
+  document.getElementById('magic-link-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value.trim();
+    if (!email) return;
+
+    // Show loading
+    document.getElementById('magic-link-form').classList.add('hidden');
+    document.getElementById('loading-state').classList.remove('hidden');
+
+    try {
+      const { data, error } = await WP.sendMagicLink(email);
+      
+      if (error) throw error;
+
+      // Show success
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('sent-email').textContent = email;
+      document.getElementById('success-state').classList.remove('hidden');
+    } catch (err) {
+      // Show error
+      document.getElementById('loading-state').classList.add('hidden');
+      document.getElementById('error-message').textContent = err.message || 'No pudimos enviar el email. Intenta de nuevo.';
+      document.getElementById('error-state').classList.remove('hidden');
+    }
+  });
+
+  function resetForm() {
+    document.getElementById('magic-link-form').classList.remove('hidden');
+    document.getElementById('success-state').classList.add('hidden');
+    document.getElementById('error-state').classList.add('hidden');
+    document.getElementById('loading-state').classList.add('hidden');
+    document.getElementById('email').value = '';
+  }
+</script>
+
+</body>
+</html>

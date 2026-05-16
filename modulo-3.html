@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 3: Salir de Deudas — WiserPicture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  
+  /* Workbook specific styles */
+  .workbook-textarea { width: 100%; min-height: 120px; padding: 1.25rem; border: none; border-radius: 0.5rem; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; resize: vertical; background-color: #E8DED1; transition: all 0.2s; color: #1A1C1B; }
+  .workbook-textarea:focus { outline: none; box-shadow: 0 0 0 2px #334F2B; background-color: #EBE5DB; }
+  .workbook-input { width: 100%; padding: 0.75rem 1rem; border: none !important; border-radius: 0.5rem !important; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; background-color: #E8DED1 !important; transition: all 0.2s; color: #1A1C1B; outline: none !important; box-shadow: none !important; }
+  .workbook-input:focus { outline: none !important; box-shadow: 0 0 0 2px #334F2B !important; background-color: #EBE5DB !important; }
+  
+
+  
+  /* Flowchart styles */
+  .flowchart-container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0; }
+  .flowbox { background-color: #C9A84C; color: #FFFFFF; font-family: "Lora", serif; font-style: italic; font-size: 1.1rem; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-align: center; flex: 1; min-width: 120px; }
+  .flowarrow { color: #C0603A; font-weight: bold; }
+  
+  /* Scale 1-5 Radio Group */
+  .scale-container { background-color: #C9A84C; border-radius: 0.5rem; padding: 0.5rem; display: flex; justify-content: space-between; margin-top: 1rem; margin-bottom: 0.5rem; }
+  .scale-label { flex: 1; text-align: center; color: white; font-weight: 600; font-family: "Manrope", sans-serif; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .scale-input { appearance: none; width: 1.25rem; height: 1.25rem; border: 2px solid white; border-radius: 50%; background: transparent; cursor: pointer; display: block; margin: 0 auto; transition: background 0.2s; }
+  .scale-input:checked { background: white; }
+  .scale-input:focus { outline: none; box-shadow: 0 0 0 2px rgba(255,255,255,0.5); }
+  .scale-text-labels { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; margin-bottom: 2rem; }
+  
+  /* Checkboxes custom styling */
+  .custom-checkbox-wrapper { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; cursor: pointer; }
+  .custom-checkbox { appearance: none; width: 1.2rem; height: 1.2rem; border: 1px solid #A0A0A0; border-radius: 0.25rem; background-color: #FFFFFF; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .custom-checkbox:checked { background-color: #C9A84C; border-color: #C9A84C; }
+  .custom-checkbox:checked::after { content: "✓"; color: #FFFFFF; font-size: 0.8rem; font-weight: bold; }
+  
+  /* Indicator Dots */
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; margin-bottom: 1rem; }
+  .dot-green { background-color: #4CAF50; }
+  .dot-yellow { background-color: #FFC107; }
+  .dot-red { background-color: #F44336; }
+  
+  article p { font-size: 1.05rem; line-height: 1.7; color: #1A1C1B; margin-bottom: 1.5rem; }
+  article ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  article li { margin-bottom: 0.5rem; font-size: 1.05rem; line-height: 1.7; }
+</style>
+</head>
+<body class="font-body flex flex-col min-h-screen">
+
+<!-- Sticky Header with Nav -->
+<nav class="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-outline-variant/30">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+    
+    <!-- Module Links -->
+    <div class="flex gap-6 overflow-x-auto whitespace-nowrap w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+      <a href="portal.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Mi Portal</a>
+      <a href="modulo-1.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 1</a>
+      <a href="modulo-2.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 2</a>
+      <a href="modulo-3.html" class="text-sm font-medium text-primary border-b-2 border-secondary pb-1">Módulo 3</a>
+      <a href="modulo-4.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 4</a>
+      <a href="modulo-5.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 5</a>
+    </div>
+    
+    <!-- Utilities -->
+    <div class="flex items-center gap-4 self-end md:self-auto">
+      <div id="save-status" class="flex items-center gap-1.5 text-xs font-semibold text-[#1E8E3E] opacity-0 transition-opacity duration-300">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+        Guardado
+      </div>
+      
+      <div class="relative">
+        <button id="outline-toggle" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold bg-white border border-outline-variant/50 px-4 py-2 rounded-full shadow-sm hover:shadow-md">
+          <span class="material-symbols-outlined text-[1.1rem]">format_list_bulleted</span>
+          <span class="hidden sm:inline">Índice</span>
+        </button>
+        <!-- Dropdown Menu -->
+        <div id="outline-menu" class="absolute right-0 mt-2 w-64 bg-white border border-outline-variant/30 rounded-xl shadow-xl py-2 opacity-0 pointer-events-none transform scale-95 origin-top-right transition-all duration-200">
+          <div class="px-4 py-3 border-b border-outline-variant/20 mb-1 bg-surface-container-lowest rounded-t-xl">
+            <span class="text-xs font-bold text-secondary uppercase tracking-widest">Navegación del Módulo</span>
+          </div>
+          <a href="#intro" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">Introducción</a>
+          <a href="#seccion-1" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">1. Tu situación real</a>
+          <a href="#seccion-2" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">2. No toda deuda es igual</a>
+          <a href="#seccion-3" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">3. Los hábitos que te metieron aquí</a>
+          <a href="#seccion-4" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">4. Tu plan de salida</a>
+          <a href="#seccion-5" class="block px-4 py-2.5 text-[1.05rem] font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">5. La Mejor Deuda es la que Nunca Tienes</a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
+  
+  <!-- Cover Equivalent -->
+    <header class="mb-12 bg-[#C9A84C] text-white rounded-2xl p-8 md:p-12 shadow-lg relative overflow-hidden">
+    <!-- Decorative Circle -->
+    <div class="absolute -right-16 -bottom-24 w-64 h-64 border-[1px] border-white/40 rounded-full"></div>
+    <div class="absolute -right-12 -bottom-20 w-64 h-64 border-[1px] border-white/20 rounded-full"></div>
+    
+    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+      <span class="text-7xl font-headline text-black/10 italic font-bold leading-none">03</span>
+      <div>
+        <span class="text-xs font-bold text-[#334f2b] uppercase tracking-widest block mb-2">Módulo 3 — Edgar U. Chan</span>
+        <h1 class="font-headline text-4xl md:text-5xl font-bold italic text-white leading-tight" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.1);">Salir de Deudas</h1>
+      </div>
+    </div>
+    
+    <div class="relative z-10 border-l-4 border-white pl-4 mt-8">
+      <p class="text-lg text-white font-headline italic max-w-2xl font-bold mb-1">Quítate el Lastre</p>
+      <p class="text-lg text-white/90 font-headline italic max-w-2xl">Porque el que no debe, no le teme ni a la del Coppel.</p>
+    </div>
+    
+    <div class="relative z-10 mt-10 p-6 bg-black/10 border-l-4 border-[#334f2b] rounded-r-lg">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-white">"Así como el rico gobierna al pobre, el que pide prestado es sirviente del que presta."</p>
+      <p class="text-[#334f2b] font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Proverbios 22:7 NTV</p>
+    </div>
+  </header>
+
+  <!-- Interactive Content -->
+  <article>
+
+    <section id="intro" class="mb-16 scroll-mt-24">
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Módulo 3</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Introducción</h2>
+      </div>
+    
+    <p class="mb-4">¿Alguna vez has sentido que trabajas para alguien que ni conoces? Te esfuerzas todo el mes, llega la quincena y el dinero ya tiene destino antes de que lo veas: el banco, la tarjeta, el crédito de la tienda departamental que compraste en noviembre porque "era el Buen Fin y había que aprovechar."</p>
+    
+    <p class="mb-8">Las deudas en México se han normalizado tanto que ya casi no las vemos como un problema. "Échalo a meses sin intereses." "Lo voy pagando poco a poco." "Usa la tarjeta, para eso es." Y así vamos, como si el dinero que vamos a ganar en el futuro no tuviera ningún costo. Spoiler: sí lo tiene. Bastante.</p>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="text-on-surface font-headline italic text-xl mb-4 tracking-wide">Objetivo y Contenido del Módulo</h3>
+      <p class="mb-4">Las deudas no solo afectan tu cartera — afectan tu paz, tus decisiones y tu capacidad de vivir con propósito. Este módulo existe para ayudarte a recuperar tu libertad financiera: no escapando del problema, sino enfrentándolo con honestidad y con un plan real.</p>
+      <ul class="list-disc pl-5 space-y-3 text-[1.05rem] text-on-surface mb-6">
+        <li>Primero vas a hacer un <strong>diagnóstico honesto</strong> de tus deudas actuales.</li>
+        <li>Luego vas a entender <strong>qué tipos de deuda existen</strong> y qué hábitos te metieron en ellas.</li>
+        <li>Desde ahí, el módulo te lleva a elegir una <strong>estrategia probada para salir</strong>: Bola de Nieve o Avalancha.</li>
+        <li>Y para cerrar, vamos a establecer <strong>principios que eviten que vuelvas a caer</strong>.</li>
+      </ul>
+      <div class="pt-4 border-t border-outline-variant/30">
+        <p class="text-on-surface text-[1.05rem] mb-2">⏱ <strong>Tiempo estimado: 60–90 minutos</strong></p>
+        <p class="text-on-surface-variant text-[1.05rem] leading-relaxed mb-0 italic">Es el módulo más corto en páginas, pero posiblemente el más intenso emocionalmente. Puedes terminarlo en 2 sesiones de 30 minutos — pero si en algún ejercicio sientes que necesitas pausar, hazlo. Esto no es un examen con tiempo.</p>
+      </div>
+    </div>
+    
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">bolt</span>
+        Reflexión Inicial
+      </h3>
+      <p class="text-[1.05rem] leading-[1.7] mb-4 text-on-surface">Si mañana te cortaran el sueldo, ¿cuántas semanas o meses podrías mantenerte antes de que las deudas empezaran a presionarte?</p>
+      
+      <div class="flex items-center gap-4">
+        <span class="text-[1.05rem] leading-[1.7] text-on-surface-variant">Tu respuesta honesta:</span>
+        <input type="text" id="m3_q1_reflexion" class="workbook-input m-0 flex-1 bg-[#E8DED1]" placeholder="">
+      </div>
+    </div>
+
+
+    <!-- SECCIÓN 1: TU SITUACIÓN REAL -->
+    </section>
+
+    <section id="seccion-1" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 1</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Tu situación real</h2>
+      </div>
+
+    <p class="mb-8">Antes de hablar de estrategias, necesitas ver los números. No los que crees que tienes — los que realmente tienes.</p>
+
+    <h4 class="font-bold text-on-surface mb-6">Datos México (2024-2025)</h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      
+      <div class="bg-[#F4F4F1] rounded-2xl p-6 border-t-4 border-t-secondary shadow-sm relative overflow-hidden">
+        <div class="text-4xl font-headline font-bold text-secondary italic mb-3">$79,000</div>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Los jóvenes de 21 a 25 años cargan en promedio con esta deuda — Eso es casi el precio de un auto usado decente.</p>
+      </div>
+      
+      <div class="bg-[#F4F4F1] rounded-2xl p-6 border-t-4 border-t-primary shadow-sm relative overflow-hidden">
+        <div class="text-4xl font-headline font-bold text-primary italic mb-3">$2,777</div>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">En promedio, es lo único que el mexicano puede destinar a sus deudas al mes sin comprometer sus gastos básicos.</p>
+      </div>
+
+      <div class="bg-[#F4F4F1] rounded-2xl p-6 border-t-4 border-t-tertiary shadow-sm relative overflow-hidden">
+        <div class="text-4xl font-headline font-bold text-tertiary italic mb-3">7 de 10</div>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Personas en el país gastan más de lo que ganan. Siete de cada diez. Eso no es mala suerte — eso es un patrón.</p>
+      </div>
+
+    </div>
+
+    <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-8">Estos números no están aquí para desanimarte — están aquí para recordarte que no eres el único. Y que si otros han salido de deudas mucho mayores, tú también puedes. El primer paso siempre es ver con claridad dónde estás parado.</p>
+
+
+
+    <div class="bg-[#F4F4F1] border-t-4 border-secondary p-6 rounded-xl shadow-sm mb-12">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide">Historia real</h3>
+      <p class="mb-0 text-[1.05rem] leading-[1.7] text-on-surface">Cuando estudié Teología, pagaba la mensualidad mientras trabajaba. Suena heroico. No lo era. Era llegar al final del mes pensando “¿me va a alcanzar?”, estudiar con esa angustia encima, y tener que decirles no a mis compañeros cuando me invitaban a salir porque no había tiempo ni dinero para nada más. No era saludable. Era estrés financiero.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 1 — Tu radiografía financiera
+      </h3>
+      <p class="text-[1.05rem] leading-[1.7] mb-4">Necesitamos ver dónde estás parado. Sin juicios, solo con honestidad. La claridad es el primer paso para cambiar.</p>
+      <p class="text-[1.05rem] leading-[1.7] mb-8 text-on-surface">Lo que estás a punto de escribir puede ser incómodo — y está bien. Ver los números por primera vez (o en papel por primera vez) tiene eso. Pero lo que no nombras no lo puedes enfrentar, y lo que no enfrentas sigue manejando tu vida. Así que respira, y escribe.</p>
+
+      <div class="grid grid-cols-12 gap-2 mb-2 px-2">
+        <div class="col-span-4 text-[1.05rem] text-on-surface font-bold">¿A quién le debo?</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface font-bold text-center">¿Cuánto debo?</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface font-bold text-center">¿Cuánto pago/mes?</div>
+        <div class="col-span-2 text-[1.05rem] text-on-surface font-bold text-center">Interés</div>
+      </div>
+      
+      <div class="flex flex-col gap-3 mb-6" id="ej1-container">
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-4"><input type="text" id="m3_q2_deuda1_quien" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda1_cuanto" class="workbook-input mb-0 w-full pl-7 ej1-cuanto" placeholder="0.00">
+          </div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda1_pago" class="workbook-input mb-0 w-full pl-7 ej1-pago" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+             <input type="number" id="m3_q2_deuda1_interes" class="workbook-input mb-0 w-full pr-7" placeholder="0">
+             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">%</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-4"><input type="text" id="m3_q2_deuda2_quien" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda2_cuanto" class="workbook-input mb-0 w-full pl-7 ej1-cuanto" placeholder="0.00">
+          </div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda2_pago" class="workbook-input mb-0 w-full pl-7 ej1-pago" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+             <input type="number" id="m3_q2_deuda2_interes" class="workbook-input mb-0 w-full pr-7" placeholder="0">
+             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">%</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-4"><input type="text" id="m3_q2_deuda3_quien" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda3_cuanto" class="workbook-input mb-0 w-full pl-7 ej1-cuanto" placeholder="0.00">
+          </div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda3_pago" class="workbook-input mb-0 w-full pl-7 ej1-pago" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+             <input type="number" id="m3_q2_deuda3_interes" class="workbook-input mb-0 w-full pr-7" placeholder="0">
+             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">%</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-4"><input type="text" id="m3_q2_deuda4_quien" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda4_cuanto" class="workbook-input mb-0 w-full pl-7 ej1-cuanto" placeholder="0.00">
+          </div>
+          <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+             <input type="number" id="m3_q2_deuda4_pago" class="workbook-input mb-0 w-full pl-7 ej1-pago" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+             <input type="number" id="m3_q2_deuda4_interes" class="workbook-input mb-0 w-full pr-7" placeholder="0">
+             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">%</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-start mb-6 mt-4">
+        <button id="add-ej1-btn" class="text-primary font-bold flex items-center gap-1 hover:underline text-[1.05rem]">
+          <span class="material-symbols-outlined text-[20px]">add_circle</span>
+          Agregar Deuda
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-12 gap-2 items-center mb-8">
+        <div class="col-span-4 text-[1.05rem] font-bold text-on-surface text-right pr-4">Total:</div>
+        <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-primary">$</span>
+             <input type="text" id="m3_q2_total_cuanto" class="workbook-input mb-0 w-full pl-7 font-bold text-primary bg-[#E8DED1]/50 cursor-not-allowed" placeholder="0.00" readonly>
+        </div>
+        <div class="col-span-3 relative">
+             <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-primary">$</span>
+             <input type="text" id="m3_q2_total_pago" class="workbook-input mb-0 w-full pl-7 font-bold text-primary bg-[#E8DED1]/50 cursor-not-allowed" placeholder="0.00" readonly>
+        </div>
+        <div class="col-span-2 text-on-surface-variant text-center">—</div>
+      </div>
+
+      <div class="bg-[#F4F4F1] p-6 rounded-xl border border-outline-variant/30">
+        <p class="text-[1.05rem] leading-[1.7] mb-4 text-on-surface">¿Qué te dice ese número? ¿Sorpresa, alivio, preocupación?</p>
+        <textarea id="m3_q3_reaccion" class="workbook-textarea m-0 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+      </div>
+    </div>
+
+
+    <!-- SECCIÓN 2: NO TODA DEUDA ES IGUAL -->
+    </section>
+
+    <section id="seccion-2" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 2</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">No toda deuda es igual</h2>
+      </div>
+
+    <p class="mb-8">Antes de hablar del plan de salida, conviene entender que no todas las deudas tienen el mismo nivel de peligro. Algunas son claramente tóxicas. Otras, manejadas con cabeza, pueden tener sentido.</p>
+
+    <div class="bg-[#334f2b] p-8 rounded-xl shadow-md text-white mb-12">
+      <h3 class="text-secondary font-headline italic text-xl mb-6 tracking-wide flex items-center gap-3">
+        <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> 
+        Definiciones clave
+      </h3>
+      
+      <p class="mb-5 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">Deuda de consumo</span> (la más peligrosa): La que usas para comprar cosas que pierden valor desde el momento en que las adquieres: ropa, electrónicos, viajes, ese gadget que viste en un reel a las 11 de la noche. Casi siempre viene con intereses muy altos y es la razón número uno por la que muchos no logran avanzar.</p>
+      
+      <p class="mb-5 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">Deuda productiva</span> (puede tener sentido): La que se usa para generar ingresos o construir patrimonio: un negocio bien planeado, herramienta de trabajo, una propiedad. No es automáticamente buena, pero puede justificarse si el plan está bien evaluado.</p>
+      
+      <p class="mb-5 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">Meses Sin Intereses</span> (MSI): El gancho más popular. No son malos por definición — se convierten en trampa cuando los usas para comprar algo que no podrías pagar de contado. Es la ilusión de tener dinero que en realidad aún no tienes.</p>
+      
+      <p class="mb-0 text-[1.05rem] text-white leading-[1.7]"><span class="font-bold text-secondary">Interés:</span> El costo de usar dinero que no es tuyo. Si debes $10,000 pesos a un 5% mensual, al siguiente mes ya debes $10,500 aunque no hayas comprado nada más.</p>
+    </div>
+
+
+
+
+    <!-- Page 6: Ilustración and Ejercicio 2 -->
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-12">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3">
+        <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> 
+        Ilustración: La bola de nieve que nadie detiene
+      </h3>
+      <p class="text-[1.05rem] text-white/95 mb-4">Imagina una bolita de nieve pequeña que avientas desde la cima de una montaña. Al inicio parece inofensiva. Pero conforme rueda va acumulando más nieve. Si nadie la detiene, cuando llega abajo ya es una avalancha.</p>
+      <p class="text-[1.05rem] text-white/95 mb-0">Así funcionan los intereses. El mejor momento para actuar siempre fue ayer. El segundo mejor momento es hoy.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 2—Clasifica tus deudas
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">Revisa el inventario del Ejercicio 1 y sé honesto con cada una: ¿Cuáles de tus deudas son de consumo (lo que compraste ya perdió su valor)?</p>
+      <textarea id="m3_q4_consumo" class="workbook-textarea mb-6 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">¿Cuáles podrían considerarse productivas y por qué?</p>
+      <textarea id="m3_q5_productivas" class="workbook-textarea mb-6 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+
+      <div class="flex items-center gap-4 mb-6">
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">¿Qué porcentaje de tu deuda total es de consumo?</p>
+        <input type="text" id="m3_q6_porcentaje" class="workbook-input m-0 w-24 bg-[#E8DED1]" placeholder="%">
+      </div>
+
+      <p class="text-[1.05rem] text-on-surface-variant italic mb-0">Si la mayoría es deuda de consumo, eso no es una condena. Es información valiosa que señala dónde necesitas hacer cambios.</p>
+    </div>
+
+
+    <!-- SECCIÓN 3: LOS HÁBITOS QUE TE METIERON AQUÍ -->
+    </section>
+
+    <section id="seccion-3" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 3</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Los hábitos que te metieron aquí</h2>
+      </div>
+
+    <p class="mb-8">Las deudas no aparecen de la nada. Son el resultado de decisiones que fuimos tomando — muchas veces sin darnos cuenta — respaldadas por frases que suenan razonables en el momento.</p>
+
+    <!-- Hábito 1 -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 border-t-4 border-t-secondary rounded-xl p-6 mb-6 shadow-sm relative">
+      <h4 class="font-bold text-secondary text-lg mb-3">Hábito #1: Comprar a crédito lo que se necesita "ya"</h4>
+      <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Se descompone el refrigerador, el celular, el coche. En lugar de tener un fondo de emergencia, sacamos la tarjeta. "Es que lo necesito ahorita y así lo voy pagando en cómodas mensualidades." Algo de $5,000 pesos comprado a 18 meses puede terminar costando $7,000 o más. Dos mil pesos extra. Por la comodidad de no esperar.</p>
+    </div>
+
+    <!-- Advertencia -->
+    <div class="bg-[#C0603A] text-white p-8 rounded-xl shadow-md mb-12">
+      <h3 class="text-white font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3">
+        <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+        Advertencia
+      </h3>
+      <p class="text-[1.05rem] text-white/95 mb-0">Las "cómodas mensualidades" son el autoengaño más popular de las finanzas personales mexicanas. No solo pagas más — pagas por el privilegio de no haber esperado. Eso no es una solución. Es una penalización disfrazada de facilidad.</p>
+    </div>
+
+    <!-- Hábito 2 -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 border-t-4 border-t-primary rounded-xl p-6 mb-8 shadow-sm">
+      <h4 class="font-bold text-primary text-lg mb-3">Hábito #2: Empezar proyectos sin tener el capital completo</h4>
+      <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Se comienza con entusiasmo y el dinero disponible. A la mitad del camino se acaba el presupuesto. Se recurre al préstamo. "Ya invertí demasiado para dejarlo." Y esa presión emocional lleva a aceptar créditos en condiciones que nunca aceptarías si estuvieras tranquilo.</p>
+    </div>
+
+    <!-- Page 8: Hábito 3 y Ejercicio 3 -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 border-t-4 border-t-[#755b00] rounded-xl p-6 mb-12 shadow-sm">
+      <h4 class="font-bold text-[#755b00] text-lg mb-3">Hábito #3: La tarjeta como primera solución</h4>
+      <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">En México, comprar a meses se ha vuelto tan normal que la pregunta cambió de "¿tengo ese dinero ahora?" a "¿de cuánto me quedan las mensualidades?" Es un cambio sutil. Y devastador. Porque te hace sentir que puedes pagar algo que en realidad no puedes — solo que todavía no lo sabes.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 3— Identifica tu patrón
+      </h3>
+      <p class="text-[1.05rem] mb-6 text-on-surface-variant font-medium">Honestidad total. Esto es solo para ti.</p>
+
+      <div class="flex flex-col gap-3 mb-8">
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="m3_q7_patron1" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-[1.05rem] text-on-surface group-hover:text-primary transition-colors">Compro cosas a crédito cuando se rompen o son urgentes</span>
+        </label>
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="m3_q7_patron2" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-[1.05rem] text-on-surface group-hover:text-primary transition-colors">He comenzado proyectos sin tener el presupuesto completo</span>
+        </label>
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="m3_q7_patron3" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-[1.05rem] text-on-surface group-hover:text-primary transition-colors">Uso meses sin intereses aunque no tenga el dinero de contado</span>
+        </label>
+        <label class="flex items-start gap-3 cursor-pointer group">
+          <input type="checkbox" id="m3_q7_patron4" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-[1.05rem] text-on-surface group-hover:text-primary transition-colors">Mi frase favorita es "lo voy pagando poco a poco"</span>
+        </label>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">¿Cuál de estos hábitos te costaría más trabajo cambiar? ¿Por qué?</p>
+      <textarea id="m3_q8_habito_dificil" class="workbook-textarea mb-6 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">¿Qué decisión concreta puedes tomar esta semana para empezar a romper ese patrón?</p>
+      <textarea id="m3_q9_decision" class="workbook-textarea m-0 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+
+    <!-- SECCIÓN 4: TU PLAN DE SALIDA -->
+    </section>
+
+    <section id="seccion-4" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 4</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Tu plan de salida</h2>
+      </div>
+
+    <p class="mb-8">Bien. Ya viste el problema con claridad. Ahora viene lo que sí se puede controlar.</p>
+
+    <!-- Paso 1 -->
+    <div class="flex items-start gap-3 mb-8">
+      <div class="bg-primary text-white w-7 h-7 rounded-full flex items-center justify-center font-bold text-[1.05rem] shrink-0 mt-0.5">1</div>
+      <div>
+        <h4 class="font-bold text-primary text-lg mb-3">Para de endeudarte — cierra la llave antes de sacar el agua</h4>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Si tu barco tiene un agujero, lo primero no es sacar el agua con un balde. Lo primero es tapar el agujero. Mientras sigas generando deuda nueva, el esfuerzo de pagar la anterior no va a ningún lado. Deja de usar las tarjetas de crédito hasta haberlas liquidado. Si es necesario, ponlas en un cajón. O en el congelador. O dáselas a alguien de confianza. Lo que funcione. No pidas más préstamos, por más tentador que parezca en el momento. Y si quieres comprar algo — ahorra primero.</p>
+      </div>
+    </div>
+
+    <!-- Paso 2 -->
+    <div class="flex items-start gap-3 mb-6">
+      <div class="bg-primary text-white w-7 h-7 rounded-full flex items-center justify-center font-bold text-[1.05rem] shrink-0 mt-0.5">2</div>
+      <div>
+        <h4 class="font-bold text-primary text-lg mb-3">Elige tu método de pago</h4>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Elige el método que realmente vayas a mantener. El mejor plan es el que ejecutas.</p>
+      </div>
+    </div>
+
+    <h3 class="text-xl font-headline font-bold text-secondary mt-8 mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined">bolt</span>
+      Aplicación práctica — Los dos métodos para pagar deudas
+    </h3>
+
+    <!-- Bola de Nieve -->
+    <div class="bg-[#F4F4F1] p-8 rounded-xl border border-outline-variant/30 mb-6">
+      <h4 class="font-bold text-on-surface text-lg mb-4 flex items-center gap-2">Método Bola de Nieve ❄️ (Para quien necesita victorias rápidas):</h4>
+      <p class="text-[1.05rem] text-on-surface mb-4">Pagas primero la deuda más pequeña, sin importar el interés. Cuando la liquidas, ese dinero lo sumas al pago de la siguiente. No es el más eficiente matemáticamente, pero genera impulso — y el impulso importa más que la teoría cuando estás a punto de tirar la toalla.</p>
+      <ol class="list-decimal pl-5 space-y-2 text-[1.05rem] text-on-surface">
+        <li>Lista tus deudas de menor a mayor monto.</li>
+        <li>Paga solo el mínimo a todas.</li>
+        <li>Todo ingreso extra va a la deuda más pequeña.</li>
+        <li>Al liquidarla, ese pago pasa completo a la siguiente.</li>
+        <li>Repite hasta quedar en ceros.</li>
+      </ol>
+    </div>
+
+    <!-- Avalancha -->
+    <div class="bg-[#F4F4F1] p-8 rounded-xl border border-outline-variant/30 mb-8 relative">
+      <h4 class="font-bold text-on-surface text-lg mb-4 flex items-center gap-2">Método Avalancha ⛰️ — Para quien busca la opción más eficiente:</h4>
+      <p class="text-[1.05rem] text-on-surface mb-4">Pagas primero la deuda con el interés más alto. Matemáticamente es la mejor opción — terminas pagando menos en total. Requiere más disciplina porque los resultados tardan más en llegar.</p>
+      <ol class="list-decimal pl-5 space-y-2 text-[1.05rem] text-on-surface">
+        <li>Lista tus deudas de mayor a menor tasa de interés.</li>
+        <li>Paga el mínimo a todas.</li>
+        <li>Todo el dinero extra va a la deuda con el interés más alto.</li>
+        <li>Al liquidarla, ese pago pasa completo a la siguiente.</li>
+        <li>Repite hasta quedar en ceros.</li>
+      </ol>
+    </div>
+
+    <!-- Paso 3 -->
+    <div class="flex items-start gap-3 mb-8">
+      <div class="bg-primary text-white w-7 h-7 rounded-full flex items-center justify-center font-bold text-[1.05rem] shrink-0 mt-0.5">3</div>
+      <div>
+        <h4 class="font-bold text-primary text-lg mb-3">Genera ingresos adicionales — temporalmente</h4>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Vende lo que ya no uses. Ofrece un servicio con las habilidades que ya tienes. Cualquier ingreso no planeado — aguinaldo, bono, regalo — va directo a la deuda antes de cualquier otro destino.</p>
+      </div>
+    </div>
+
+    <!-- Paso 4 -->
+    <div class="flex items-start gap-3 mb-12">
+      <div class="bg-primary text-white w-7 h-7 rounded-full flex items-center justify-center font-bold text-[1.05rem] shrink-0 mt-0.5">4</div>
+      <div>
+        <h4 class="font-bold text-primary text-lg mb-3">Negocia con tus acreedores</h4>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Muchos bancos prefieren recuperar una parte a no recuperar nada. Si estás en dificultades, comunícate antes de desaparecer. Pregunta sobre reestructuras o programas de liquidación anticipada. Negociar no es deshonestidad — es ser buen administrador de tu situación.</p>
+      </div>
+    </div>
+
+
+
+
+    <!-- Page 11: Ejercicio 4 -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 4— Tu plan de salida
+      </h3>
+      
+      <p class="text-[1.05rem] mb-3 text-on-surface">¿Qué estrategia vas a usar?</p>
+      <div class="flex flex-wrap gap-4 mb-6">
+        <label class="flex items-center gap-2 cursor-pointer group">
+          <input type="checkbox" name="m3_q10_estrategia" value="nieve" id="m3_q10_estrategia_nieve" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2 strategy-checkbox">
+          <span class="text-[1.05rem] text-on-surface group-hover:text-secondary transition-colors">Bola de Nieve</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer group">
+          <input type="checkbox" name="m3_q10_estrategia" value="avalancha" id="m3_q10_estrategia_avalancha" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2 strategy-checkbox">
+          <span class="text-[1.05rem] text-on-surface group-hover:text-secondary transition-colors">Avalancha</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer group">
+          <input type="checkbox" name="m3_q10_estrategia" value="decidir" id="m3_q10_estrategia_decidir" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2 strategy-checkbox">
+          <span class="text-[1.05rem] text-on-surface group-hover:text-secondary transition-colors">Lo voy a decidir esta semana</span>
+        </label>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-4 text-on-surface">Ordena tus deudas según el método que elegiste:</p>
+      
+      <div class="grid grid-cols-12 gap-2 mb-2 px-2">
+        <div class="col-span-2 text-[1.05rem] text-on-surface font-bold text-center">Prioridad</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface font-bold">Deuda</div>
+        <div class="col-span-2 text-[1.05rem] text-on-surface font-bold">Monto</div>
+        <div class="col-span-2 text-[1.05rem] text-on-surface font-bold">Pago Mínimo</div>
+        <div class="col-span-3 text-[1.05rem] text-on-surface font-bold">Fecha objetivo</div>
+      </div>
+
+      <div class="flex flex-col gap-3 mb-8" id="ej4-container">
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-2 flex items-center justify-center font-bold text-on-surface-variant bg-[#E8DED1]/50 rounded-lg h-[50px]">1º</div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden1_deuda" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden1_monto" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden1_pago" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden1_fecha" class="workbook-input mb-0 w-full" placeholder=""></div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-2 flex items-center justify-center font-bold text-on-surface-variant bg-[#E8DED1]/50 rounded-lg h-[50px]">2º</div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden2_deuda" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden2_monto" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden2_pago" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden2_fecha" class="workbook-input mb-0 w-full" placeholder=""></div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-2 flex items-center justify-center font-bold text-on-surface-variant bg-[#E8DED1]/50 rounded-lg h-[50px]">3º</div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden3_deuda" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden3_monto" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden3_pago" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden3_fecha" class="workbook-input mb-0 w-full" placeholder=""></div>
+        </div>
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <div class="col-span-2 flex items-center justify-center font-bold text-on-surface-variant bg-[#E8DED1]/50 rounded-lg h-[50px]">4º</div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden4_deuda" class="workbook-input mb-0 w-full" placeholder=""></div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden4_monto" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-2 relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span>
+            <input type="number" id="m3_q11_orden4_pago" class="workbook-input mb-0 w-full pl-7" placeholder="0.00">
+          </div>
+          <div class="col-span-3"><input type="text" id="m3_q11_orden4_fecha" class="workbook-input mb-0 w-full" placeholder=""></div>
+        </div>
+      </div>
+      <div class="flex justify-start mb-6 mt-4">
+        <button id="add-ej4-btn" class="text-primary font-bold flex items-center gap-1 hover:underline text-[1.05rem]">
+          <span class="material-symbols-outlined text-[20px]">add_circle</span>
+          Agregar Deuda
+        </button>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">¿Qué gasto puedes reducir o eliminar este mes para destinar más dinero a tu deuda?</p>
+      <textarea id="m3_q12_reducir" class="workbook-textarea mb-6 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 text-on-surface">¿Hay algo que puedas vender o hacer para generar ingresos adicionales este mes?</p>
+      <textarea id="m3_q13_vender" class="workbook-textarea m-0 bg-[#E8DED1]" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+
+    <!-- SECCIÓN 5: LA MEJOR DEUDA ES LA QUE NUNCA TIENES -->
+    </section>
+
+    <section id="seccion-5" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Sección 5</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">La Mejor Deuda es la que Nunca Tienes</h2>
+      </div>
+
+    <p class="mb-12">Salir de deudas es un logro enorme. Pero el objetivo a largo plazo es construir una vida donde el crédito sea una herramienta que eliges usar con intención — no una red de seguridad para cuando no alcanza.</p>
+
+    <h3 class="text-xl font-headline font-bold text-secondary mt-8 mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined">bolt</span>
+      Aplicación práctica — Principios para no volver a caer
+    </h3>
+
+    <div class="bg-[#F4F4F1] p-8 rounded-xl border border-outline-variant/30 mb-12 relative overflow-hidden">
+      <p class="text-[1.05rem] text-on-surface mb-5"><strong class="text-primary font-bold">Primero:</strong> El crédito no es tu dinero. Si no tienes el dinero para pagarlo de contado hoy, los meses sin intereses no cambian esa realidad — solo la posponen.</p>
+      
+      <p class="text-[1.05rem] text-on-surface mb-5"><strong class="text-primary font-bold">Segundo:</strong> Cuando llegue un imprevisto, tienes que tener un fondo de emergencia listo. No la tarjeta. El fondo. Esa es la diferencia entre un imprevisto que resuelves en un día y una deuda que pagas durante dos años. <br><span class="italic text-on-surface-variant">(Vamos a hablar sobre construir un fondo de emergencia en el siguiente módulo).</span></p>
+      
+      <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0"><strong class="text-primary font-bold">Tercero:</strong> Nunca seas aval de alguien si no estás dispuesto a pagar esa deuda tú mismo. Ser aval no es un favor — es una firma legal. Si la otra persona no paga, el banco no va a ir a buscarla a ella. Va a ir a buscarte a ti.</p>
+    </div>
+
+    <!-- Page 13: Ejercicio 5 -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 5— Tus reglas personales con el crédito
+      </h3>
+      <p class="text-[1.05rem] mb-6 text-on-surface-variant font-medium">Escribe tres reglas que vas a seguir a partir de hoy con tu dinero y el crédito. Comprométete con ellas.</p>
+
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-[1.05rem] text-on-surface font-medium whitespace-nowrap">Regla 1: No voy a</span>
+        <input type="text" id="m3_q14_regla1" class="workbook-input m-0 w-full bg-[#E8DED1]" placeholder="">
+      </div>
+
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-[1.05rem] text-on-surface font-medium whitespace-nowrap">Regla 2: Antes de usar crédito, voy a</span>
+        <input type="text" id="m3_q14_regla2" class="workbook-input m-0 w-full bg-[#E8DED1]" placeholder="">
+      </div>
+
+      <div class="flex items-center gap-2 mb-8">
+        <span class="text-[1.05rem] text-on-surface font-medium whitespace-nowrap">Regla 3: Cuando me llegue un imprevisto, voy a</span>
+        <input type="text" id="m3_q14_regla3" class="workbook-input m-0 w-full bg-[#E8DED1]" placeholder="">
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Comparte al menos una de estas reglas con alguien de confianza. No para sentir presión, sino para tener a alguien que te ayude a mantenerlas. La rendición de cuentas es una de las herramientas más poderosas que existen.</p>
+    </div>
+
+
+    <!-- RESUMEN DEL MÓDULO -->
+    </section>
+
+    <section id="resumen" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar Final -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-4">Resumen</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Resumen del Módulo</h2>
+      </div>
+
+    <!-- Table Resumen -->
+    <div class="mb-12 border border-outline-variant/30 rounded-lg overflow-hidden shadow-sm mt-8">
+      <div class="grid grid-cols-2 bg-[#334f2b] text-white">
+        <div class="p-3 font-bold text-[1.05rem]">Lo que aprendiste</div>
+        <div class="p-3 font-bold text-[1.05rem] border-l border-white/20">Herramienta Práctica</div>
+      </div>
+      <div class="flex flex-col bg-white">
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">Las deudas limitan tu libertad</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Haz un inventario honesto de todo lo que debes</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">No toda deuda tiene el mismo impacto</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Clasifica entre consumo y productiva</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">Los malos hábitos financieros se pueden cambiar</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Identifica tu patrón principal y actúa esta semana</div>
+        </div>
+        <div class="grid grid-cols-2 border-b border-outline-variant/30">
+          <div class="p-3 text-[1.05rem] text-on-surface">Hay un plan de salida que funciona</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Elige entre Bola de Nieve o Avalancha y empieza hoy</div>
+        </div>
+        <div class="grid grid-cols-2">
+          <div class="p-3 text-[1.05rem] text-on-surface">La mejor protección es la prevención</div>
+          <div class="p-3 text-[1.05rem] text-on-surface-variant border-l border-outline-variant/30">Desarrollé mis reglas del crédito</div>
+        </div>
+      </div>
+    </div>
+
+
+</section>
+</article>
+  <!-- Navigation / Finish -->
+  <div class="mt-16 flex justify-between items-center border-t border-outline-variant/30 pt-8">
+    <button onclick="window.print()" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-[1.05rem] font-semibold">
+      <span class="material-symbols-outlined text-lg">print</span>
+      Guardar PDF / Imprimir
+    </button>
+    
+    <a href="portal.html" class="flex items-center gap-2 bg-primary text-white font-semibold py-3 px-6 rounded shadow hover:bg-primary/90 transition-colors">
+      Completar Sección <span class="material-symbols-outlined text-[1.05rem]">arrow_forward</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="bg-[#F4F4F1] py-8 text-center border-t border-outline-variant/30 mt-auto">
+  <p class="text-xs text-on-surface-variant">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Auth + Cloud Save -->
+<script src="js/supabase-auth.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const user = await WP.requireAuth();
+    if (!user) return;
+
+    // Outline Menu Toggle
+    const outlineToggle = document.getElementById('outline-toggle');
+    const outlineMenu = document.getElementById('outline-menu');
+    if(outlineToggle && outlineMenu) {
+      outlineToggle.addEventListener('click', () => {
+        const isClosed = outlineMenu.classList.contains('opacity-0');
+        if (isClosed) {
+          outlineMenu.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.add('opacity-100', 'scale-100');
+        } else {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      document.addEventListener('click', (e) => {
+        if (!outlineToggle.contains(e.target) && !outlineMenu.contains(e.target)) {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      outlineMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        });
+      });
+    }
+
+    // Ejercicio 1 Totals calculation
+    const calcTotalsEj1 = () => {
+      let sumCuanto = 0, sumPago = 0;
+      document.querySelectorAll('.ej1-cuanto').forEach(i => sumCuanto += parseFloat(i.value) || 0);
+      document.querySelectorAll('.ej1-pago').forEach(i => sumPago += parseFloat(i.value) || 0);
+      const tc = document.getElementById('m3_q2_total_cuanto');
+      const tp = document.getElementById('m3_q2_total_pago');
+      if (tc) tc.value = sumCuanto.toFixed(2);
+      if (tp) tp.value = sumPago.toFixed(2);
+    };
+    document.getElementById('ej1-container')?.addEventListener('input', (e) => {
+      if (e.target.classList.contains('ej1-cuanto') || e.target.classList.contains('ej1-pago')) calcTotalsEj1();
+    });
+
+    // Add row Ej1
+    document.getElementById('add-ej1-btn')?.addEventListener('click', () => {
+      const container = document.getElementById('ej1-container');
+      const count = container.querySelectorAll('.grid.grid-cols-12').length + 1;
+      const div = document.createElement('div');
+      div.className = 'grid grid-cols-12 gap-2 items-center';
+      div.innerHTML = `
+        <div class="col-span-4"><input type="text" id="m3_q2_deuda${count}_quien" class="workbook-input mb-0 w-full"></div>
+        <div class="col-span-3 relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span><input type="number" id="m3_q2_deuda${count}_cuanto" class="workbook-input mb-0 w-full pl-7 ej1-cuanto" placeholder="0.00"></div>
+        <div class="col-span-3 relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span><input type="number" id="m3_q2_deuda${count}_pago" class="workbook-input mb-0 w-full pl-7 ej1-pago" placeholder="0.00"></div>
+        <div class="col-span-2 relative"><input type="number" id="m3_q2_deuda${count}_interes" class="workbook-input mb-0 w-full pr-7" placeholder="0"><span class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">%</span></div>
+      `;
+      container.appendChild(div);
+      div.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => { WP.queueSave(input.id, input.value, input.type === 'number' ? 'number' : 'text'); localStorage.setItem(input.id, input.value); });
+      });
+    });
+
+    // Add row Ej4
+    document.getElementById('add-ej4-btn')?.addEventListener('click', () => {
+      const container = document.getElementById('ej4-container');
+      const count = container.querySelectorAll('.grid.grid-cols-12').length + 1;
+      const div = document.createElement('div');
+      div.className = 'grid grid-cols-12 gap-2 items-center';
+      div.innerHTML = `
+        <div class="col-span-2 flex items-center justify-center font-bold text-on-surface-variant bg-[#E8DED1]/50 rounded-lg h-[50px]">${count}º</div>
+        <div class="col-span-3"><input type="text" id="m3_q11_orden${count}_deuda" class="workbook-input mb-0 w-full"></div>
+        <div class="col-span-2 relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span><input type="number" id="m3_q11_orden${count}_monto" class="workbook-input mb-0 w-full pl-7" placeholder="0.00"></div>
+        <div class="col-span-2 relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant font-bold">$</span><input type="number" id="m3_q11_orden${count}_pago" class="workbook-input mb-0 w-full pl-7" placeholder="0.00"></div>
+        <div class="col-span-3"><input type="text" id="m3_q11_orden${count}_fecha" class="workbook-input mb-0 w-full"></div>
+      `;
+      container.appendChild(div);
+      div.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', () => { WP.queueSave(input.id, input.value, input.type === 'number' ? 'number' : 'text'); localStorage.setItem(input.id, input.value); });
+      });
+    });
+
+    // Strategy Exclusive Checkboxes
+    const strategyCheckboxes = document.querySelectorAll('.strategy-checkbox');
+    strategyCheckboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        if (cb.checked) {
+          strategyCheckboxes.forEach(other => { if (other !== cb) other.checked = false; });
+          WP.queueSave('m3_q10_estrategia', cb.value, 'radio');
+          localStorage.setItem('m3_q10_estrategia', cb.value);
+        } else {
+          localStorage.removeItem('m3_q10_estrategia');
+        }
+        WP.showSaveIndicator();
+      });
+    });
+
+    // Load progress
+    await WP.loadProgress();
+    const savedStrategy = localStorage.getItem('m3_q10_estrategia');
+    if (savedStrategy) strategyCheckboxes.forEach(cb => { if (cb.value === savedStrategy) cb.checked = true; });
+    setTimeout(calcTotalsEj1, 500);
+    WP.setupAutoSave();
+  });
+</script>
+
+</body>
+</html>

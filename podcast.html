@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Podcast — WiserPicture</title>
+<meta name="description" content="Cada refrán mexicano esconde un principio bíblico. Acompáñanos a descubrir sabiduría cristiana práctica en el podcast de WiserPicture en Spotify.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "surface-container-low": "#F4F4F1",
+          "surface-container-high": "#E8E8E5",
+          "surface-container-highest": "#D8D8D5",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "secondary-fixed-dim": "#C9A84C",
+          "on-primary-container": "#2A3F22",
+          "on-primary": "#FFFFFF",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    }
+  }
+</script>
+<style>
+  body {
+    background-color: #F9F9F6;
+    color: #1A1C1B;
+    min-height: 100dvh;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .warm-card {
+    background: #FFFFFF;
+    border: 1px solid #E8E8E5;
+    box-shadow: 0 1px 3px rgba(45,51,25,0.06), 0 1px 2px rgba(45,51,25,0.04);
+  }
+  .warm-card:hover {
+    box-shadow: 0 4px 12px rgba(45,51,25,0.1);
+  }
+  .nav-drawer { transform: translateX(-100%); transition: transform 0.3s ease; }
+  .nav-drawer.open { transform: translateX(0); }
+  .nav-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+</style>
+</head>
+<body class="font-body selection:bg-primary/20 selection:text-on-surface">
+
+<!-- Header -->
+<header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 shadow-[0_1px_3px_rgba(45,51,25,0.08)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+  <div class="flex items-center gap-3">
+    <button id="menu-toggle" class="material-symbols-outlined text-primary md:hidden">menu</button>
+    <a href="index.html"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto"></a>
+  </div>
+  <div class="hidden md:flex flex-1 justify-center items-center gap-8">
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="blog.html">Blog</a>
+    <a class="text-primary font-medium text-sm tracking-wide" href="podcast.html">Podcast</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="workbook.html">Workbook</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="recursos.html">Recursos</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <a href="workbook.html" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">Módulo Gratis</a>
+  </div>
+</div>
+</header>
+
+<!-- Mobile Nav -->
+<div id="nav-overlay" class="nav-overlay fixed inset-0 bg-black/30 z-[55]"></div>
+<nav id="nav-drawer" class="nav-drawer fixed inset-y-0 left-0 z-[60] flex flex-col bg-[#F9F9F6]/98 backdrop-blur-2xl h-full w-80 shadow-2xl shadow-black/10">
+<div class="p-8">
+  <div class="flex justify-between items-center mb-10">
+    <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-14 w-auto">
+    <button id="menu-close" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">close</button>
+  </div>
+  <div class="flex flex-col gap-2">
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="index.html"><span class="material-symbols-outlined">home</span><span class="font-medium">Inicio</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="blog.html"><span class="material-symbols-outlined">article</span><span class="font-medium">Blog</span></a>
+    <a class="text-[#1A1C1B] bg-gradient-to-r from-secondary/20 to-transparent px-4 py-3 flex items-center gap-4 rounded-full border border-secondary/20" href="podcast.html"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">mic</span><span class="font-medium">Podcast</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="workbook.html"><span class="material-symbols-outlined">menu_book</span><span class="font-medium">Workbook</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="recursos.html"><span class="material-symbols-outlined">handyman</span><span class="font-medium">Recursos</span></a>
+  </div>
+</div>
+</nav>
+
+<main class="relative overflow-hidden bg-background">
+
+<!-- Page Hero (Editorial Split) -->
+<section class="px-6 pt-20 pb-16 max-w-7xl mx-auto">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <!-- Left Column: Intro -->
+    <div class="lg:col-span-5 flex flex-col items-start text-left">
+      <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-4 border-b border-secondary/30 pb-2 inline-block">Sabiduría en Audio</span>
+      <h1 class="text-5xl md:text-6xl font-headline italic text-on-surface mb-6 leading-tight">El Podcast</h1>
+      <p class="text-lg text-on-surface-variant max-w-md mb-10 leading-relaxed font-body">
+        Cada refrán mexicano esconde un principio bíblico. Acompáñanos a descubrir esta sabiduría cristiana práctica para la vida real.
+      </p>
+      <a href="https://open.spotify.com" target="_blank" class="inline-flex items-center gap-3 bg-[#1DB954] text-white font-bold py-4 px-8 rounded-full text-sm shadow-xl shadow-[#1DB954]/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Escuchar en Spotify
+      </a>
+    </div>
+
+    <!-- Right Column: Featured Episode (Ep 8) -->
+    <div class="lg:col-span-7">
+      <div class="relative">
+        <div class="absolute inset-0 bg-primary/5 rounded-[2.5rem] transform translate-x-4 translate-y-4 -z-10"></div>
+        <a href="https://open.spotify.com/episode/1O3ptDeU9c4y1s4ggmkEGJ?si=fa17425f14f44009" target="_blank" class="block warm-card rounded-3xl p-8 md:p-12 border border-outline-variant/30 group hover:border-primary/50 transition-all duration-500 overflow-hidden relative shadow-lg hover:shadow-2xl">
+          <div class="absolute -right-8 -top-8 text-primary/5 font-headline text-[12rem] leading-none select-none transition-transform duration-500 group-hover:scale-110">8</div>
+          
+          <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-start">
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-primary text-white flex items-center justify-center flex-shrink-0 shadow-2xl shadow-primary/30 group-hover:rotate-3 transition-transform duration-500">
+              <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+            
+            <div class="flex-1 text-center md:text-left">
+              <span class="inline-block bg-primary/10 text-primary text-[0.65rem] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Último Episodio</span>
+              <h3 class="text-2xl md:text-3xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-tight">Haz El Bien Sin Mirar A Quien</h3>
+              <p class="text-base text-on-surface-variant leading-relaxed mb-6">Reflexionamos sobre la justicia, la corrupción y el trato hacia los inmigrantes. Vivir en integridad y amor hacia el prójimo.</p>
+              
+              <div class="flex items-center justify-center md:justify-start gap-4">
+                <span class="text-xs text-on-surface-variant/70 uppercase tracking-wider font-semibold">Nov 26, 2023</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-outline-variant/50"></span>
+                <span class="text-xs text-primary font-bold uppercase tracking-wider flex items-center gap-1 group-hover:underline underline-offset-4">Reproducir <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Episodes Grid -->
+<section class="bg-surface-container-low py-20 px-6 border-t border-outline-variant/20 mt-10">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-12 border-b border-outline-variant/20 pb-4">
+      <h2 class="text-3xl font-headline italic text-on-surface">Todos los Episodios</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Ep 7 -->
+      <a href="https://open.spotify.com/episode/30Y6fe6YSJlJgz7jfOcix5?si=6f022d1940e140d0" target="_blank" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+        <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">7</div>
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">Nov 14, 2023</span>
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">No Porque Hay Lodo Hay Que Atascarse</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">Exploramos el auto-control y cómo Dios nos da las herramientas para dominar nuestros impulsos. Proverbios 16:32.</p>
+          <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant font-medium">Episodio 07</span>
+            <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Ep 6 -->
+      <a href="https://open.spotify.com/episode/6XTsJThizspYOZ3Nv6CHbK?si=7b6d63b97bfa4bfb" target="_blank" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+        <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">6</div>
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">Ago 3, 2023</span>
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">Hombre Prevenido Vale Por Dos</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">La prudencia como capacidad de tomar decisiones reflexivas, saber escuchar, esperar y planear.</p>
+          <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant font-medium">Episodio 06</span>
+            <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Ep 5 -->
+      <a href="https://open.spotify.com/episode/1tLUugT4iGiCVKmqIivrOt?si=bcfdd3c6ac664e2c" target="_blank" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+        <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">5</div>
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">Jul 22, 2023</span>
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">El Valiente Vive Hasta Que El Cobarde Quiere</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">Sobre fortaleza: cómo Dios y su Espíritu nos mueven a perseverar y tomar valor en situaciones difíciles.</p>
+          <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant font-medium">Episodio 05</span>
+            <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Ep 4 -->
+      <a href="https://open.spotify.com/episode/2orsVlULDT2rEwfuuBaFaK?si=21fe6d62b5fc4358" target="_blank" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+        <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">4</div>
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">Jun 13, 2023</span>
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">Más Vale Prevenir Que Lamentar</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">Sobre salud física y mental. La biblia nos da sabiduría para un cuidado integral del cuerpo y mente.</p>
+          <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant font-medium">Episodio 04</span>
+            <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Ep 3 -->
+      <a href="https://open.spotify.com/episode/7CxaCMpd6rCct2qWmq3WUg?si=676ca4a2b7b043fd" target="_blank" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+        <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">3</div>
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">May 18, 2023</span>
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">Dime de Qué Presumes y Te Diré de Qué Careces</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">Cómo manejar las finanzas personales desde una perspectiva cristiana. Principios bíblicos para administrar recursos.</p>
+          <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant font-medium">Episodio 03</span>
+            <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Ep 2 -->
+      <a href="https://open.spotify.com/episode/2orsVlULDT2rEwfuuBaFaK?si=uXbzCtWZQF28W3S6312Z8w" target="_blank" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+        <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">2</div>
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">May 18, 2023</span>
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">De Tal Palo Tal Astilla</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">Sobre los beneficios de la sabiduría y cómo aplicarla en nuestra vida diaria.</p>
+          <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant font-medium">Episodio 02</span>
+            <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Ep 1 -->
+      <a href="https://open.spotify.com/episode/1cATHYLt62O16cfpI2W2uE?si=sw-Adzt7Q-S_FIcaWOb_Nw" target="_blank" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+        <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">1</div>
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">May 18, 2023</span>
+            <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+          </div>
+          <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">El Que a Buen Árbol Se Arrima Buena Sombra Le Acobija</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">El principio de la sabiduría: cuál es el fundamento y de qué se trata la verdadera sabiduría.</p>
+          <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant font-medium">Episodio 01</span>
+            <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-[#C0603A] py-16">
+<div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
+  <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto mb-8">
+
+  <!-- Footer Navigation -->
+  <div class="flex flex-wrap justify-center gap-6 mb-8">
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="blog.html">Blog</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="podcast.html">Podcast</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="workbook.html">Workbook</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="recursos.html">Recursos</a>
+  </div>
+
+
+
+  <!-- Social -->
+  <div class="flex gap-6 mb-8">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank">
+      <span class="material-symbols-outlined text-xl">photo_camera</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
+    </a>
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank">
+      <span class="material-symbols-outlined text-xl">public</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
+    </a>
+  </div>
+
+  <!-- Contact -->
+  <div class="mb-10">
+    <p class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/60 mb-2">Contacto</p>
+    <a class="text-white/80 hover:text-white transition-colors text-base" href="mailto:edgar@wiserpicture.com">
+      edgar@wiserpicture.com
+    </a>
+  </div>
+
+  <p class="text-[0.7rem] text-white/40">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</div>
+</footer>
+
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/30 z-50 flex justify-around items-center py-3 px-4 rounded-t-2xl">
+  <a href="index.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">home</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Inicio</span></a>
+  <a href="blog.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">article</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Blog</span></a>
+  <a href="podcast.html" class="flex flex-col items-center gap-0.5 text-primary relative"><div class="absolute -top-0.5 w-1 h-1 bg-primary rounded-full shadow-none"></div><span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">mic</span><span class="text-[0.55rem] font-bold tracking-widest uppercase">Podcast</span></a>
+  <a href="workbook.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">menu_book</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Workbook</span></a>
+  <a href="recursos.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">handyman</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Recursos</span></a>
+</nav>
+<div class="h-20 md:hidden"></div>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const drawer = document.getElementById('nav-drawer');
+  const overlay = document.getElementById('nav-overlay');
+  const closeBtn = document.getElementById('menu-close');
+  function openMenu() { drawer.classList.add('open'); overlay.classList.add('open'); }
+  function closeMenu() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+  toggle.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+</script>
+</body>
+</html>

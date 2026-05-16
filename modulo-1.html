@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 1: Base Bíblica y Mentalidad — WiserPicture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  
+  /* Workbook specific styles */
+  .workbook-textarea { width: 100%; min-height: 120px; padding: 1.25rem; border: none; border-radius: 0.5rem; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; resize: vertical; background-color: #E8DED1; transition: all 0.2s; color: #1A1C1B; }
+  .workbook-textarea:focus { outline: none; box-shadow: 0 0 0 2px #334F2B; background-color: #EBE5DB; }
+  .workbook-input { width: 100%; padding: 0.75rem 1rem; border: none !important; border-radius: 0.5rem !important; font-family: 'Manrope', sans-serif; font-size: 1rem; margin-bottom: 1rem; background-color: #E8DED1 !important; transition: all 0.2s; color: #1A1C1B; outline: none !important; box-shadow: none !important; }
+  .workbook-input:focus { outline: none !important; box-shadow: 0 0 0 2px #334F2B !important; background-color: #EBE5DB !important; }
+  
+
+  
+  /* Flowchart styles */
+  .flowchart-container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0; }
+  .flowbox { background-color: #C9A84C; color: #FFFFFF; font-family: "Lora", serif; font-style: italic; font-size: 1.1rem; padding: 0.75rem 1.5rem; border-radius: 0.5rem; text-align: center; flex: 1; min-width: 120px; }
+  .flowarrow { color: #C0603A; font-weight: bold; }
+  
+
+  
+  /* Indicator Dots */
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; margin-bottom: 1rem; }
+  .dot-green { background-color: #4CAF50; }
+  .dot-yellow { background-color: #FFC107; }
+  .dot-red { background-color: #F44336; }
+  
+  article p { font-size: 1.05rem; line-height: 1.7; color: #1A1C1B; margin-bottom: 1.5rem; }
+  article ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+  article li { margin-bottom: 0.5rem; font-size: 1.05rem; line-height: 1.7; }
+</style>
+</head>
+<body class="font-body flex flex-col min-h-screen">
+
+<!-- Sticky Header with Nav -->
+<nav class="bg-white/95 backdrop-blur-xl sticky top-0 z-50 border-b border-outline-variant/30">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+    
+    <!-- Module Links -->
+    <div class="flex gap-6 overflow-x-auto whitespace-nowrap w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
+      <a href="portal.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Mi Portal</a>
+      <a href="modulo-1.html" class="text-sm font-medium text-primary border-b-2 border-secondary pb-1">Módulo 1</a>
+      <a href="modulo-2.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 2</a>
+      <a href="modulo-3.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 3</a>
+      <a href="modulo-4.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 4</a>
+      <a href="modulo-5.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Módulo 5</a>
+    </div>
+    
+    <!-- Utilities -->
+    <div class="flex items-center gap-4 self-end md:self-auto">
+      <div id="save-status" class="flex items-center gap-1.5 text-xs font-semibold text-[#1E8E3E] opacity-0 transition-opacity duration-300">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+        Guardado
+      </div>
+      
+      <div class="relative">
+        <button id="outline-toggle" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold bg-white border border-outline-variant/50 px-4 py-2 rounded-full shadow-sm hover:shadow-md">
+          <span class="material-symbols-outlined text-[1.1rem]">format_list_bulleted</span>
+          <span class="hidden sm:inline">Índice</span>
+        </button>
+        <!-- Dropdown Menu -->
+        <div id="outline-menu" class="absolute right-0 mt-2 w-64 bg-white border border-outline-variant/30 rounded-xl shadow-xl py-2 opacity-0 pointer-events-none transform scale-95 origin-top-right transition-all duration-200">
+          <div class="px-4 py-3 border-b border-outline-variant/20 mb-1 bg-surface-container-lowest rounded-t-xl">
+            <span class="text-xs font-bold text-secondary uppercase tracking-widest">Navegación del Módulo</span>
+          </div>
+          <a href="#intro" class="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">Introducción</a>
+          <a href="#seccion-1" class="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">1. Dios Provee</a>
+          <a href="#seccion-2" class="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">2. Mayordomía</a>
+          <a href="#seccion-3" class="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">3. Trabajo Diligente</a>
+          <a href="#seccion-4" class="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">4. Contentamiento</a>
+          <a href="#seccion-5" class="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-primary/5 hover:text-primary transition-colors border-l-2 border-transparent hover:border-primary">5. Generosidad</a>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
+  
+  <!-- Cover Equivalent -->
+  <header class="mb-12 bg-primary text-white rounded-2xl p-8 md:p-12 shadow-lg relative overflow-hidden">
+    <!-- Decorative Circle -->
+    <div class="absolute -right-16 -bottom-24 w-64 h-64 border-[1px] border-secondary/30 rounded-full"></div>
+    <div class="absolute -right-12 -bottom-20 w-64 h-64 border-[1px] border-secondary/20 rounded-full"></div>
+    
+    <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+      <span class="text-7xl font-headline text-secondary/30 italic font-bold leading-none">01</span>
+      <div>
+        <span class="text-xs font-bold text-secondary uppercase tracking-widest block mb-2">Módulo 1 — Edgar U. Chan</span>
+        <h1 class="font-headline text-3xl md:text-5xl font-bold italic text-white leading-tight">Base Bíblica y <br>Mentalidad</h1>
+      </div>
+    </div>
+    
+    <div class="relative z-10 border-l-4 border-secondary pl-4 mt-8">
+      <p class="text-lg text-white/90 font-headline italic max-w-2xl">Antes de hablar de presupuestos, deudas o inversiones, hay que sentar las bases. Y esas bases no son técnicas — son teológicas.</p>
+    </div>
+    
+    <div class="relative z-10 mt-10 p-6 bg-black/10 border-l-4 border-secondary rounded-r-lg">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-white/95">"Si son fieles en las cosas pequeñas, serán fieles en las grandes; pero si son deshonestos en las cosas pequeñas, no actuarán con honradez en las responsabilidades más grandes."</p>
+      <p class="text-secondary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Lucas 16:10 NTV</p>
+    </div>
+  </header>
+
+  <!-- Interactive Content -->
+  <article>
+    
+    <section id="intro" class="mb-16 scroll-mt-24">
+      <p class="text-secondary font-bold tracking-wide uppercase text-sm mb-4">Módulo 1</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Introducción</h2>
+      </div>
+
+    <div class="bg-[#F4F4F1] p-6 rounded-xl mb-8">
+      <h3 class="text-on-surface font-headline italic text-xl mb-4 tracking-wide">Objetivo y Contenido del Módulo</h3>
+      <p class="mb-2 text-[1.05rem] leading-[1.7]">Al terminar este módulo podrás entender los 5 principios:</p>
+      <ul class="list-disc pl-5 text-[1.05rem] leading-[1.7] text-on-surface space-y-1 mb-6">
+        <li>Dios Provee</li>
+        <li>Mayordomía</li>
+        <li>Trabajo Diligente</li>
+        <li>Contentamiento</li>
+        <li>Generosidad</li>
+      </ul>
+      <div class="pt-4 border-t border-outline-variant/30">
+        <p class="text-on-surface text-[1.05rem] mb-2">⏱ <strong>Tiempo estimado: 45–60 minutos</strong></p>
+        <p class="text-on-surface-variant text-[1.05rem] leading-relaxed mb-0 italic">Puedes trabajar este módulo en 2 sesiones de 30 minutos — o en tres momentos cortos si andas ocupado. No hay ejercicio que tome más de 10 minutos, pero sí hay preguntas que merecen más que una respuesta rápida.</p>
+      </div>
+    </div>
+    
+    <p>Imagina que te llaman por teléfono y te dicen que alguien depositó <strong>$500,000 pesos en tu cuenta</strong>. No es un error. Es real. El dinero es tuyo.</p>
+    
+    <p>Tómate un segundo. ¿Qué haría tu mente en los próximos cinco minutos? ¿Pensarías en pagar deudas? ¿En comprarte algo que llevas tiempo queriendo? ¿En guardarlo? ¿O quizás sentirías una mezcla rara de emoción y angustia, sin saber bien por dónde empezar?</p>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      Lo que respondiste revela algo importante: tu relación con el dinero. Y esa relación casi siempre viene de algo más profundo que un número en tu cuenta bancaria.
+    </div>
+
+    <p>Vamos a comenzar este curso <strong>con lo que Dios dice sobre el dinero</strong>. No porque ignoremos lo práctico, sino porque construir hábitos financieros sin los cimientos correctos es como ponerte zapatos antes de los calcetines — técnicamente funciona, pero algo está mal.</p>
+
+    </section>
+
+    <section id="seccion-1" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-sm mb-4">Sección 1</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Dios Provee</h2>
+      </div>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"Así que no se preocupen por todo eso diciendo: '¿Qué comeremos?, ¿qué beberemos?, ¿qué ropa nos pondremos?'. Esas cosas dominan el pensamiento de los incrédulos, pero su Padre celestial ya conoce todas sus necesidades. Busquen el reino de Dios por encima de todo lo demás y lleven una vida justa, y él les dará todo lo que necesiten."</p>
+      <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Mateo 6:31-33 NTV</p>
+    </div>
+
+    <p>Jesús estaba hablando con gente como tú y como yo que se preguntaban: ¿Alcanzará para el mes? ¿Y si me quedo sin trabajo? ¿Y si sube el precio de la canasta básica otra vez? La respuesta que da no es un presupuesto. Es una promesa: tu Padre celestial ya sabe lo que necesitas.</p>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      <p class="mb-0 text-[1.05rem] leading-[1.7] text-on-surface">Este principio es la base de todo el curso. Sin él, hablar de finanzas puede convertirse en una fuente constante de ansiedad. Más allá del fondo de emergencia, más allá de la inversión a largo plazo, más allá del retiro: Dios es nuestro proveedor.</p>
+    </div>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave — Provisión</h3>
+<p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Proveer es prevención, no es reaccionar cuando ya te pidieron algo. Dios no solo reacciona a nuestras necesidades, las ve antes de que lleguen. Proveer no es solo dar dinero; es anticiparse con cuidado a lo que alguien necesita.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border-t-4 border-secondary rounded-xl p-6 mb-10 relative">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide">Historia real</h3>
+      <p class="text-[1.05rem] leading-[1.7] mb-3 text-on-surface">Mi esposa tenía dinero ahorrado y no sabía qué hacer con él: si comprarse algo, si meterlo a una cuenta de inversión. El asunto la tenía estresada. Un día, alguien la estafó y perdió ese dinero completo.</p>
+      <p class="text-[1.05rem] leading-[1.7] mb-3 text-on-surface">¿Saben qué hizo cuando se dio cuenta? Se echó a reír. Y no porque no le importara, sino porque en ese momento entendió que ya no tenía que preocuparse más por ese dinero. Como decimos en México: el dinero va y viene.</p>
+      <p class="text-[1.05rem] leading-[1.7] mb-0 text-on-surface">No estoy minimizando lo difícil que es quedarse sin dinero. Para muchas personas, quedarse sin una quincena significa no tener para comer. Lo que quiero decir es que muchas veces Dios nos enseña, de maneras que no esperamos, que Él es quien nos sostiene. Puedes tener mucho dinero y estar completamente angustiado. Puedes tener poco y tener una paz que no se explica.</p>
+    </div>
+
+    <h3 class="font-headline font-bold text-primary text-xl mt-12 mb-6">Dos errores que debemos evitar</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      <!-- Error 1 -->
+      <div class="bg-[#F4F4F1] border-t-4 border-tertiary rounded-xl p-6">
+        <h4 class="font-headline font-bold text-tertiary text-lg mb-3">Evangelio de la prosperidad</h4>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface">La idea de que si tienes suficiente fe, Dios te hará rico. Que el éxito económico es señal de espiritualidad.</p>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0"><strong>Resultado:</strong> convierte a Dios en cajero automático y al dinero en el objetivo final.</p>
+      </div>
+      <!-- Error 2 -->
+      <div class="bg-[#F4F4F1] border-t-4 border-primary rounded-xl p-6">
+        <h4 class="font-headline font-bold text-primary text-lg mb-3">Falsa espiritualidad</h4>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface">La idea de que planificar las finanzas es mundano. Que como "buenos cristianos" no deberíamos ser tan calculadores porque eso es falta de fe.</p>
+        <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0"><strong>Resultado:</strong> romantiza la pobreza e ignora la responsabilidad de ser buenos administradores.</p>
+      </div>
+    </div>
+
+
+    <!-- Exercises -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Aplicación práctica — Esta semana, no "algún día"
+      </h3>
+      <p class="text-[1.05rem] leading-[1.7] mb-4">① Escribe aquí una preocupación financiera que traes cargando hoy: <em>"Estoy preocupado/a por:"</em></p>
+      <textarea id="m1_q1_preocupacion" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+      <p class="text-[1.05rem] leading-[1.7] mt-2 text-on-surface font-medium">Recuerda que Dios ya lo sabe. Y ya está actuando.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 1 de reflexión — El inventario honesto
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-4">① Cuando piensas en tu situación financiera hoy, tu primer instinto es...</p>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+        <div>
+          <span class="dot dot-green"></span>
+          <label class="flex items-center gap-3 cursor-pointer mb-3"><input type="checkbox" id="m1_chk_paz" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Paz</span></label>
+          <label class="flex items-center gap-3 cursor-pointer mb-3"><input type="checkbox" id="m1_chk_esperanza" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Esperanza</span></label>
+        </div>
+        <div>
+          <span class="dot dot-yellow"></span>
+          <label class="flex items-center gap-3 cursor-pointer mb-3"><input type="checkbox" id="m1_chk_incertidumbre" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Incertidumbre</span></label>
+          <label class="flex items-center gap-3 cursor-pointer mb-3"><input type="checkbox" id="m1_chk_frustracion" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Frustración</span></label>
+        </div>
+        <div>
+          <span class="dot dot-red"></span>
+          <label class="flex items-center gap-3 cursor-pointer mb-3"><input type="checkbox" id="m1_chk_ansiedad" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Ansiedad</span></label>
+          <label class="flex items-center gap-3 cursor-pointer mb-3"><input type="checkbox" id="m1_chk_verguenza" class="mt-1 w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Vergüenza</span></label>
+        </div>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-4">② ¿En qué cosas has buscado seguridad financiera además de Dios? (un empleo estable, cierta cantidad ahorrada, que alguien te sostenga...)</p>
+      <textarea id="m1_q2_seguridad" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+  
+    <!-- SECCIÓN 2: MAYORDOMÍA -->
+    </section>
+
+    <section id="seccion-2" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-sm mb-4">Sección 2</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Mayordomía</h2>
+      </div>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"Si son fieles en las cosas pequeñas, serán fieles en las grandes; pero si son deshonestos en las cosas pequeñas, no actuarán con honradez en las responsabilidades más grandes. Por lo tanto, si no son confiables con las riquezas mundanas, ¿quién les confiará las verdaderas riquezas del cielo? Y si no son fieles con las cosas de otras personas, ¿por qué se les debería confiar lo que es de ustedes?"</p>
+      <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Lucas 16:10-12 NTV</p>
+    </div>
+
+    <p>Esto es un problema que abunda: sin importar cuánto ganes, llegas al día 20 del mes sin saber exactamente a dónde se fue el dinero. Como si el dinero tuviera patas y saliera solo de la cuenta. Spoiler: Sí tiene patas. Se llaman gastos hormiga, transferencias y "compras pequeñas" en Mercado Libre a las 11 de la noche.</p>
+
+    <p>Pero quiero reconocer que no todos parten del mismo lugar. Hay personas que con el salario que tienen apenas cubren lo básico, y eso es una realidad que no se puede ignorar.</p>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave — Mayordomía</h3>
+<p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">La mayordomía parte de un reconocimiento fundamental: nada de lo que tenemos nos pertenece en última instancia. Todo le pertenece a Dios, y tenemos la responsabilidad de administrar bien lo que Él nos ha confiado. Dios es el dueño, y un día le rendirás cuentas de cómo los usaste.</p>
+    </div>
+
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">restaurant</span> Ilustración: El restaurante que no es tuyo</h3>
+      <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Imagina que te contratan como encargado de un restaurante. El dueño viajó y te dejó a cargo. ¿Cómo tomarías las decisiones sabiendo que él va a regresar y te preguntará cómo manejaste todo? ¿Gastarías en cosas innecesarias? ¿O serías más cuidadoso, más intencional, más organizado?</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Eso es exactamente lo que la Biblia nos invita a hacer con nuestro dinero. No porque Dios sea un jefe severo, sino porque cuando entendemos que lo que tenemos nos fue confiado, lo tratamos con más respeto y propósito.</p>
+    </div>
+
+    <h3 class="font-headline font-bold text-primary text-xl mt-12 mb-6">Error frecuente sobre la mayordomía</h3>
+    <div class="bg-[#F4F4F1] border-t-4 border-primary rounded-xl p-6 mb-12">
+      <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-0">Pensar que lo que tenemos es solo fruto de nuestro esfuerzo. Que me lo merezco porque trabajé duro para conseguirlo. Y hay que cuidarnos de esa mentalidad, porque nos desconecta de la gratitud y de la responsabilidad ante Dios.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 2 de reflexión — Rindiendo cuentas
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">① Piensa en el último mes. Sin juzgarte, ¿cómo describirías tu administración del dinero en una sola palabra?</p>
+      <textarea id="m1_q3_palabra" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">② Si tuvieras que rendirle cuentas a Dios hoy sobre cómo usaste tu dinero este mes, ¿qué le dirías?</p>
+      <textarea id="m1_q4_cuentas" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">③ ¿Hay algo que estás haciendo con tu dinero que, si fuera de otra persona, no harías igual? ¿Qué te dice eso?</p>
+      <textarea id="m1_q5_otrapersona" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+    <!-- SECCIÓN 3: TRABAJO DILIGENTE -->
+    </section>
+
+    <section id="seccion-3" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-sm mb-4">Sección 3</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Trabajo Diligente</h2>
+      </div>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"Los planes bien pensados y el arduo trabajo llevan a la prosperidad, pero los atajos tomados a la carrera conducen a la pobreza."</p>
+      <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">Proverbios 21:5 NTV</p>
+    </div>
+
+    <p>La Biblia tiene mucho que decir sobre el trabajo. No como un mal necesario que hay que aguantar hasta jubilarte, sino como algo que tiene dignidad en sí mismo. Proverbios 10:4 dice que la mano diligente enriquece. Y 2 Tesalonicenses 3:10 no le da muchas vueltas: "Si alguno no quiere trabajar, tampoco coma."</p>
+    <p>Pero en México existe una tentación muy real: la del atajo. Las rifas, las tandas riesgosas, los esquemas piramidales, los videos que te prometen que si sigues tres pasos vas a ser millonario en seis meses — y el comentario de abajo dice "yo lo hice y ya tengo mi Tesla." En las finanzas saludables y sostenibles, no hay atajos. Nunca los ha habido.</p>
+
+    <div class="bg-[#C0603A] p-8 rounded-xl shadow-md text-white mb-12">
+      <h3 class="text-white font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">warning</span> Advertencia: La trampa del pacto con Dios</h3>
+<p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Existe la idea de que si das cierta cantidad, Dios está obligado a prosperarte. Lamentablemente, muchos líderes se aprovechan de esa mentalidad. Por eso, antes de hablar de lo práctico, vale la pena pausar y hacerse la pregunta: ¿quieres dinero rápido, o quieres construir algo sólido y sostenible a largo plazo?</p>
+    </div>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definiciones clave: Diligencia</h3>
+<p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">No es trabajar más horas, sino trabajar con más intención y propósito. Una persona diligente no improvisa: planifica, evalúa y mejora. Combina esfuerzo con sabiduría.</p>
+    </div>
+
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]">hardware</span> Ilustración: El leñador y el hacha</h3>
+<p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Se le atribuye a Abraham Lincoln: "Dame seis horas para talar un árbol y pasaré las primeras cuatro horas afilando el hacha." Muchos llevamos años tumbando árboles con el hacha sin filo: trabajando duro, esforzándonos mucho, pero sin planificar ni mejorar la herramienta. El resultado es agotamiento sin fruto.</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">En finanzas, afilar el hacha se traduce en: sentarse a revisar tus gastos, hacer un presupuesto, definir metas. Planificar no es falta de fe, es sabiduría. Esa pausa hace toda la diferencia.</p>
+    </div>
+
+    <div class="bg-[#C0603A] p-8 rounded-xl shadow-md text-white mb-12">
+      <h3 class="text-white font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">warning</span> Advertencia</h3>
+<p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">La diligencia tiene un límite llamado descanso. La Biblia no glorifica el agotamiento. Eclesiastés 4:6 lo dice con una claridad que incomoda a más de uno: "Es mejor tener un puñado con tranquilidad que tener dos puñados con mucho esfuerzo y perseguir el viento."</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">El burnout no es una medalla de honor. Lo que buscamos en este curso son hábitos que puedas mantener con el tiempo — no un sprint que te deje sin energía al tercer mes.</p>
+    </div>
+
+  
+    <!-- EJERCICIO CONTINUACIÓN (Sección 3) -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 3 de reflexión — Planificando con diligencia
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">① ¿Alguna vez has caído en la tentación de buscar un "atajo" financiero? ¿Qué pasó?</p>
+      <textarea id="m1_q6_atajo" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">② En una escala del 1 al 5, ¿qué tan diligente eres en planificar tus finanzas?</p>
+      
+      <div class="flex justify-between items-center bg-[#E8DED1] p-6 rounded-xl mb-2">
+        <label class="flex flex-col items-center gap-3 cursor-pointer">
+          <input type="checkbox" name="diligencia" value="1" id="m1_r1_1" class="w-6 h-6 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-on-surface font-bold">1</span>
+        </label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer">
+          <input type="checkbox" name="diligencia" value="2" id="m1_r1_2" class="w-6 h-6 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-on-surface font-bold">2</span>
+        </label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer">
+          <input type="checkbox" name="diligencia" value="3" id="m1_r1_3" class="w-6 h-6 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-on-surface font-bold">3</span>
+        </label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer">
+          <input type="checkbox" name="diligencia" value="4" id="m1_r1_4" class="w-6 h-6 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-on-surface font-bold">4</span>
+        </label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer">
+          <input type="checkbox" name="diligencia" value="5" id="m1_r1_5" class="w-6 h-6 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2">
+          <span class="text-on-surface font-bold">5</span>
+        </label>
+      </div>
+      <div class="flex justify-between font-medium text-sm text-on-surface-variant mb-6 px-2">
+        <span class="w-24 text-center">Nunca planeo,<br>solo reacciono</span>
+        <span class="w-24 text-center">Tengo un plan<br>claro</span>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">③ ¿Hay algún área de tu vida donde estás golpeando sin afilar el hacha? ¿Qué sería "afilar" en ese contexto?</p>
+      <textarea id="m1_q7_afilar" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+    <!-- SECCIÓN 4: CONTENTAMIENTO -->
+    </section>
+
+    <section id="seccion-4" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-outline-variant/30 hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-sm mb-4">Sección 4</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Contentamiento</h2>
+      </div>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"Sin embargo, la sumisión a Dios es una gran ganancia en sí misma cuando uno está contento con lo que tiene. Después de todo, no trajimos nada con nosotros al venir al mundo, y nada podremos llevarnos al partir. Así que, si tenemos suficiente alimento y ropa, estemos contentos."</p>
+      <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">1 Timoteo 6:6-8 NTV</p>
+    </div>
+
+    <p>Vivimos en un mundo diseñado precisamente para que nunca estemos contentos. Piénsalo: Cada anuncio, cada reel, cada espectacular está diseñado para generarte una incomodidad: la sensación de que algo te falta, de que tu vida estaría mejor si tuvieras ese producto. Y ese ciclo de deseo, compra y satisfacción temporal es, literalmente, un mecanismo de adicción.</p>
+
+    <p>En México esto se agrava con la presión social: muchas veces consumimos para aparentar estatus, para no quedarnos atrás, para no ser menos que el cuñado que llegó a la reunión familiar con carro nuevo. Y esa comparación nos roba la paz — y en muchos casos, también el dinero.</p>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave — Contentamiento</h3>
+<p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Contentamiento no significa que no quieras mejorar tu situación. No es resignación. El conformismo se rinde. El contentamiento descansa. Es encontrar paz en lo que ya tienes mientras trabajas con intención hacia lo que esperas. La diferencia entre los dos es enorme — aunque de afuera puedan verse igual.</p>
+    </div>
+
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]">device_thermostat</span> Ilustración: El termostato y el termómetro</h3>
+<p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">El termómetro solo refleja la temperatura del cuarto. No tiene iniciativa propia: solo reacciona. El termostato tiene una temperatura definida internamente. No importa si afuera hace calor o frío, él regula el ambiente para mantener lo que ya decidió.</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Sin contentamiento, vivimos como <strong>termómetros financieros</strong>: si vemos que otros tienen más, nos sentimos pobres; si vemos ofertas, sentimos que nos falta. El contentamiento nos convierte en <strong>termostatos</strong>: tomamos decisiones desde un lugar estable, no desde la reacción o el miedo.</p>
+    </div>
+
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 4 de reflexión — El contentamiento diario
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">① Escribe tres cosas que tienes hoy por las cuales estás genuinamente agradecido (que no sean materiales):</p>
+      <div class="flex flex-col gap-3 mb-6">
+        <div class="flex items-center gap-2 bg-[#E8DED1] rounded-lg px-4 focus-within:ring-2 focus-within:ring-[#C9A84C] transition-shadow">
+          <span class="text-on-surface-variant font-bold">1.</span> 
+          <input type="text" id="m1_q8_agradecido1" class="w-full bg-transparent border-none focus:ring-0 text-on-surface py-3 outline-none m-0" placeholder="">
+        </div>
+        <div class="flex items-center gap-2 bg-[#E8DED1] rounded-lg px-4 focus-within:ring-2 focus-within:ring-[#C9A84C] transition-shadow">
+          <span class="text-on-surface-variant font-bold">2.</span> 
+          <input type="text" id="m1_q8_agradecido2" class="w-full bg-transparent border-none focus:ring-0 text-on-surface py-3 outline-none m-0" placeholder="">
+        </div>
+        <div class="flex items-center gap-2 bg-[#E8DED1] rounded-lg px-4 focus-within:ring-2 focus-within:ring-[#C9A84C] transition-shadow">
+          <span class="text-on-surface-variant font-bold">3.</span> 
+          <input type="text" id="m1_q8_agradecido3" class="w-full bg-transparent border-none focus:ring-0 text-on-surface py-3 outline-none m-0" placeholder="">
+        </div>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">② ¿En qué áreas sientes más presión de consumir o de "tener más"?</p>
+      <textarea id="m1_q9_presion" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">③ ¿Qué crees que está detrás de esa presión? (comparación social, miedo, inseguridad, hábito...)</p>
+      <textarea id="m1_q10_detras_presion" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+    <!-- SECCIÓN 5: GENEROSIDAD -->
+    </section>
+
+    <section id="seccion-5" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 1"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 2"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 3"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors" title="Sección 4"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-secondary hover:opacity-80 transition-colors" title="Sección 5"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-sm mb-4">Sección 5</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Generosidad</h2>
+      </div>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-secondary p-6 rounded-r-xl mb-12 relative">
+      <p class="text-lg italic font-headline mb-4 leading-snug text-on-surface">"Cada uno debe decidir en su corazón cuánto dar; y no den de mala gana ni bajo presión, porque Dios ama a la persona que da con alegría. Y Dios proveerá con generosidad todo lo que necesiten. Entonces siempre tendrán todo lo necesario y habrá abundante para toda buena obra."</p>
+      <p class="text-primary font-bold text-sm uppercase tracking-widest mt-4 block mb-0">2 Corintios 9:7-9 NTV</p>
+    </div>
+
+    <p>La generosidad no nace de la abundancia. Nace de la confianza en Dios. Esa es la parte contraintuitiva que más cuesta entender.</p>
+    
+    <p>Hay una trampa en la que muchos caemos: esperamos al final del mes para ver qué sobra y entonces dar. Pero así casi nunca sobra nada — porque el dinero que "sobra" rara vez sobra realmente; simplemente todavía no has decidido en qué gastarlo. La generosidad necesita ser intencional: cuando recibes tu ingreso, ya defines qué porcentaje vas a dar. No es lo que sobra. Es lo que decides de antemano.</p>
+
+    <div class="bg-primary p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-secondary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">lightbulb</span> Definición clave: Generosidad</h3>
+<p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">La generosidad es la cualidad de ser bondadoso y desinteresado, en especial cuando se trata de compartir con los demás dinero y otros bienes. Es ser dadivoso: estar dispuesto a desprenderse de algo para darlo a alguien necesitado.<br><br>Pero aquí viene lo importante: la generosidad verdadera brota de un corazón genuino y noble que no busca recibir nada a cambio. No es un trato. No es "te doy esto y espero que me devuelvas el favor con intereses."</p>
+    </div>
+
+    <div class="bg-[#C9A84C] p-8 rounded-xl shadow-md text-white mb-10">
+      <h3 class="text-primary font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]">front_hand</span> Ilustración: El puño abierto y el puño cerrado</h3>
+      <p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Imagina que sostienes arena en tu mano. Si cierras el puño con fuerza, la arena empieza a escaparse por los dedos. Cuanto más aprietas, más se pierde. Pero si abres la mano con calma, la arena descansa en tu palma.</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Cuando vivimos con el puño cerrado —con miedo de perder lo que tenemos— acumulamos sin sentido y nunca tenemos suficiente. Cuando vivimos con la mano abierta, algo cambia. La generosidad no nos empobrece. Nos libera.</p>
+    </div>
+
+    <p class="text-[1.05rem] leading-[1.7] text-on-surface mb-4">La generosidad correcta no espera a que sobre — decide antes de que llegue.</p>
+    <h3 class="font-headline font-bold text-primary text-xl mt-12 mb-6">El flujo correcto de la salud financiera cristiana</h3>
+
+    <div class="flowchart-container">
+      <div class="flowbox">Recibo</div>
+      <span class="material-symbols-outlined flowarrow">arrow_forward</span>
+      <div class="flowbox">Doy</div>
+      <span class="material-symbols-outlined flowarrow">arrow_forward</span>
+      <div class="flowbox">Administro</div>
+      <span class="material-symbols-outlined flowarrow">arrow_forward</span>
+      <div class="flowbox">Confío en Dios</div>
+    </div>
+
+    <p class="mt-6 mb-12 text-on-surface text-[1.05rem] leading-[1.7]">Ese ciclo es lo que produce la verdadera salud financiera cristiana. No es un ciclo de acumulación. Es un ciclo de confianza.</p>
+
+    <div class="bg-[#C0603A] p-8 rounded-xl shadow-md text-white mb-16">
+      <h3 class="text-white font-headline italic text-xl mb-4 tracking-wide flex items-center gap-3"><span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">warning</span> Advertencia</h3>
+<p class="mb-4 text-[1.05rem] !text-white leading-[1.7]">Dar no es un contrato con Dios. No es "te doy esto y tú me das aquello." Eso no es generosidad, es una negociación. Damos porque reconocemos que lo que tenemos vino de Dios en primer lugar.</p>
+      <p class="mb-0 text-[1.05rem] !text-white leading-[1.7]">Lo que sí enseña la Biblia es un principio real: el que siembra, cosecha. Cuando damos con alegría y administramos bien, abrimos las manos para recibir la bendición de Dios — no porque hayamos "pagado" para recibirla, sino porque Dios ve un corazón que entiende que sus recursos no son solo para consumo personal.</p>
+    </div>
+
+
+    <!-- EJERCICIO CONTINUACIÓN (Sección 5) -->
+    <div class="bg-[#F4F4F1] border border-outline-variant/30 rounded-xl p-8 mb-12 shadow-sm">
+      <h3 class="font-headline font-bold text-secondary text-xl mb-6 flex items-center gap-2">
+        <span class="material-symbols-outlined text-2xl">edit</span>
+        Ejercicio 5 de reflexión — Mi práctica de generosidad
+      </h3>
+      
+      <p class="text-[1.05rem] leading-[1.7] mb-4 mt-4">① ¿Cómo describes tu práctica actual de generosidad? (marca una)</p>
+      
+      <div class="flex flex-col gap-3 mb-8">
+        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" name="practica_generosidad" value="ninguna" id="m1_r2_ninguna" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">No tengo una práctica definida de dar</span></label>
+        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" name="practica_generosidad" value="sobra" id="m1_r2_sobra" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Doy cuando me acuerdo o cuando "sobra"</span></label>
+        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" name="practica_generosidad" value="aproximada" id="m1_r2_aprox" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Tengo una cantidad aproximada que intento dar</span></label>
+        <label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" name="practica_generosidad" value="porcentaje" id="m1_r2_porcentaje" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary focus:ring-2"> <span class="text-on-surface">Tengo un porcentaje definido que doy de forma regular</span></label>
+      </div>
+
+      <p class="text-[1.05rem] leading-[1.7] mb-2 mt-4">② ¿Hay algo que te impide ser más generoso hoy? (una deuda, el miedo, la falta de hábito, no saber a quién dar...)</p>
+      <textarea id="m1_q11_impide" class="workbook-textarea" placeholder="Escribe aquí..."></textarea>
+    </div>
+
+    <!-- RESUMEN DEL MÓDULO -->
+    </section>
+
+    <section id="resumen" class="mb-16 scroll-mt-24">
+      <!-- Progress Bar Final -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+      </div>
+      <p class="text-secondary font-bold tracking-wide uppercase text-sm mb-4">Resumen</p>
+      <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-3xl font-headline font-bold text-primary italic border-b-4 border-secondary inline-block pb-1 mb-8">Resumen del Módulo</h2>
+      </div>
+
+    <div class="bg-[#F4F4F1] border-l-4 border-primary rounded-r-lg p-8 mb-12 shadow-sm">
+      <ul class="space-y-6 mb-0 text-[1.05rem]">
+        <li><strong>01- Dios Provee:</strong> Tu seguridad financiera descansa en Dios, no en tu saldo. El dinero es herramienta, no amo.</li>
+        <li><strong>02- Mayordomía:</strong> Todo te fue confiado. Administrar bien — incluyendo cuidar a tu familia — es responsabilidad ante Dios.</li>
+        <li><strong>03- Trabajo Diligente:</strong> Trabajar con propósito, planificar antes de actuar y descansar también. No hay atajos en las finanzas saludables ni pactos para obligar a Dios.</li>
+        <li><strong>04- Contentamiento:</strong> Paz que no depende de lo que tienes. No es resignación: es trabajar con intención desde un lugar estable, libre de la trampa del consumo compulsivo.</li>
+        <li><strong>05- Generosidad:</strong> Dar con alegría, de forma intencional y desde el principio. No es un contrato: es un acto de fe que nos pone en el flujo correcto de recibir, administrar y dar.</li>
+      </ul>
+    </div>
+
+</section>
+</article>
+  <!-- Navigation / Finish -->
+  <div class="mt-16 flex justify-between items-center border-t border-outline-variant/30 pt-8">
+    <button onclick="window.print()" class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-semibold">
+      <span class="material-symbols-outlined text-lg">print</span>
+      Guardar PDF / Imprimir
+    </button>
+    
+    <a href="portal.html" class="flex items-center gap-2 bg-primary text-white font-semibold py-3 px-6 rounded shadow hover:bg-primary/90 transition-colors">
+      Completar Sección <span class="material-symbols-outlined text-sm">arrow_forward</span>
+    </a>
+  </div>
+
+</main>
+
+<footer class="bg-[#F4F4F1] py-8 text-center border-t border-outline-variant/30 mt-auto">
+  <p class="text-xs text-on-surface-variant">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Auth + Cloud Save -->
+<script src="js/supabase-auth.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Require authentication
+    const user = await WP.requireAuth();
+    if (!user) return;
+
+    // Outline Menu Toggle
+    const outlineToggle = document.getElementById('outline-toggle');
+    const outlineMenu = document.getElementById('outline-menu');
+    
+    if(outlineToggle && outlineMenu) {
+      outlineToggle.addEventListener('click', () => {
+        const isClosed = outlineMenu.classList.contains('opacity-0');
+        if (isClosed) {
+          outlineMenu.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.add('opacity-100', 'scale-100');
+        } else {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!outlineToggle.contains(e.target) && !outlineMenu.contains(e.target)) {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        }
+      });
+      
+      const outlineLinks = outlineMenu.querySelectorAll('a');
+      outlineLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          outlineMenu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+          outlineMenu.classList.remove('opacity-100', 'scale-100');
+        });
+      });
+    }
+
+    // Load saved progress from Supabase (or localStorage fallback)
+    await WP.loadProgress();
+
+    // Setup auto-save for all inputs (Supabase + localStorage)
+    WP.setupAutoSave();
+  });
+</script>
+
+</body>
+</html>

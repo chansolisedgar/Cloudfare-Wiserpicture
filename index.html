@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WiserPicture — Sabiduría Práctica para Tu Vida</title>
+<meta name="description" content="Podcast, artículos y un workbook de finanzas personales que conectan la sabiduría bíblica con tu vida real. Sabiduría práctica para vivir mejor.">
+<meta property="og:title" content="WiserPicture — Sabiduría Práctica para Tu Vida">
+<meta property="og:description" content="Herramientas prácticas, podcast cristiano y recursos de finanzas personales desde una perspectiva bíblica.">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "surface-container-low": "#F4F4F1",
+          "surface-container-high": "#E8E8E5",
+          "surface-container-highest": "#D8D8D5",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "secondary-fixed-dim": "#C9A84C",
+          "on-primary-container": "#2A3F22",
+          "on-primary": "#FFFFFF",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    }
+  }
+</script>
+<style>
+  body {
+    background-color: #F9F9F6;
+    color: #1A1C1B;
+    min-height: 100dvh;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .warm-card {
+    background: #FFFFFF;
+    border: 1px solid #E8E8E5;
+    box-shadow: 0 1px 3px rgba(45,51,25,0.06), 0 1px 2px rgba(45,51,25,0.04);
+  }
+  .warm-card:hover {
+    box-shadow: 0 4px 12px rgba(45,51,25,0.1);
+  }
+  .nav-drawer { transform: translateX(-100%); transition: transform 0.3s ease; }
+  .nav-drawer.open { transform: translateX(0); }
+  .nav-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+</style>
+</head>
+<body class="font-body selection:bg-primary/20 selection:text-on-surface">
+
+<!-- TopAppBar -->
+<header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 shadow-[0_1px_3px_rgba(45,51,25,0.08)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+  <div class="flex items-center gap-3">
+    <button id="menu-toggle" class="material-symbols-outlined text-primary md:hidden" aria-label="Abrir menú">menu</button>
+    <a href="index.html"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto"></a>
+  </div>
+  <div class="hidden md:flex flex-1 justify-center items-center gap-8">
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="blog.html">Blog</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="podcast.html">Podcast</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="workbook.html">Workbook</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="recursos.html">Recursos</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <a href="workbook.html" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
+      Módulo Gratis
+    </a>
+  </div>
+</div>
+</header>
+
+<!-- Mobile Nav Overlay -->
+<div id="nav-overlay" class="nav-overlay fixed inset-0 bg-black/30 z-[55]"></div>
+
+<!-- Mobile Nav Drawer -->
+<nav id="nav-drawer" class="nav-drawer fixed inset-y-0 left-0 z-[60] flex flex-col bg-[#F9F9F6]/98 backdrop-blur-2xl h-full w-80 shadow-2xl shadow-black/10">
+<div class="p-8">
+  <div class="flex justify-between items-center mb-10">
+    <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-14 w-auto">
+    <button id="menu-close" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">close</button>
+  </div>
+  <div class="flex flex-col gap-2">
+    <a class="text-[#1A1C1B] bg-gradient-to-r from-primary/10 to-transparent px-4 py-3 flex items-center gap-4 rounded-full border border-primary/20" href="index.html">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+      <span class="font-medium font-body">Inicio</span>
+    </a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="blog.html">
+      <span class="material-symbols-outlined">article</span>
+      <span class="font-medium font-body">Blog</span>
+    </a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="podcast.html">
+      <span class="material-symbols-outlined">mic</span>
+      <span class="font-medium font-body">Podcast</span>
+    </a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="workbook.html">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span class="font-medium font-body">Workbook</span>
+    </a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="recursos.html">
+      <span class="material-symbols-outlined">handyman</span>
+      <span class="font-medium font-body">Recursos</span>
+    </a>
+  </div>
+</div>
+</nav>
+
+<main class="relative overflow-hidden">
+
+<!-- ========== HERO ========== -->
+<section class="relative px-6 pt-12 pb-16 overflow-hidden">
+  
+  <div class="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 pt-8 pb-8">
+    <!-- Text Content -->
+    <div class="flex-1 w-full md:pt-8">
+      <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-4 block">SABIDURÍA PRÁCTICA PARA VIVIR MEJOR</span>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline text-on-surface mb-6 leading-tight">
+        Vivir bien empieza<br/>
+        <span class="text-primary italic">con una decisión</span><br class="md:hidden"/>
+        <span class="text-on-surface"> sabia</span>
+      </h1>
+      <p class="text-base md:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-lg">
+        Aprende a manejar tu dinero con principios bíblicos y herramientas reales. Sin teoría vacía. Sin culpa. Con un plan.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="workbook.html" class="bg-primary text-white font-semibold py-4 px-8 rounded text-center shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
+          Descarga el Módulo Gratis
+        </a>
+        <a href="recursos.html" class="border border-outline-variant text-on-surface font-medium py-4 px-8 rounded text-center hover:border-primary hover:text-primary transition-all">
+          Explorar Recursos
+        </a>
+      </div>
+    </div>
+
+    <!-- Featured Workbook Card -->
+    <div class="flex-1 w-full max-w-md">
+      <div class="warm-card rounded-2xl overflow-hidden flex flex-col p-8 relative group">
+        <div class="relative z-10">
+          <span class="inline-block bg-secondary text-white text-[0.6rem] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Nuevo</span>
+          <h3 class="text-xl font-headline text-on-surface mb-2">Workbook de Finanzas con Propósito</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
+            5 módulos con ejercicios prácticos, plantillas y principios bíblicos adaptados al contexto mexicano.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-[0.6rem] font-semibold bg-[#CAECBC] text-primary px-3 py-1 rounded-full">PDF Interactivo</span>
+            <span class="text-[0.6rem] font-semibold bg-[#FED977] text-[#755B00] px-3 py-1 rounded-full">Google Sheets</span>
+          </div>
+          <a href="workbook.html" class="w-full block bg-primary text-white font-semibold py-3 px-6 rounded-lg text-center transition-transform active:scale-95 hover:scale-[1.02]">
+            Ver Workbook →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== VERSE PLATE ========== -->
+<section class="px-6 py-16 max-w-3xl mx-auto">
+  <div class="bg-[#F4F4F1] rounded-r-lg border-l-4 border-secondary px-8 py-10 text-center">
+    <p class="text-lg md:text-xl italic font-headline text-on-surface leading-snug mb-4">
+      "En casa del sabio abundan las riquezas y el perfume, pero el necio todo lo despilfarra."
+    </p>
+    <p class="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#755B00] mb-0">
+      Proverbios 21:20 NTV
+    </p>
+  </div>
+</section>
+
+<!-- ========== LA REALIDAD EN MÉXICO ========== -->
+<section class="px-6 py-16 max-w-7xl mx-auto">
+  <div class="text-center mb-12">
+    <span class="text-[0.65rem] font-bold text-tertiary uppercase tracking-widest mb-3 block">LA REALIDAD EN MÉXICO</span>
+    <h2 class="text-2xl md:text-3xl font-headline italic text-on-surface mb-4 max-w-2xl mx-auto">El problema no es el dinero. Es que nadie te explicó cómo manejarlo.</h2>
+    <p class="text-base text-on-surface-variant max-w-xl mx-auto">La mayoría de los jóvenes mexicanos entran a la vida adulta sabiendo cómo pedir prestado, pero no cómo ahorrar, presupuestar o invertir. Este workbook existe para cambiar eso.</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="warm-card rounded-2xl p-8 text-center">
+      <span class="text-4xl md:text-5xl font-headline text-primary block mb-3">67%</span>
+      <p class="text-sm text-on-surface font-semibold mb-2">De los jóvenes (18-29) no ahorra</p>
+      <p class="text-xs text-on-surface-variant leading-relaxed">La mayoría de los jóvenes mexicanos vive al día sin un fondo de emergencia.</p>
+      <span class="text-[0.5rem] text-on-surface-variant/50 mt-3 block">ENIF 2024</span>
+    </div>
+    <div class="warm-card rounded-2xl p-8 text-center">
+      <span class="text-4xl md:text-5xl font-headline text-secondary block mb-3">8%</span>
+      <p class="text-sm text-on-surface font-semibold mb-2">Recibió educación financiera formal</p>
+      <p class="text-xs text-on-surface-variant leading-relaxed">Ni en la escuela ni en casa les enseñaron a manejar su dinero.</p>
+      <span class="text-[0.5rem] text-on-surface-variant/50 mt-3 block">ENSAFI 2024</span>
+    </div>
+    <div class="warm-card rounded-2xl p-8 text-center">
+      <span class="text-4xl md:text-5xl font-headline text-tertiary block mb-3">76%</span>
+      <p class="text-sm text-on-surface font-semibold mb-2">Tiene productos financieros</p>
+      <p class="text-xs text-on-surface-variant leading-relaxed">Tienen cuenta o AFORE, pero nadie les enseñó qué hacer con ellos.</p>
+      <span class="text-[0.5rem] text-on-surface-variant/50 mt-3 block">ENIF 2024</span>
+    </div>
+  </div>
+  <p class="text-center text-base text-primary font-headline italic mt-10">Este workbook llena ese vacío — con principios bíblicos y herramientas prácticas.</p>
+</section>
+
+<!-- ========== SOBRE WISERPICTURE ========== -->
+<section class="px-6 py-16 max-w-7xl mx-auto mt-4">
+  <div class="warm-card rounded-2xl p-8 md:p-12 border border-secondary/20 flex flex-col md:flex-row items-center gap-10">
+    <div class="w-32 h-32 md:w-48 md:h-48 flex-shrink-0 rounded-full overflow-hidden border-2 border-secondary/30 relative">
+      <img src="assets/edgar.jpg" alt="Edgar U. Chan" class="w-full h-full object-cover">
+    </div>
+    <div class="flex-1 text-center md:text-left">
+      <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-2 block">El Autor</span>
+      <h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-4">Edgar U. Chan</h2>
+      <p class="text-base text-on-surface-variant leading-relaxed mb-6">
+        No soy asesor financiero — soy alguien que decidió dejar de improvisar con su dinero. Estudié Teología en Ridley College Australia, y llevo años investigando cómo conectar la mayordomía bíblica con la vida real en México. Esto que aprendí, ahora lo comparto contigo.
+      </p>
+      <a href="blog.html" class="inline-flex items-center gap-2 text-secondary font-semibold hover:underline">
+        Lee Mi Viaje de Fe completo <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== QUOTE SECTION ========== -->
+<section class="bg-[#334F2B] py-20 px-6 mt-8 relative overflow-hidden">
+  <div class="max-w-2xl mx-auto text-center relative z-10">
+    <div class="text-secondary text-4xl mb-6">❞</div>
+    <p class="text-lg md:text-xl italic font-headline text-white leading-snug mb-6">
+      "El que administra bien lo poco, será puesto sobre lo mucho."
+    </p>
+    <p class="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-secondary/80 mb-0">
+      MATEO 25:21
+    </p>
+  </div>
+</section>
+
+<!-- ========== LEAD MAGNET ========== -->
+<section class="px-6 py-20 max-w-7xl mx-auto">
+  <div class="warm-card rounded-2xl p-8 md:p-12 border border-primary/20 relative overflow-hidden">
+
+    <div class="relative z-10 max-w-2xl mx-auto text-center">
+      <span class="material-symbols-outlined text-primary text-4xl mb-4 block" style="font-variation-settings: 'FILL' 1;">download</span>
+      <span class="text-[0.65rem] font-bold text-primary uppercase tracking-widest mb-2 block">EMPIEZA HOY / SIN COSTO</span>
+      <h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-4">
+        Descarga el <span class="text-primary">Módulo 1</span> gratis
+      </h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-8">
+        Sin tarjeta. Sin compromiso. Solo un PDF con ejercicios reales para que empieces esta semana — no "algún día."
+      </p>
+      <form action="https://formsubmit.co/edgar@wiserpicture.com" method="POST" class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+        <input type="hidden" name="_subject" value="Lead Magnet: Módulo 1 Workbook">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="email" name="email" required placeholder="tu@email.com"
+          class="flex-1 bg-white border border-outline-variant/40 rounded py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm">
+        <button type="submit" class="bg-primary text-white font-semibold py-3 px-6 rounded shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95 text-sm whitespace-nowrap">
+          Descargar Gratis
+        </button>
+      </form>
+      <p class="text-[0.65rem] text-on-surface-variant/60 mt-3">Te enviaremos el PDF a tu correo. Sin spam.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-[#C0603A] py-16">
+<div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
+  <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto mb-8">
+
+  <!-- Footer Navigation -->
+  <div class="flex flex-wrap justify-center gap-6 mb-8">
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="blog.html">Blog</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="podcast.html">Podcast</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="workbook.html">Workbook</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="recursos.html">Recursos</a>
+  </div>
+
+
+
+  <!-- Social -->
+  <div class="flex gap-6 mb-8">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank">
+      <span class="material-symbols-outlined text-xl">photo_camera</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
+    </a>
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank">
+      <span class="material-symbols-outlined text-xl">public</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
+    </a>
+  </div>
+
+  <!-- Contact -->
+  <div class="mb-10">
+    <p class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/60 mb-2">Contacto</p>
+    <a class="text-white/80 hover:text-white transition-colors text-base" href="mailto:edgar@wiserpicture.com">
+      edgar@wiserpicture.com
+    </a>
+  </div>
+
+  <p class="text-[0.7rem] text-white/40">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</div>
+</footer>
+
+<!-- ========== MOBILE BOTTOM NAV ========== -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/30 z-50 flex justify-around items-center py-3 px-4 rounded-t-2xl">
+  <a href="index.html" class="flex flex-col items-center gap-0.5 text-primary relative">
+    <div class="absolute -top-0.5 w-1 h-1 bg-primary rounded-full shadow-none"></div>
+    <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">home</span>
+    <span class="text-[0.55rem] font-bold tracking-widest uppercase">Inicio</span>
+  </a>
+  <a href="blog.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined text-xl">article</span>
+    <span class="text-[0.55rem] font-medium tracking-widest uppercase">Blog</span>
+  </a>
+  <a href="podcast.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined text-xl">mic</span>
+    <span class="text-[0.55rem] font-medium tracking-widest uppercase">Podcast</span>
+  </a>
+  <a href="workbook.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined text-xl">menu_book</span>
+    <span class="text-[0.55rem] font-medium tracking-widest uppercase">Workbook</span>
+  </a>
+  <a href="recursos.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+    <span class="material-symbols-outlined text-xl">handyman</span>
+    <span class="text-[0.55rem] font-medium tracking-widest uppercase">Recursos</span>
+  </a>
+</nav>
+<div class="h-20 md:hidden"></div>
+
+<!-- JS: Mobile menu toggle -->
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const drawer = document.getElementById('nav-drawer');
+  const overlay = document.getElementById('nav-overlay');
+  const closeBtn = document.getElementById('menu-close');
+
+  function openMenu() { drawer.classList.add('open'); overlay.classList.add('open'); }
+  function closeMenu() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+
+  toggle.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+</script>
+</body>
+</html>
