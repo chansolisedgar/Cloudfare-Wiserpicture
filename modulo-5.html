@@ -19,7 +19,7 @@
           "primary": "#334F2B",
           "background": "#F9F9F6",
           "outline-variant": "#C8C8C5",
-          "on-surface-variant": "#666",
+          "on-surface-variant": "#6B705C",
           "on-surface": "#1A1C1B",
           "tertiary": "#C0603A"
         },
@@ -1116,7 +1116,15 @@
     </div>
 
     <!-- Page 22 - Resumen -->
-    <section class="mb-16 pt-12 border-t border-outline-variant/30">
+    <section id="resumen" class="mb-16 pt-12 border-t border-outline-variant/30 scroll-mt-24">
+      <!-- Progress Bar Final -->
+      <div class="sticky top-[73px] z-40 bg-[#F9F9F6]/95 backdrop-blur-md py-4 -mx-6 px-6 mb-8 flex gap-2">
+        <a href="#seccion-1" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-2" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-3" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-4" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+        <a href="#seccion-5" class="h-1.5 flex-1 rounded-full bg-[#8C3A20] hover:opacity-80 transition-colors"></a>
+      </div>
       <p class="text-secondary font-bold tracking-wide uppercase text-[1.05rem] mb-2">Módulo 5</p>
       <h2 class="text-3xl font-headline font-bold text-primary italic mb-8 border-b-4 border-secondary inline-block pb-1">Resumen del Módulo</h2>
 
@@ -1154,7 +1162,6 @@
           </tbody>
         </table>
       </div>
-    </section>
 
     <!-- Glosario Rápido (parte del Resumen) -->
       <h3 class="text-xl font-headline font-bold text-primary mt-12 mb-2">Glosario Rápido</h3>
@@ -1234,7 +1241,8 @@
 <script src="js/supabase-auth.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", async () => {
-    const user = await WP.requireAuth();
+    // Require authentication + module 5 access (Paquete Crecimiento or Curso Completo)
+    const user = await WP.requireModuleAccess(5);
     if (!user) return;
 
     // Outline Menu Toggle

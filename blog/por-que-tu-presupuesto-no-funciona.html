@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Por qué tu presupuesto no funciona (y qué hacer al respecto) — WiserPicture</title>
+<meta name="description" content="Hacer un presupuesto no es un problema matemático, es un problema de comportamiento. Descubre por qué fallan tus finanzas y cómo arreglarlas.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "surface-container-low": "#F4F4F1",
+          "surface-container-high": "#E8E8E5",
+          "surface-container-highest": "#D8D8D5",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "secondary-fixed-dim": "#C9A84C",
+          "on-primary-container": "#2A3F22",
+          "on-primary": "#FFFFFF",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .warm-card { background: #FFFFFF; border: 1px solid #E8E8E5; box-shadow: 0 1px 3px rgba(45,51,25,0.06), 0 1px 2px rgba(45,51,25,0.04); }
+  .warm-card:hover { box-shadow: 0 4px 12px rgba(45,51,25,0.1); }
+  .nav-drawer { transform: translateX(-100%); transition: transform 0.3s ease; }
+  .nav-drawer.open { transform: translateX(0); }
+  .nav-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+  .prose h2 { font-family: 'Lora', serif; font-size: 1.75rem; color: #1A1C1B; margin-top: 2.5rem; margin-bottom: 1rem; font-style: italic; }
+  .prose h3 { font-family: 'Lora', serif; font-size: 1.35rem; color: #1A1C1B; margin-top: 2rem; margin-bottom: 0.75rem; }
+  .prose p { color: #444; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.05rem; }
+  .prose blockquote { border-left: 3px solid #334F2B; padding-left: 1.5rem; margin: 2rem 0; font-style: italic; color: #666; font-family: 'Lora', serif; font-size: 1.2rem; }
+  .prose a { color: #334F2B; text-decoration: underline; text-underline-offset: 4px; }
+</style>
+</head>
+<body class="font-body selection:bg-primary/20 selection:text-on-surface">
+
+<header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 shadow-[0_1px_3px_rgba(45,51,25,0.08)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+  <div class="flex items-center gap-3">
+    <button id="menu-toggle" class="material-symbols-outlined text-primary md:hidden">menu</button>
+    <a href="../index.html"><img src="../assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto"></a>
+  </div>
+  <div class="hidden md:flex flex-1 justify-center items-center gap-8">
+    <a class="text-primary font-medium text-sm tracking-wide" href="../blog.html">Blog</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="../podcast.html">Podcast</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="../workbook.html">Workbook</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="../recursos.html">Recursos</a>
+  </div>
+  <a href="../workbook.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">Módulo Gratis</a>
+</div>
+</header>
+
+<div id="nav-overlay" class="nav-overlay fixed inset-0 bg-black/30 z-[55]"></div>
+<nav id="nav-drawer" class="nav-drawer fixed inset-y-0 left-0 z-[60] flex flex-col bg-[#F9F9F6]/98 backdrop-blur-2xl h-full w-80 shadow-2xl shadow-black/10">
+<div class="p-8">
+  <div class="flex justify-between items-center mb-10"><img src="../assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-14 w-auto"><button id="menu-close" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">close</button></div>
+  <div class="flex flex-col gap-2">
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../index.html"><span class="material-symbols-outlined">home</span><span class="font-medium font-body">Inicio</span></a>
+    <a class="text-[#1A1C1B] bg-gradient-to-r from-primary/10 to-transparent px-4 py-3 flex items-center gap-4 rounded-full border border-primary/20" href="../blog.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">article</span><span class="font-medium font-body">Blog</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../podcast.html"><span class="material-symbols-outlined">mic</span><span class="font-medium font-body">Podcast</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../workbook.html"><span class="material-symbols-outlined">menu_book</span><span class="font-medium font-body">Workbook</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../recursos.html"><span class="material-symbols-outlined">handyman</span><span class="font-medium font-body">Recursos</span></a>
+  </div>
+</div>
+</nav>
+
+<main class="max-w-3xl mx-auto px-6 py-16">
+  <a href="../blog.html" class="inline-flex items-center gap-2 text-primary text-sm mb-10 hover:underline"><span class="material-symbols-outlined text-base">arrow_back</span>Volver al Blog</a>
+  <div class="mb-6"><span class="bg-primary/20 text-primary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full">Finanzas · Mayo 2026</span></div>
+  <h1 class="text-3xl md:text-4xl font-headline text-on-surface mb-6 leading-tight">Por qué tu presupuesto no funciona (y qué hacer al respecto)</h1>
+  <p class="text-on-surface-variant text-sm mb-12">Por <strong class="text-on-surface">Edgar Chan</strong> · Mayo 2026</p>
+
+  <div class="prose max-w-none">
+    <p>Todos hemos estado ahí. Es día 1 del mes. Te sientas con un café, abres un Excel glorioso o descargas la aplicación de finanzas que está de moda. Pones todos tus ingresos, asignas categorías para todo —desde la renta hasta el café de la tarde— y te dices a ti mismo: <em>"Este mes sí. Este mes por fin voy a tener control."</em></p>
+    
+    <p>Para el día 15, el plan ya voló por la ventana. Tuviste una emergencia médica menor, un amigo cumplió años, saliste a cenar porque estabas muy cansado para cocinar, y de repente, tu Excel parece una obra de ficción.</p>
+
+    <p>¿Qué haces entonces? Culpas a la herramienta. "El Excel es muy rígido", "la app no se sincroniza bien con mi banco en México". Y el ciclo vuelve a empezar el siguiente mes.</p>
+
+    <h2>No es un problema matemático</h2>
+    <p>La razón por la que tu presupuesto no funciona no es porque no sepas sumar y restar. Si ese fuera el problema, una calculadora de 50 pesos lo resolvería. El problema real es que intentas resolver un tema de comportamiento con una hoja de cálculo.</p>
+    
+    <p>Administrar el dinero es 80% comportamiento y 20% conocimiento técnico. Y el comportamiento está directamente ligado a tu corazón y a tus creencias más profundas sobre la seguridad, el estatus y la comodidad.</p>
+
+    <blockquote>"Porque donde esté tu tesoro, allí estará también tu corazón." — Mateo 6:21</blockquote>
+    
+    <p>Si tu corazón busca seguridad en tu cuenta de banco, o validación en lo que puedes comprar, ningún Excel del mundo va a poder contener tus gastos. Porque al final, el presupuesto es solo un espejo que refleja lo que realmente valoras.</p>
+
+    <h2>Empieza por la raíz, no por las hojas</h2>
+    <p>Si quieres que tu presupuesto funcione, tienes que dejar de intentar podar las hojas del árbol y empezar a revisar las raíces. Esto significa hacerte preguntas incómodas:</p>
+    
+    <ul>
+      <li>¿Por qué siento la necesidad de gastar dinero cuando estoy estresado?</li>
+      <li>¿Qué creo <em>realmente</em> sobre la provisión de Dios frente a mi propio esfuerzo?</li>
+      <li>¿Estoy administrando esto como si fuera mío, o como un mayordomo de lo que se me ha confiado?</li>
+    </ul>
+
+    <p>Hasta que no alinees tus fundamentos espirituales y mentales sobre el dinero, cualquier herramienta práctica terminará siendo abandonada por frustración.</p>
+
+    <h2>El paso a paso que sí funciona</h2>
+    <p>Una vez que tienes claridad sobre tu rol como administrador (mayordomo) y no como dueño absoluto, el presupuesto deja de ser una "camisa de fuerza" que te prohíbe gastar, y se convierte en un plan de vuelo que le dice a tu dinero hacia dónde ir.</p>
+    
+    <p>Ahí es donde el conocimiento práctico entra en juego. Necesitas un sistema que se adapte a tu vida real, con gastos variables y emergencias inevitables. Necesitas saber cómo separar tu dinero, qué porcentaje destinar a necesidades, y cómo no sentir culpa cuando decides gastar en algo que disfrutas y que ya planeaste.</p>
+  </div>
+
+  <div class="warm-card rounded-2xl p-8 mt-16 border border-primary/20 bg-surface-container-lowest">
+    <div class="flex flex-col md:flex-row gap-6 items-center">
+      <div class="flex-1">
+        <p class="text-xs font-bold text-primary uppercase tracking-widest mb-2">No improvises más</p>
+        <h3 class="text-xl font-headline text-on-surface mb-3">Deja la teoría y empieza a aplicarlo</h3>
+        <p class="text-sm text-on-surface-variant mb-6">Si estás cansado de presupuestos fallidos, necesitas reconstruir desde la base. El <strong>Módulo 1</strong> de nuestro curso te ayuda a hacer ese diagnóstico espiritual y mental, y el <strong>Módulo 2</strong> te da las herramientas prácticas reales (y la plantilla que sí funciona) para administrarte mes a mes.</p>
+        <div class="flex flex-wrap gap-4">
+          <a href="../workbook.html#lead-magnet" class="inline-flex bg-primary text-white font-semibold py-3 px-6 rounded shadow-lg shadow-primary/20 hover:scale-105 transition-transform text-sm">Empieza con el Módulo 1 Gratis →</a>
+          <a href="../workbook.html#precios" class="inline-flex border border-outline-variant text-on-surface font-semibold py-3 px-6 rounded hover:border-primary hover:text-primary transition-colors text-sm">Ver Curso Completo</a>
+        </div>
+      </div>
+      <div class="w-24 h-24 md:w-32 md:h-32 flex-shrink-0 bg-primary/10 rounded-full flex items-center justify-center border border-primary/20">
+        <span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings:'FILL' 1">menu_book</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-primary py-16 mt-16">
+<div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
+  <img src="../assets/Logo footer.png" alt="WiserPicture" class="h-24 w-auto mb-8">
+
+  <!-- Footer Navigation -->
+  <div class="flex flex-wrap justify-center gap-6 mb-8">
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../blog.html">Blog</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../podcast.html">Podcast</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../workbook.html">Workbook</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../recursos.html">Recursos</a>
+  </div>
+
+  <!-- Social -->
+  <div class="flex gap-6 mb-8">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank">
+      <span class="material-symbols-outlined text-xl">photo_camera</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
+    </a>
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank">
+      <span class="material-symbols-outlined text-xl">public</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
+    </a>
+  </div>
+
+  <!-- Contact -->
+  <div class="mb-10">
+    <p class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/60 mb-2">Contacto</p>
+    <a class="text-white/80 hover:text-white transition-colors text-base" href="mailto:edgar@wiserpicture.com">
+      edgar@wiserpicture.com
+    </a>
+  </div>
+
+  <p class="text-[0.7rem] text-white/40">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</div>
+</footer>
+<script>
+  const toggle=document.getElementById('menu-toggle'),drawer=document.getElementById('nav-drawer'),overlay=document.getElementById('nav-overlay'),closeBtn=document.getElementById('menu-close');
+  function openMenu(){drawer.classList.add('open');overlay.classList.add('open')}
+  function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('open')}
+  toggle.addEventListener('click',openMenu);closeBtn.addEventListener('click',closeMenu);overlay.addEventListener('click',closeMenu);
+</script>
+</body></html>

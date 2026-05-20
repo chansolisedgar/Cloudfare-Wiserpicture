@@ -1,0 +1,9 @@
+{
+  "name": "wiserpicture-website",
+  "version": "1.0.0",
+  "description": "WiserPicture Website with Supabase Auth",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}

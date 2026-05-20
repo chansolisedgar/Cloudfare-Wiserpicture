@@ -4,9 +4,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>WiserPicture — Sabiduría Práctica para Tu Vida</title>
-<meta name="description" content="Podcast, artículos y un workbook de finanzas personales que conectan la sabiduría bíblica con tu vida real. Sabiduría práctica para vivir mejor.">
-<meta property="og:title" content="WiserPicture — Sabiduría Práctica para Tu Vida">
-<meta property="og:description" content="Herramientas prácticas, podcast cristiano y recursos de finanzas personales desde una perspectiva bíblica.">
+<meta name="description" content="WiserPicture: sabiduría práctica y principios bíblicos para tus finanzas personales. Blog, Podcast y Workbook de Finanzas con Propósito.">
+<meta property="og:image" content="assets/Wiserpicure Logo.png">
+<meta property="og:title" content="WiserPicture — Finanzas con Propósito">
+<meta property="og:description" content="Sabiduría práctica y principios bíblicos para manejar tu dinero con propósito. Blog, Podcast y Workbook.">
 <meta property="og:type" content="website">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -26,7 +27,7 @@
           "primary": "#334F2B",
           "background": "#F9F9F6",
           "outline-variant": "#C8C8C5",
-          "on-surface-variant": "#666",
+          "on-surface-variant": "#6B705C",
           "on-surface": "#1A1C1B",
           "secondary-fixed-dim": "#C9A84C",
           "on-primary-container": "#2A3F22",
@@ -80,9 +81,12 @@
     <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="podcast.html">Podcast</a>
     <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="workbook.html">Workbook</a>
     <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="recursos.html">Recursos</a>
-  </div>
+      </div>
   <div class="flex items-center gap-4">
-    <a href="workbook.html" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
+    <a href="login.html" class="hidden md:inline-flex text-on-surface hover:text-primary font-medium text-sm transition-colors items-center gap-2 mr-2">
+      <span class="material-symbols-outlined text-[1.1rem]">account_circle</span> Mi Cuenta
+    </a>
+    <a href="workbook.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
       Módulo Gratis
     </a>
   </div>
@@ -120,6 +124,10 @@
       <span class="material-symbols-outlined">handyman</span>
       <span class="font-medium font-body">Recursos</span>
     </a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="login.html">
+      <span class="material-symbols-outlined">login</span>
+      <span class="font-medium font-body">Mi Cuenta</span>
+    </a>
   </div>
 </div>
 </nav>
@@ -132,7 +140,7 @@
   <div class="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 pt-8 pb-8">
     <!-- Text Content -->
     <div class="flex-1 w-full md:pt-8">
-      <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-4 block">SABIDURÍA PRÁCTICA PARA VIVIR MEJOR</span>
+      <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-4 block">¿Qué significa vivir bien?</span>
       <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline text-on-surface mb-6 leading-tight">
         Vivir bien empieza<br/>
         <span class="text-primary italic">con una decisión</span><br class="md:hidden"/>
@@ -161,8 +169,8 @@
             5 módulos con ejercicios prácticos, plantillas y principios bíblicos adaptados al contexto mexicano.
           </p>
           <div class="flex flex-wrap gap-2 mb-6">
-            <span class="text-[0.6rem] font-semibold bg-[#CAECBC] text-primary px-3 py-1 rounded-full">PDF Interactivo</span>
-            <span class="text-[0.6rem] font-semibold bg-[#FED977] text-[#755B00] px-3 py-1 rounded-full">Google Sheets</span>
+            <span class="text-[0.6rem] font-semibold bg-primary/10 text-primary px-3 py-1 rounded-full">PDF Interactivo</span>
+            <span class="text-[0.6rem] font-semibold bg-secondary/20 text-secondary px-3 py-1 rounded-full">Google Sheets</span>
           </div>
           <a href="workbook.html" class="w-full block bg-primary text-white font-semibold py-3 px-6 rounded-lg text-center transition-transform active:scale-95 hover:scale-[1.02]">
             Ver Workbook →
@@ -179,7 +187,7 @@
     <p class="text-lg md:text-xl italic font-headline text-on-surface leading-snug mb-4">
       "En casa del sabio abundan las riquezas y el perfume, pero el necio todo lo despilfarra."
     </p>
-    <p class="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#755B00] mb-0">
+    <p class="text-[0.7rem] font-bold uppercase tracking-[0.2em] text-secondary mb-0">
       Proverbios 21:20 NTV
     </p>
   </div>
@@ -278,9 +286,9 @@
 </main>
 
 <!-- ========== FOOTER ========== -->
-<footer class="bg-[#C0603A] py-16">
+<footer class="bg-primary py-16">
 <div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
-  <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto mb-8">
+  <img src="assets/Logo footer.png" alt="WiserPicture" class="h-24 w-auto mb-8">
 
   <!-- Footer Navigation -->
   <div class="flex flex-wrap justify-center gap-6 mb-8">
@@ -288,17 +296,18 @@
     <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="podcast.html">Podcast</a>
     <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="workbook.html">Workbook</a>
     <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="recursos.html">Recursos</a>
+    <a class="text-white/60 hover:text-white transition-colors text-sm font-medium border-l border-white/20 pl-6" href="login.html">Mi Cuenta</a>
   </div>
 
 
 
   <!-- Social -->
   <div class="flex gap-6 mb-8">
-    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank" aria-label="WiserPicture en Instagram" rel="noopener">
       <span class="material-symbols-outlined text-xl">photo_camera</span>
       <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
     </a>
-    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank" aria-label="WiserPicture en Facebook" rel="noopener">
       <span class="material-symbols-outlined text-xl">public</span>
       <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
     </a>

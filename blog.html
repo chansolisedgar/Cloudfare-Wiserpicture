@@ -4,7 +4,10 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Blog — WiserPicture</title>
-<meta name="description" content="Artículos y reflexiones sobre fe cristiana, carácter y cómo tomar mejores decisiones. Lee la serie testimonial Mi Viaje de Fe. WiserPicture.">
+<meta name="description" content="Artículos sobre fe, sabiduría práctica y finanzas personales desde una perspectiva cristiana. Reflexiones y testimonios reales.">
+<meta property="og:image" content="assets/Wiserpicure Logo.png">
+<meta property="og:title" content="Blog — WiserPicture">
+<meta property="og:description" content="Artículos sobre fe, sabiduría y finanzas. Reflexiones prácticas para tu vida diaria.">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -23,7 +26,7 @@
           "primary": "#334F2B",
           "background": "#F9F9F6",
           "outline-variant": "#C8C8C5",
-          "on-surface-variant": "#666",
+          "on-surface-variant": "#6B705C",
           "on-surface": "#1A1C1B",
           "secondary-fixed-dim": "#C9A84C",
           "on-primary-container": "#2A3F22",
@@ -79,9 +82,12 @@
     <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="podcast.html">Podcast</a>
     <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="workbook.html">Workbook</a>
     <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="recursos.html">Recursos</a>
-  </div>
+      </div>
   <div class="flex items-center gap-4">
-    <a href="workbook.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">Módulo Gratis</a>
+        <a href="login.html" class="hidden md:inline-flex text-on-surface hover:text-primary font-medium text-sm transition-colors items-center gap-2">
+      <span class="material-symbols-outlined text-[1.1rem]">account_circle</span> Mi Cuenta
+    </a>
+    <a href="workbook.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">Módulo Gratis</a>
   </div>
 </div>
 </header>
@@ -96,6 +102,7 @@
     <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="podcast.html"><span class="material-symbols-outlined">mic</span><span class="font-medium font-body">Podcast</span></a>
     <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="workbook.html"><span class="material-symbols-outlined">menu_book</span><span class="font-medium font-body">Workbook</span></a>
     <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="recursos.html"><span class="material-symbols-outlined">handyman</span><span class="font-medium font-body">Recursos</span></a>
+      <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="login.html"><span class="material-symbols-outlined">login</span><span class="font-medium font-body">Mi Cuenta</span></a>
   </div>
 </div>
 </nav>
@@ -108,7 +115,7 @@
 
 <!-- Page Hero -->
 <section class="px-6 pt-12 pb-10 max-w-7xl mx-auto">
-  <div class="warm-card rounded-3xl p-10 md:p-16 border border-tertiary/20 relative overflow-hidden bg-gradient-to-br from-surface to-surface-container-lowest">
+  <div class="warm-card rounded-2xl p-10 md:p-16 border border-tertiary/20 relative overflow-hidden bg-gradient-to-br from-surface to-surface-container-lowest">
 
     <div class="relative z-10 max-w-2xl">
       <span class="text-[0.65rem] font-bold text-tertiary uppercase tracking-widest mb-3 block">ARTÍCULOS</span>
@@ -138,6 +145,28 @@
       </div>
     </div>
   </a>
+</section>
+
+<!-- Categoría: Finanzas -->
+<section class="px-6 pb-16 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between mb-6 border-b border-outline-variant/10 pb-4">
+    <h2 class="text-2xl font-headline italic text-on-surface">Finanzas</h2>
+    <span class="text-[0.6rem] font-medium text-on-surface-variant uppercase tracking-widest">Finanzas Personales</span>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Article 1: Presupuesto no funciona -->
+    <a href="blog/por-que-tu-presupuesto-no-funciona.html" class="article-card warm-card rounded-2xl p-6 border border-primary/30 hover:border-primary/60 transition-all group flex flex-col shadow-sm">
+      <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+        <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">account_balance_wallet</span>
+      </div>
+      <span class="text-[0.6rem] text-primary font-bold uppercase mb-2 block tracking-widest">Mayo 2026 · Finanzas</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">Por qué tu presupuesto no funciona (y qué hacer al respecto)</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed flex-1">Hacer un presupuesto no es un problema matemático, es un problema de comportamiento. Si solo descargas apps sin arreglar la raíz, siempre vas a fallar.</p>
+      <span class="mt-4 inline-flex items-center gap-1 text-primary text-xs font-semibold">Leer artículo <span class="material-symbols-outlined text-sm read-arrow">arrow_forward</span></span>
+    </a>
+
+  </div>
 </section>
 
 <!-- Categoría: Mi Viaje de Fe -->
@@ -275,9 +304,9 @@
 </main>
 
 <!-- ========== FOOTER ========== -->
-<footer class="bg-[#C0603A] py-16">
+<footer class="bg-primary py-16">
 <div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
-  <img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto mb-8">
+  <img src="assets/Logo footer.png" alt="WiserPicture" class="h-24 w-auto mb-8">
 
   <!-- Footer Navigation -->
   <div class="flex flex-wrap justify-center gap-6 mb-8">
@@ -285,17 +314,18 @@
     <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="podcast.html">Podcast</a>
     <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="workbook.html">Workbook</a>
     <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="recursos.html">Recursos</a>
+    <a class="text-white/60 hover:text-white transition-colors text-sm font-medium border-l border-white/20 pl-6" href="login.html">Mi Cuenta</a>
   </div>
 
 
 
   <!-- Social -->
   <div class="flex gap-6 mb-8">
-    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank" aria-label="WiserPicture en Instagram" rel="noopener">
       <span class="material-symbols-outlined text-xl">photo_camera</span>
       <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
     </a>
-    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank" aria-label="WiserPicture en Facebook" rel="noopener">
       <span class="material-symbols-outlined text-xl">public</span>
       <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
     </a>

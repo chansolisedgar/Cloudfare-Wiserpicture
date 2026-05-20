@@ -19,7 +19,7 @@
           "primary": "#334F2B",
           "background": "#F9F9F6",
           "outline-variant": "#C8C8C5",
-          "on-surface-variant": "#666",
+          "on-surface-variant": "#6B705C",
           "on-surface": "#1A1C1B",
           "tertiary": "#C0603A"
         },
@@ -613,7 +613,7 @@
 <script src="js/supabase-auth.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", async () => {
-    // Require authentication
+    // Require authentication (Module 1 is free for all authenticated users)
     const user = await WP.requireAuth();
     if (!user) return;
 

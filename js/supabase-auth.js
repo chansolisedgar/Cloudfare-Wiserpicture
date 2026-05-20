@@ -13,7 +13,7 @@
 // ============================================================
 const SUPABASE_URL = 'https://qwcagdlslkxrzqngystj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3Y2FnZGxzbGt4cnpxbmd5c3RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTkyNDMsImV4cCI6MjA5NDM3NTI0M30.rI6-hkEDvs9m_TJDVAc3eaPygo_1GRNUVyg9QbTvNJc';
-const SITE_URL = window.location.origin || 'https://wiserpicture.com';
+const SITE_URL = window.location.origin || 'https://wiserpiture.netlify.app';
 
 // ============================================================
 // SUPABASE CLIENT INITIALIZATION
@@ -65,6 +65,47 @@ async function requireAuth() {
     // Save current page so we can redirect back after login
     sessionStorage.setItem('wp_redirect_after_login', window.location.href);
     window.location.href = '/login.html';
+    return null;
+  }
+  return user;
+}
+
+/**
+ * Check if the current user has access to a specific module number.
+ * Returns true if access is granted, false otherwise.
+ * Module 1 is always accessible (free tier).
+ */
+function checkModuleAccess(user, moduleNumber) {
+  if (moduleNumber === 1) return true; // Module 1 is always free
+  if (!user || !user.user_metadata) return false;
+  const access = user.user_metadata.modules_access;
+  if (!access || !Array.isArray(access)) return false;
+  return access.includes(moduleNumber);
+}
+
+/**
+ * Get the list of modules the user has access to.
+ * Returns [1] at minimum (free module).
+ */
+function getModulesAccess(user) {
+  if (!user || !user.user_metadata) return [1];
+  const access = user.user_metadata.modules_access;
+  if (!access || !Array.isArray(access)) return [1];
+  // Always include module 1
+  return [...new Set([1, ...access])];
+}
+
+/**
+ * Require auth + module access. If no access, redirect to pricing.
+ * @param {number} moduleNumber - The module number (1-5)
+ */
+async function requireModuleAccess(moduleNumber) {
+  const user = await requireAuth();
+  if (!user) return null; // Already redirecting to login
+  
+  if (!checkModuleAccess(user, moduleNumber)) {
+    // User is logged in but doesn't have access to this module
+    window.location.href = '/workbook.html#precios';
     return null;
   }
   return user;
@@ -383,6 +424,9 @@ window.WP = {
   getSession,
   getUser,
   requireAuth,
+  requireModuleAccess,
+  checkModuleAccess,
+  getModulesAccess,
   sendMagicLink,
   signOut,
   onAuthStateChange,
