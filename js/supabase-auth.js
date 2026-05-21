@@ -96,6 +96,28 @@ function getModulesAccess(user) {
 }
 
 /**
+ * Grays out locked modules in the top navigation bar.
+ */
+function setupModuleNav(user) {
+  const allowedModules = getModulesAccess(user);
+  const navLinks = document.querySelectorAll('a[href^="modulo-"]');
+  
+  navLinks.forEach(link => {
+    // Extract module number from href (e.g. "modulo-2.html" -> 2)
+    const match = link.getAttribute('href').match(/modulo-(\d+)\.html/);
+    if (match) {
+      const moduleNum = parseInt(match[1], 10);
+      if (!allowedModules.includes(moduleNum)) {
+        // Module is locked: disable link and gray it out
+        link.href = 'workbook.html#precios';
+        link.className = 'text-sm font-medium text-gray-300 cursor-not-allowed opacity-60';
+        link.title = 'Módulo bloqueado';
+      }
+    }
+  });
+}
+
+/**
  * Require auth + module access. If no access, redirect to pricing.
  * @param {number} moduleNumber - The module number (1-5)
  */
@@ -108,6 +130,9 @@ async function requireModuleAccess(moduleNumber) {
     window.location.href = '/workbook.html#precios';
     return null;
   }
+  
+  // Apply locked styling to the nav bar
+  setupModuleNav(user);
   return user;
 }
 
@@ -427,6 +452,7 @@ window.WP = {
   requireModuleAccess,
   checkModuleAccess,
   getModulesAccess,
+  setupModuleNav,
   sendMagicLink,
   signOut,
   onAuthStateChange,

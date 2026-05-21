@@ -328,9 +328,13 @@
     const descEl = document.getElementById('access-description');
     if (descEl) {
       if (userModules.length === 5) {
-        descEl.innerHTML = 'Aquí tienes <strong>acceso completo</strong> a todos los cuadernos interactivos, PDFs y plantillas descargables de tu workbook.';
+        descEl.innerHTML = 'Tienes activo el <strong>Paquete Curso Completo</strong>. Aquí tienes acceso total a todos los cuadernos interactivos, PDFs y plantillas descargables de tu workbook.';
+      } else if (userModules.includes(4)) {
+        descEl.innerHTML = 'Tienes activo el <strong>Paquete Crecimiento</strong> (Módulos 4 y 5). Aquí tienes acceso a tus cuadernos interactivos, PDFs y calculadoras de inversión.';
+      } else if (userModules.includes(2)) {
+        descEl.innerHTML = 'Tienes activo el <strong>Paquete Orden</strong> (Módulos 1, 2 y 3). Aquí tienes acceso a tus cuadernos interactivos, PDFs y plantillas de presupuesto y deudas.';
       } else if (userModules.length === 1 && userModules[0] === 1) {
-        descEl.innerHTML = 'Actualmente tienes acceso al <strong>Módulo 1 Gratis</strong>. Puedes desbloquear el resto de los módulos en cualquier momento para continuar tu proceso.';
+        descEl.innerHTML = 'Actualmente tienes acceso al <strong>Módulo 1 Gratis</strong>. Puedes desbloquear los paquetes restantes en cualquier momento para continuar tu proceso.';
       } else {
         descEl.innerHTML = `Tienes acceso a los <strong>Módulos ${userModules.join(', ')}</strong>. Puedes desbloquear los módulos restantes cuando estés listo para avanzar.`;
       }
@@ -357,6 +361,45 @@
         card.style.borderStyle = 'dashed';
       }
     });
+
+    // Apply template access control
+    const templates = document.querySelectorAll('.template-card');
+    if (templates.length === 5) {
+      const hasOrder = userModules.includes(2);
+      const hasCrecimiento = userModules.includes(4);
+      
+      const lockTemplate = (el) => {
+        el.href = 'workbook.html#precios';
+        el.removeAttribute('target');
+        el.classList.add('opacity-60', 'grayscale', 'bg-surface-container-lowest');
+        el.classList.remove('warm-card', 'hover:shadow-lg', 'hover:border-primary/40', 'hover:border-secondary/40', 'hover:border-tertiary/40');
+        el.style.borderStyle = 'dashed';
+        
+        // Hide the "Copiar" badge
+        const badge = el.querySelector('.bg-secondary\\/10');
+        if (badge) badge.style.display = 'none';
+        
+        // Update the action text at the bottom
+        const actionDiv = el.querySelector('.mt-auto');
+        if (actionDiv) {
+          actionDiv.innerHTML = '<span class="material-symbols-outlined text-base">lock</span> Bloqueado';
+          actionDiv.className = 'mt-auto flex items-center gap-2 text-on-surface-variant font-medium text-sm';
+        }
+      };
+
+      // Templates 1, 2, 3 belong to Order bundle
+      if (!hasOrder) {
+        lockTemplate(templates[0]); // Presupuesto
+        lockTemplate(templates[1]); // Deudas
+        lockTemplate(templates[2]); // Fondo Emergencia
+      }
+      
+      // Templates 4, 5 belong to Crecimiento bundle
+      if (!hasCrecimiento) {
+        lockTemplate(templates[3]); // Meta de Ahorro
+        lockTemplate(templates[4]); // Calculadora Inversion
+      }
+    }
 
     // Sign out handler
     document.getElementById('sign-out-btn').addEventListener('click', async (e) => {
