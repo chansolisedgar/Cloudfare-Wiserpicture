@@ -14,6 +14,64 @@
 
 const crypto = require('crypto');
 
+// Función para sincronizar con Mailchimp
+async function syncWithMailchimp(email, name, tags) {
+  const apiKey = process.env.MAILCHIMP_API_KEY;
+  const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+
+  if (!apiKey || !audienceId) {
+    console.warn('Skipping Mailchimp sync: missing API Key or Audience ID');
+    return;
+  }
+
+  const https = require('https');
+  const datacenter = apiKey.split('-')[1] || 'us14';
+  const subscriberHash = crypto.createHash('md5').update(email.toLowerCase()).digest('hex');
+  const url = `https://${datacenter}.api.mailchimp.com/3.0/lists/${audienceId}/members/${subscriberHash}`;
+
+  const [FNAME, ...lastNameParts] = (name || '').split(' ');
+  const LNAME = lastNameParts.join(' ');
+
+  const data = JSON.stringify({
+    email_address: email,
+    status_if_new: 'subscribed',
+    merge_fields: { FNAME, LNAME },
+    tags: tags
+  });
+
+  const options = {
+    method: 'PUT',
+    headers: {
+      'Authorization': `apikey ${apiKey}`,
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(data)
+    }
+  };
+
+  return new Promise((resolve) => {
+    const req = https.request(url, options, (res) => {
+      let responseBody = '';
+      res.on('data', (chunk) => { responseBody += chunk; });
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          console.log(`Mailchimp sync success for ${email}`);
+        } else {
+          console.error(`Mailchimp sync error for ${email}:`, responseBody);
+        }
+        resolve();
+      });
+    });
+
+    req.on('error', (e) => {
+      console.error('Request Error syncing to Mailchimp:', e);
+      resolve();
+    });
+
+    req.write(data);
+    req.end();
+  });
+}
+
 // Map checkout custom_data.modules to actual module arrays
 // This is the source of truth for which bundle grants which modules
 function parseModulesFromCustomData(customData) {
@@ -77,6 +135,19 @@ exports.handler = async (event) => {
     console.log(`Processing order for: ${email} (${name})`);
     console.log(`Product: ${productName}`);
     console.log(`Modules granted: ${newModules.join(', ')}`);
+
+    // Determinar etiquetas para Mailchimp
+    const tags = [];
+    if (newModules.length === 1 && newModules[0] === 1) {
+      tags.push('Comprador Módulo 1 Gratis');
+    } else if (newModules.length === 5) {
+      tags.push('Comprador Curso Completo');
+    } else {
+      tags.push(`Comprador Módulos: ${newModules.join(', ')}`);
+    }
+
+    // Sincronizar con Mailchimp de fondo
+    await syncWithMailchimp(email, name, tags);
 
     const siteUrl = process.env.SITE_URL || 'https://wiserpiture.netlify.app';
 

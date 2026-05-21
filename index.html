@@ -86,8 +86,8 @@
     <a href="login.html" class="hidden md:inline-flex text-on-surface hover:text-primary font-medium text-sm transition-colors items-center gap-2 mr-2">
       <span class="material-symbols-outlined text-[1.1rem]">account_circle</span> Mi Cuenta
     </a>
-    <a href="workbook.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
-      Módulo Gratis
+    <a href="index.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
+      Módulo 1 Gratis
     </a>
   </div>
 </div>
@@ -150,11 +150,11 @@
         Aprende a manejar tu dinero con principios bíblicos y herramientas reales. Sin teoría vacía. Sin culpa. Con un plan.
       </p>
       <div class="flex flex-col sm:flex-row gap-4">
-        <a href="workbook.html" class="bg-primary text-white font-semibold py-4 px-8 rounded text-center shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
-          Descarga el Módulo Gratis
+        <a href="#lead-magnet" class="bg-primary text-white font-semibold py-4 px-8 rounded text-center shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95">
+          Descarga Módulo 1 Gratis
         </a>
-        <a href="recursos.html" class="border border-outline-variant text-on-surface font-medium py-4 px-8 rounded text-center hover:border-primary hover:text-primary transition-all">
-          Explorar Recursos
+        <a href="workbook.html#precios" class="border border-outline-variant text-on-surface font-medium py-4 px-8 rounded text-center hover:border-primary hover:text-primary transition-all">
+          Ver Paquetes del Workbook
         </a>
       </div>
     </div>
@@ -172,8 +172,8 @@
             <span class="text-[0.6rem] font-semibold bg-primary/10 text-primary px-3 py-1 rounded-full">PDF Interactivo</span>
             <span class="text-[0.6rem] font-semibold bg-secondary/20 text-secondary px-3 py-1 rounded-full">Google Sheets</span>
           </div>
-          <a href="workbook.html" class="w-full block bg-primary text-white font-semibold py-3 px-6 rounded-lg text-center transition-transform active:scale-95 hover:scale-[1.02]">
-            Ver Workbook →
+          <a href="workbook.html#precios" class="w-full block bg-primary text-white font-semibold py-3 px-6 rounded-lg text-center transition-transform active:scale-95 hover:scale-[1.02]">
+            Ver Paquetes →
           </a>
         </div>
       </div>
@@ -256,7 +256,7 @@
 </section>
 
 <!-- ========== LEAD MAGNET ========== -->
-<section class="px-6 py-20 max-w-7xl mx-auto">
+<section id="lead-magnet" class="px-6 py-20 max-w-7xl mx-auto">
   <div class="warm-card rounded-2xl p-8 md:p-12 border border-primary/20 relative overflow-hidden">
 
     <div class="relative z-10 max-w-2xl mx-auto text-center">
@@ -268,16 +268,62 @@
       <p class="text-sm text-on-surface-variant leading-relaxed mb-8">
         Sin tarjeta. Sin compromiso. Solo un PDF con ejercicios reales para que empieces esta semana — no "algún día."
       </p>
-      <form action="https://formsubmit.co/edgar@wiserpicture.com" method="POST" class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-        <input type="hidden" name="_subject" value="Lead Magnet: Módulo 1 Workbook">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="email" name="email" required placeholder="tu@email.com"
-          class="flex-1 bg-white border border-outline-variant/40 rounded py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm">
-        <button type="submit" class="bg-primary text-white font-semibold py-3 px-6 rounded shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95 text-sm whitespace-nowrap">
-          Descargar Gratis
+      <form id="lead-magnet-form" class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto relative">
+        <input type="email" id="lm-email" name="email" required placeholder="tu@email.com"
+          class="flex-1 bg-white border border-outline-variant/40 rounded py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-all disabled:opacity-50">
+        <button type="submit" id="lm-submit" class="bg-primary text-white font-semibold py-3 px-6 rounded shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 text-sm whitespace-nowrap disabled:opacity-70 disabled:pointer-events-none flex items-center justify-center gap-2 min-w-[160px]">
+          <span>Descargar Gratis</span>
         </button>
+        <!-- Mensaje de éxito/error (oculto por defecto) -->
+        <div id="lm-message" class="absolute top-full left-0 right-0 mt-3 text-center text-sm font-medium hidden"></div>
       </form>
+
+      <script>
+        document.getElementById('lead-magnet-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const emailInput = document.getElementById('lm-email');
+          const submitBtn = document.getElementById('lm-submit');
+          const msgBox = document.getElementById('lm-message');
+          const email = emailInput.value;
+
+          // Estado de carga
+          emailInput.disabled = true;
+          submitBtn.disabled = true;
+          const originalBtnText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-lg" style="font-variation-settings: \'FILL\' 0;">progress_activity</span> Enviando...';
+          msgBox.classList.add('hidden');
+          msgBox.className = 'absolute top-full left-0 right-0 mt-3 text-center text-sm font-medium hidden';
+
+          try {
+            const res = await fetch('/.netlify/functions/subscribe', {
+              method: 'POST',
+              body: JSON.stringify({ email: email }),
+              headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              msgBox.textContent = "¡Revisa tu correo! Te hemos enviado el acceso.";
+              msgBox.classList.add('text-primary');
+              msgBox.classList.remove('hidden');
+              emailInput.value = '';
+            } else {
+              throw new Error(data.error || 'Error desconocido');
+            }
+          } catch (err) {
+            msgBox.textContent = "Hubo un problema. Intenta de nuevo más tarde.";
+            msgBox.classList.add('text-tertiary');
+            msgBox.classList.remove('hidden');
+            console.error('Error suscribiendo:', err);
+          } finally {
+            // Restaurar estado
+            emailInput.disabled = false;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+          }
+        });
+      </script>
       <p class="text-[0.65rem] text-on-surface-variant/60 mt-3">Te enviaremos el PDF a tu correo. Sin spam.</p>
     </div>
   </div>
