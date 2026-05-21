@@ -63,8 +63,8 @@
   <section class="mb-12">
     <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-2 block">Bienvenido de vuelta</span>
     <h1 class="text-3xl md:text-4xl lg:text-5xl font-headline text-on-surface mb-3">Hola, <span id="user-name">Participante</span> 👋</h1>
-    <p class="text-base text-on-surface-variant max-w-2xl">
-      Aquí tienes acceso completo a todos los cuadernos interactivos, PDFs y plantillas descargables de tu workbook.
+    <p id="access-description" class="text-base text-on-surface-variant max-w-2xl">
+      Cargando tu acceso...
     </p>
   </section>
 
@@ -324,6 +324,18 @@
     const userModules = WP.getModulesAccess(user);
     const moduleCards = document.querySelectorAll('[data-module]');
     
+    // Update access description based on modules
+    const descEl = document.getElementById('access-description');
+    if (descEl) {
+      if (userModules.length === 5) {
+        descEl.innerHTML = 'Aquí tienes <strong>acceso completo</strong> a todos los cuadernos interactivos, PDFs y plantillas descargables de tu workbook.';
+      } else if (userModules.length === 1 && userModules[0] === 1) {
+        descEl.innerHTML = 'Actualmente tienes acceso al <strong>Módulo 1 Gratis</strong>. Puedes desbloquear el resto de los módulos en cualquier momento para continuar tu proceso.';
+      } else {
+        descEl.innerHTML = `Tienes acceso a los <strong>Módulos ${userModules.join(', ')}</strong>. Puedes desbloquear los módulos restantes cuando estés listo para avanzar.`;
+      }
+    }
+
     moduleCards.forEach(card => {
       const moduleNum = parseInt(card.getAttribute('data-module'), 10);
       const hasAccess = userModules.includes(moduleNum);
@@ -339,8 +351,10 @@
             <span class="material-symbols-outlined text-sm">shopping_cart</span> Desbloquear
           </a>
         `;
-        // Visual cue that module is locked
-        card.classList.add('opacity-75');
+        // Visual cue that module is locked (grayscale, flat, dashed border)
+        card.classList.add('opacity-60', 'grayscale', 'bg-surface-container-lowest');
+        card.classList.remove('warm-card'); // Remove shadow and hover effect
+        card.style.borderStyle = 'dashed';
       }
     });
 
