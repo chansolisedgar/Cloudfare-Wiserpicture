@@ -67,6 +67,10 @@ async function requireAuth() {
     window.location.href = '/login.html';
     return null;
   }
+  
+  // Apply locked/unlocked styling to the nav bar if it exists
+  setupModuleNav(user);
+  
   return user;
 }
 
@@ -96,7 +100,7 @@ function getModulesAccess(user) {
 }
 
 /**
- * Grays out locked modules in the top navigation bar.
+ * Grays out locked modules in the top navigation bar and highlights accessible ones.
  */
 function setupModuleNav(user) {
   const allowedModules = getModulesAccess(user);
@@ -107,12 +111,19 @@ function setupModuleNav(user) {
     const match = link.getAttribute('href').match(/modulo-(\d+)\.html/);
     if (match) {
       const moduleNum = parseInt(match[1], 10);
+      const isActive = window.location.pathname.includes(`modulo-${moduleNum}.html`);
+      
       if (!allowedModules.includes(moduleNum)) {
         // Module is locked: disable link and gray it out
         link.href = 'workbook.html#precios';
-        link.className = 'text-sm font-medium text-gray-300 cursor-not-allowed opacity-60';
+        link.className = 'text-sm font-medium text-gray-300 cursor-not-allowed opacity-50 flex items-center gap-1';
+        link.innerHTML = `Módulo ${moduleNum} <span class="material-symbols-outlined text-[14px]">lock</span>`;
         link.title = 'Módulo bloqueado';
+      } else if (!isActive) {
+        // Module is unlocked but not the current page -> highlight it to show it's available
+        link.className = 'text-sm font-bold text-gray-900 hover:text-primary transition-colors';
       }
+      // If it's active, it keeps its original HTML styling (border-b-2 text-primary)
     }
   });
 }
@@ -131,8 +142,7 @@ async function requireModuleAccess(moduleNumber) {
     return null;
   }
   
-  // Apply locked styling to the nav bar
-  setupModuleNav(user);
+  // Navigation styling is already handled inside requireAuth
   return user;
 }
 
