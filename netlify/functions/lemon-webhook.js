@@ -155,21 +155,36 @@ exports.handler = async (event) => {
       // Import Supabase
       const { createClient } = require('@supabase/supabase-js');
       
-      const supabase = createClient(
+      // Admin client for updating metadata and creating users
+      const supabaseAdmin = createClient(
         process.env.SUPABASE_URL,
         process.env.SUPABASE_SERVICE_KEY
       );
 
-      // Check if user already exists — search by email (not listUsers which paginates)
-      const { data: { users }, error: listError } = await supabase.auth.admin.listUsers({
-        filter: email
-      });
-      
-      if (listError) {
-        console.error('Error listing users:', listError);
+      // Anon client specifically for triggering auth emails like a normal user
+      const supabaseAnon = createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3Y2FnZGxzbGt4cnpxbmd5c3RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTkyNDMsImV4cCI6MjA5NDM3NTI0M30.rI6-hkEDvs9m_TJDVAc3eaPygo_1GRNUVyg9QbTvNJc'
+      );
+
+      // Helper function to safely find a user by email
+      async function findUserByEmail(targetEmail) {
+        let page = 1;
+        while (page <= 10) { // Limit to 10 pages to avoid infinite loops
+          const { data: { users }, error } = await supabaseAdmin.auth.admin.listUsers({
+            page: page,
+            perPage: 1000
+          });
+          if (error || !users || users.length === 0) return null;
+          const found = users.find(u => u.email === targetEmail);
+          if (found) return found;
+          if (users.length < 1000) return null; // No more pages
+          page++;
+        }
+        return null;
       }
       
-      const existingUser = users?.find(u => u.email === email);
+      const existingUser = await findUserByEmail(email);
 
       if (existingUser) {
         // ── EXISTING USER: merge modules and update ──
@@ -178,7 +193,7 @@ exports.handler = async (event) => {
         const existingModules = existingUser.user_metadata?.modules_access || [];
         const mergedModules = [...new Set([...existingModules, ...newModules])].sort((a, b) => a - b);
         
-        await supabase.auth.admin.updateUserById(existingUser.id, {
+        await supabaseAdmin.auth.admin.updateUserById(existingUser.id, {
           user_metadata: {
             ...existingUser.user_metadata,
             has_access: true,
@@ -191,8 +206,8 @@ exports.handler = async (event) => {
         console.log(`Updated modules for ${email}: [${mergedModules.join(', ')}]`);
 
         // Send a magic link email so they can log in easily
-        // NOTE: signInWithOtp() actually SENDS the email (unlike generateLink which only returns a URL)
-        const { error: otpError } = await supabase.auth.signInWithOtp({
+        // Use supabaseAnon so it acts like a normal client login attempt (which properly triggers the email)
+        const { error: otpError } = await supabaseAnon.auth.signInWithOtp({
           email: email,
           options: {
             emailRedirectTo: siteUrl + '/portal.html'
@@ -210,7 +225,7 @@ exports.handler = async (event) => {
         console.log(`Creating new user: ${email}`);
         
         // Use inviteUserByEmail — this creates the user AND sends an invite email
-        const { data: inviteData, error: inviteError } = await supabase.auth.admin.inviteUserByEmail(email, {
+        const { data: inviteData, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
           data: {
             full_name: name,
             has_access: true,
@@ -225,7 +240,7 @@ exports.handler = async (event) => {
           // If invite fails (e.g., user exists in a different state), fall back to createUser
           console.warn('inviteUserByEmail failed, falling back to createUser:', inviteError.message);
           
-          const { data: userData, error: createError } = await supabase.auth.admin.createUser({
+          const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
             email: email,
             email_confirm: true,
             user_metadata: {
@@ -243,9 +258,8 @@ exports.handler = async (event) => {
 
           console.log(`User created via fallback: ${userData.user.id}`);
 
-          // Send magic link email for this user
-          // NOTE: signInWithOtp() actually SENDS the email (unlike generateLink which only returns a URL)
-          const { error: fallbackOtpError } = await supabase.auth.signInWithOtp({
+          // Send magic link email for this user using Anon client
+          const { error: fallbackOtpError } = await supabaseAnon.auth.signInWithOtp({
             email: email,
             options: {
               emailRedirectTo: siteUrl + '/portal.html'
