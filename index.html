@@ -268,15 +268,33 @@
       <p class="text-sm text-on-surface-variant leading-relaxed mb-8">
         Sin tarjeta. Sin compromiso. Solo un PDF con ejercicios reales para que empieces esta semana — no "algún día."
       </p>
-      <form id="lead-magnet-form" class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto relative">
-        <input type="email" id="lm-email" name="email" required placeholder="tu@email.com"
-          class="flex-1 bg-white border border-outline-variant/40 rounded py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-all disabled:opacity-50">
-        <button type="submit" id="lm-submit" class="bg-primary text-white font-semibold py-3 px-6 rounded shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 text-sm whitespace-nowrap disabled:opacity-70 disabled:pointer-events-none flex items-center justify-center gap-2 min-w-[160px]">
-          <span>Descargar Gratis</span>
-        </button>
-        <!-- Mensaje de éxito/error (oculto por defecto) -->
-        <div id="lm-message" class="absolute top-full left-0 right-0 mt-3 text-center text-sm font-medium hidden"></div>
-      </form>
+      <div id="lm-form-container">
+        <form id="lead-magnet-form" class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto relative">
+          <input type="email" id="lm-email" name="email" required placeholder="tu@email.com"
+            class="flex-1 bg-white border border-outline-variant/40 rounded py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-all disabled:opacity-50">
+          <button type="submit" id="lm-submit" class="bg-primary text-white font-semibold py-3 px-6 rounded shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 text-sm whitespace-nowrap disabled:opacity-70 disabled:pointer-events-none flex items-center justify-center gap-2 min-w-[160px]">
+            <span>Descargar Gratis</span>
+          </button>
+          <!-- Mensaje de error (oculto por defecto) -->
+          <div id="lm-message" class="absolute top-full left-0 right-0 mt-3 text-center text-sm font-medium hidden"></div>
+        </form>
+        <p class="text-[0.65rem] text-on-surface-variant/60 mt-3">Te registramos a nuestro boletín y recibirás el PDF al instante.</p>
+      </div>
+
+      <!-- Contenedor de éxito con descarga directa -->
+      <div id="lm-success-container" class="hidden text-center max-w-md mx-auto">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        </div>
+        <h3 class="text-lg font-headline text-on-surface mb-2">¡Suscripción exitosa!</h3>
+        <p class="text-sm text-on-surface-variant mb-6 leading-relaxed">
+          Ya eres parte de nuestra lista. Descarga el Módulo 1 Gratis directamente haciendo clic en el siguiente botón:
+        </p>
+        <a href="assets/pdfs/modulo-1.pdf" download class="inline-flex items-center justify-center gap-2 bg-secondary text-on-surface font-semibold py-3.5 px-8 rounded shadow-lg shadow-secondary/20 hover:scale-105 active:scale-95 transition-transform text-sm w-full sm:w-auto">
+          <span class="material-symbols-outlined">download</span>
+          <span>Descargar Módulo 1 (PDF)</span>
+        </a>
+      </div>
 
       <script>
         document.getElementById('lead-magnet-form').addEventListener('submit', async (e) => {
@@ -284,6 +302,8 @@
           const emailInput = document.getElementById('lm-email');
           const submitBtn = document.getElementById('lm-submit');
           const msgBox = document.getElementById('lm-message');
+          const formContainer = document.getElementById('lm-form-container');
+          const successContainer = document.getElementById('lm-success-container');
           const email = emailInput.value;
 
           // Estado de carga
@@ -304,27 +324,25 @@
             const data = await res.json();
 
             if (res.ok) {
-              msgBox.textContent = "¡Revisa tu correo! Te hemos enviado el acceso.";
-              msgBox.classList.add('text-primary');
-              msgBox.classList.remove('hidden');
+              // Ocultar formulario y mostrar contenedor de éxito
+              formContainer.classList.add('hidden');
+              successContainer.classList.remove('hidden');
               emailInput.value = '';
             } else {
-              throw new Error(data.error || 'Error desconocido');
+              throw new Error(data.error || 'Error al suscribirse');
             }
           } catch (err) {
             msgBox.textContent = "Hubo un problema. Intenta de nuevo más tarde.";
             msgBox.classList.add('text-tertiary');
             msgBox.classList.remove('hidden');
             console.error('Error suscribiendo:', err);
-          } finally {
-            // Restaurar estado
+            // Restaurar estado del botón si hay error
             emailInput.disabled = false;
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnText;
           }
         });
       </script>
-      <p class="text-[0.65rem] text-on-surface-variant/60 mt-3">Te enviaremos el PDF a tu correo. Sin spam.</p>
     </div>
   </div>
 </section>

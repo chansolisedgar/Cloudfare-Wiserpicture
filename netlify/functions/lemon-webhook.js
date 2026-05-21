@@ -160,9 +160,16 @@ exports.handler = async (event) => {
         process.env.SUPABASE_SERVICE_KEY
       );
 
-      // Check if user already exists
-      const { data: { users } } = await supabase.auth.admin.listUsers();
-      const existingUser = users.find(u => u.email === email);
+      // Check if user already exists — search by email (not listUsers which paginates)
+      const { data: { users }, error: listError } = await supabase.auth.admin.listUsers({
+        filter: email
+      });
+      
+      if (listError) {
+        console.error('Error listing users:', listError);
+      }
+      
+      const existingUser = users?.find(u => u.email === email);
 
       if (existingUser) {
         // ── EXISTING USER: merge modules and update ──
@@ -183,17 +190,19 @@ exports.handler = async (event) => {
         
         console.log(`Updated modules for ${email}: [${mergedModules.join(', ')}]`);
 
-        // Send a magic link so they can log in easily
-        const { error: otpError } = await supabase.auth.admin.generateLink({
-          type: 'magiclink',
+        // Send a magic link email so they can log in easily
+        // NOTE: signInWithOtp() actually SENDS the email (unlike generateLink which only returns a URL)
+        const { error: otpError } = await supabase.auth.signInWithOtp({
           email: email,
           options: {
-            redirectTo: siteUrl + '/portal.html'
+            emailRedirectTo: siteUrl + '/portal.html'
           }
         });
 
         if (otpError) {
-          console.warn('Could not generate magic link for existing user:', otpError);
+          console.warn('Could not send magic link for existing user:', otpError);
+        } else {
+          console.log(`Magic link email sent to existing user: ${email}`);
         }
 
       } else {
@@ -234,14 +243,20 @@ exports.handler = async (event) => {
 
           console.log(`User created via fallback: ${userData.user.id}`);
 
-          // Generate magic link for this user
-          await supabase.auth.admin.generateLink({
-            type: 'magiclink',
+          // Send magic link email for this user
+          // NOTE: signInWithOtp() actually SENDS the email (unlike generateLink which only returns a URL)
+          const { error: fallbackOtpError } = await supabase.auth.signInWithOtp({
             email: email,
             options: {
-              redirectTo: siteUrl + '/portal.html'
+              emailRedirectTo: siteUrl + '/portal.html'
             }
           });
+
+          if (fallbackOtpError) {
+            console.warn('Could not send magic link for fallback user:', fallbackOtpError);
+          } else {
+            console.log(`Magic link email sent to fallback user: ${email}`);
+          }
         } else {
           console.log(`User invited: ${inviteData.user.id}`);
         }
