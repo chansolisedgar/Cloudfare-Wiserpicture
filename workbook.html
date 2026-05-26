@@ -682,7 +682,7 @@
             msgBox.className = 'absolute top-full left-0 right-0 mt-2 text-center text-xs font-medium hidden';
 
             try {
-              const res = await fetch('/.netlify/functions/subscribe', {
+              const res = await fetch('/api/subscribe', {
                 method: 'POST',
                 body: JSON.stringify({ email: email }),
                 headers: { 'Content-Type': 'application/json' }
@@ -841,4 +841,60 @@
         </a>
       </div>
 
-      <p class="text-
+      <p class="text-[0.65rem] text-white/30 max-w-2xl mx-auto mb-4 leading-relaxed"><span
+          class="font-semibold text-white/40">Aviso educativo ·</span> El contenido de WiserPicture —incluyendo el
+        workbook, blog y podcast— tiene carácter exclusivamente educativo e informativo. No constituye asesoría
+        financiera, fiscal, legal ni de inversión. Toda decisión financiera es responsabilidad exclusiva del usuario. Se
+        recomienda consultar a un profesional certificado antes de tomar decisiones de inversión.</p>
+      <p class="text-[0.7rem] text-white/40">© 2026 WiserPicture. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- ========== MOBILE BOTTOM NAV ========== -->
+  <nav
+    class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/30 z-50 flex justify-around items-center py-3 px-4 rounded-t-2xl">
+    <a href="index.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined text-xl">home</span>
+      <span class="text-[0.55rem] font-medium tracking-widest uppercase">Inicio</span>
+    </a>
+    <a href="blog.html"
+      class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined text-xl">article</span>
+      <span class="text-[0.55rem] font-medium tracking-widest uppercase">Blog</span>
+    </a>
+    <a href="podcast.html"
+      class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined text-xl">mic</span>
+      <span class="text-[0.55rem] font-medium tracking-widest uppercase">Podcast</span>
+    </a>
+    <a href="workbook.html"
+      class="flex flex-col items-center gap-0.5 text-primary relative">
+      <div class="absolute -top-0.5 w-1 h-1 bg-primary rounded-full shadow-none"></div>
+      <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+      <span class="text-[0.55rem] font-bold tracking-widest uppercase">Workbook</span>
+    </a>
+    <a href="recursos.html"
+      class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors">
+      <span class="material-symbols-outlined text-xl">handyman</span>
+      <span class="text-[0.55rem] font-medium tracking-widest uppercase">Recursos</span>
+    </a>
+  </nav>
+  <div class="h-20 md:hidden"></div>
+
+  <!-- JS: Mobile menu toggle -->
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const drawer = document.getElementById('nav-drawer');
+    const overlay = document.getElementById('nav-overlay');
+    const closeBtn = document.getElementById('menu-close');
+
+    function openMenu() { drawer.classList.add('open'); overlay.classList.add('open'); }
+    function closeMenu() { drawer.classList.remove('open'); overlay.classList.remove('open'); }
+
+    if(toggle) toggle.addEventListener('click', openMenu);
+    if(closeBtn) closeBtn.addEventListener('click', closeMenu);
+    if(overlay) overlay.addEventListener('click', closeMenu);
+  </script>
+</body>
+
+</html>

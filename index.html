@@ -566,7 +566,7 @@
               msgBox.className = 'absolute top-full left-0 right-0 mt-3 text-center text-sm font-medium hidden';
 
               try {
-                const res = await fetch('/.netlify/functions/subscribe', {
+                const res = await fetch('/api/subscribe', {
                   method: 'POST',
                   body: JSON.stringify({ email: email }),
                   headers: { 'Content-Type': 'application/json' }
