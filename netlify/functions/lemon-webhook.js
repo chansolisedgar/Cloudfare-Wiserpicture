@@ -9,7 +9,7 @@
  * - SUPABASE_URL
  * - SUPABASE_SERVICE_KEY (service_role key, not anon)
  * - LEMON_SQUEEZY_WEBHOOK_SECRET
- * - SITE_URL (optional, defaults to https://wiserpiture.netlify.app)
+ * - SITE_URL (optional, defaults to https://wiserpicture.com)
  */
 
 const crypto = require('crypto');
@@ -149,7 +149,7 @@ exports.handler = async (event) => {
     // Sincronizar con Mailchimp de fondo
     await syncWithMailchimp(email, name, tags);
 
-    const siteUrl = process.env.SITE_URL || 'https://wiserpiture.netlify.app';
+    const siteUrl = process.env.SITE_URL || 'https://wiserpicture.com';
 
     try {
       // Import Supabase

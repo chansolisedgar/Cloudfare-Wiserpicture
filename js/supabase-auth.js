@@ -13,7 +13,7 @@
 // ============================================================
 const SUPABASE_URL = 'https://qwcagdlslkxrzqngystj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3Y2FnZGxzbGt4cnpxbmd5c3RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTkyNDMsImV4cCI6MjA5NDM3NTI0M30.rI6-hkEDvs9m_TJDVAc3eaPygo_1GRNUVyg9QbTvNJc';
-const SITE_URL = window.location.origin || 'https://wiserpiture.netlify.app';
+const SITE_URL = window.location.origin || 'https://wiserpicture.com';
 
 // ============================================================
 // SUPABASE CLIENT INITIALIZATION

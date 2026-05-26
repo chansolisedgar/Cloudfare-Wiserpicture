@@ -1,385 +1,844 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Workbook de Finanzas con Propósito — WiserPicture</title>
-<meta name="description" content="Workbook digital de Finanzas con Propósito: 5 módulos interactivos con ejercicios prácticos, recursos y plantillas adaptados al contexto mexicano.">
-<meta property="og:image" content="assets/Wiserpicure Logo.png">
-<meta property="og:title" content="Workbook de Finanzas con Propósito — WiserPicture">
-<meta property="og:description" content="5 módulos prácticos con ejercicios, principios bíblicos y herramientas adaptadas al contexto mexicano.">
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          "surface": "#FFFFFF",
-          "surface-container-lowest": "#F9F9F6",
-          "secondary": "#C9A84C",
-          "surface-container": "#F4F4F1",
-          "surface-container-low": "#F4F4F1",
-          "surface-container-high": "#E8E8E5",
-          "surface-container-highest": "#D8D8D5",
-          "primary": "#334F2B",
-          "background": "#F9F9F6",
-          "outline-variant": "#C8C8C5",
-          "on-surface-variant": "#6B705C",
-          "on-surface": "#1A1C1B",
-          "secondary-fixed-dim": "#C9A84C",
-          "on-primary-container": "#2A3F22",
-          "on-primary": "#FFFFFF",
-          "tertiary": "#C0603A"
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Finanzas Personales Cristianas en México | Workbook con Principios Bíblicos</title>
+  <meta name="description"
+    content="¿Deudas, cero ahorro y vivir al día? Aprende a manejar tu dinero con principios bíblicos y herramientas reales para el contexto mexicano. Módulo 1 gratis.">
+  <meta property="og:image" content="assets/Wiserpicure Logo.png">
+  <meta property="og:title" content="Finanzas Personales Cristianas en México | Workbook con Principios Bíblicos">
+  <meta property="og:description"
+    content="¿Deudas, cero ahorro y vivir al día? Aprende a manejar tu dinero con principios bíblicos y herramientas reales para el contexto mexicano. Módulo 1 gratis.">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#FFFFFF",
+            "surface-container-lowest": "#F9F9F6",
+            "secondary": "#C9A84C",
+            "surface-container": "#F4F4F1",
+            "surface-container-low": "#F4F4F1",
+            "surface-container-high": "#E8E8E5",
+            "surface-container-highest": "#D8D8D5",
+            "primary": "#334F2B",
+            "background": "#F9F9F6",
+            "outline-variant": "#C8C8C5",
+            "on-surface-variant": "#6B705C",
+            "on-surface": "#1A1C1B",
+            "secondary-fixed-dim": "#C9A84C",
+            "on-primary-container": "#2A3F22",
+            "on-primary": "#FFFFFF",
+            "tertiary": "#C0603A"
+          },
+          fontFamily: {
+            "headline": ["Lora", "serif"],
+            "body": ["Manrope", "sans-serif"],
+            "label": ["Manrope", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
         },
-        fontFamily: {
-          "headline": ["Lora", "serif"],
-          "body": ["Manrope", "sans-serif"],
-          "label": ["Manrope", "sans-serif"]
-        },
-        borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
-      },
+      }
     }
-  }
+  </script>
+  <style>
+    body {
+      background-color: #F9F9F6;
+      color: #1A1C1B;
+      min-height: 100dvh;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .warm-card {
+      background: #FFFFFF;
+      border: 1px solid #E8E8E5;
+      box-shadow: 0 1px 3px rgba(45, 51, 25, 0.06), 0 1px 2px rgba(45, 51, 25, 0.04);
+    }
+
+    .warm-card:hover {
+      box-shadow: 0 4px 12px rgba(45, 51, 25, 0.1);
+    }
+
+    .nav-drawer {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-drawer.open {
+      transform: translateX(0);
+    }
+
+    .nav-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+  <script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Course",
+      "@id": "https://wiserpicture.com/workbook.html#course",
+      "name": "Guía de Finanzas Personales Cristianas para Jóvenes en México",
+      "description": "Aprende a administrar tu dinero, salir de deudas y hacer un presupuesto en México con principios bíblicos y herramientas prácticas. Módulo 1 gratis.",
+      "provider": {
+        "@type": "Organization",
+        "name": "WiserPicture",
+        "url": "https://wiserpicture.com"
+      },
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "Online",
+        "instructor": {
+          "@type": "Person",
+          "name": "Edgar U. Chan",
+          "knowsAbout": ["finanzas personales", "mayordomía bíblica", "inversiones México"],
+          "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "Ridley College Australia"
+          },
+          "url": "https://wiserpicture.com"
+        }
+      }
+    },
+    {
+      "@type": "Product",
+      "@id": "https://wiserpicture.com/workbook.html#product",
+      "name": "Workbook de Finanzas con Propósito",
+      "description": "Guía práctica de finanzas personales interactiva con 5 módulos, ejercicios y plantillas para el contexto mexicano.",
+      "brand": {
+        "@type": "Brand",
+        "name": "WiserPicture"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "MXN",
+        "lowPrice": "397",
+        "highPrice": "747",
+        "offerCount": "3",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Paquete Orden (Módulos 1-3)",
+            "price": "349",
+            "priceCurrency": "MXN",
+            "url": "https://wiserpicture.com/workbook.html#lista-espera",
+            "availability": "https://schema.org/PreOrder"
+          },
+          {
+            "@type": "Offer",
+            "name": "Paquete Crecimiento (Módulos 4-5)",
+            "price": "449",
+            "priceCurrency": "MXN",
+            "url": "https://wiserpicture.com/workbook.html#lista-espera",
+            "availability": "https://schema.org/PreOrder"
+          },
+          {
+            "@type": "Offer",
+            "name": "Curso Completo (Módulos 1-5)",
+            "price": "649",
+            "priceCurrency": "MXN",
+            "url": "https://wiserpicture.com/workbook.html#lista-espera",
+            "availability": "https://schema.org/PreOrder"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿El workbook es físico o digital?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Es 100% digital e interactivo. Recibirás acceso inmediato a un portal donde podrás ver los módulos, descargar PDFs para imprimir y acceder a las plantillas en Google Sheets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Necesito saber de finanzas para aprovecharlo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para nada. Está diseñado para llevarte de cero a tu primera inversión, explicando todo de forma muy sencilla, práctica y adaptada a la realidad de México."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Me quedaré solo si tengo dudas con los ejercicios?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, todos los paquetes incluyen soporte directo por WhatsApp. Podrás escribirme para resolver tus dudas y asegurarnos de que estás aplicando bien los principios."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto tiempo tengo para completar los módulos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tendrás acceso de por vida al portal y a los módulos que adquieras, incluyendo cualquier actualización futura. Puedes avanzar a tu propio ritmo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo podré adquirir los paquetes completos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Muy pronto abriremos los accesos oficiales. Si te registras hoy en la lista de espera, asegurarás un precio especial exclusivo de lanzamiento y serás el primero en poder ingresar al contenido completo."
+          }
+        }
+      ]
+    }
+  ]
+}
 </script>
-<style>
-  body {
-    background-color: #F9F9F6;
-    color: #1A1C1B;
-    min-height: 100dvh;
-  }
-  .material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  }
-  .warm-card {
-    background: #FFFFFF;
-    border: 1px solid #E8E8E5;
-    box-shadow: 0 1px 3px rgba(45,51,25,0.06), 0 1px 2px rgba(45,51,25,0.04);
-  }
-  .warm-card:hover {
-    box-shadow: 0 4px 12px rgba(45,51,25,0.1);
-  }
-  .nav-drawer { transform: translateX(-100%); transition: transform 0.3s ease; }
-  .nav-drawer.open { transform: translateX(0); }
-  .nav-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-  .nav-overlay.open { opacity: 1; pointer-events: auto; }
-</style>
-<script src="https://app.lemonsqueezy.com/js/lemon.js" defer></script>
 </head>
+
 <body class="font-body selection:bg-primary/20 selection:text-on-surface">
 
-<!-- Header -->
-<header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 shadow-[0_1px_3px_rgba(45,51,25,0.08)]">
-<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
-  <div class="flex items-center gap-3">
-    <button id="menu-toggle" class="material-symbols-outlined text-primary md:hidden">menu</button>
-    <a href="index.html"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 md:h-14 w-auto"></a>
-  </div>
-  <div class="hidden md:flex flex-1 justify-center items-center gap-8">
-    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="blog.html">Blog</a>
-    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="podcast.html">Podcast</a>
-    <a class="text-primary font-medium text-sm tracking-wide" href="workbook.html">Workbook</a>
-    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="recursos.html">Recursos</a>
+  <header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 shadow-[0_1px_3px_rgba(45,51,25,0.08)]">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+      <div class="flex items-center gap-3">
+        <button id="menu-toggle" class="material-symbols-outlined text-primary md:hidden">menu</button>
+        <a href="index.html"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 md:h-14 w-auto"></a>
       </div>
-  <div class="flex items-center gap-4">
-    <a href="login.html" class="hidden md:inline-flex text-on-surface hover:text-primary font-medium text-sm transition-colors items-center gap-2 mr-2">
-      <span class="material-symbols-outlined text-[1.1rem]">account_circle</span> Mi Cuenta
-    </a>
-    <a href="index.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">Módulo 1 Gratis</a>
-  </div>
-</div>
-</header>
-
-<div id="nav-overlay" class="nav-overlay fixed inset-0 bg-black/30 z-[55]"></div>
-<nav id="nav-drawer" class="nav-drawer fixed inset-y-0 left-0 z-[60] flex flex-col bg-[#F9F9F6]/98 backdrop-blur-2xl h-full w-80 shadow-2xl shadow-black/10">
-<div class="p-8">
-  <div class="flex justify-between items-center mb-10"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-10 w-auto"><button id="menu-close" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">close</button></div>
-  <div class="flex flex-col gap-2">
-    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="index.html"><span class="material-symbols-outlined">home</span><span class="font-medium font-body">Inicio</span></a>
-    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="blog.html"><span class="material-symbols-outlined">article</span><span class="font-medium font-body">Blog</span></a>
-    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="podcast.html"><span class="material-symbols-outlined">mic</span><span class="font-medium font-body">Podcast</span></a>
-    <a class="text-[#1A1C1B] bg-gradient-to-r from-primary/10 to-transparent px-4 py-3 flex items-center gap-4 rounded-full border border-primary/20" href="workbook.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">menu_book</span><span class="font-medium font-body">Workbook</span></a>
-    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="recursos.html"><span class="material-symbols-outlined">handyman</span><span class="font-medium font-body">Recursos</span></a>
-      <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="login.html"><span class="material-symbols-outlined">login</span><span class="font-medium font-body">Mi Cuenta</span></a>
-  </div>
-</div>
-</nav>
-
-<main class="relative overflow-hidden">
-
-<!-- Global Background Decorations -->
-
-<!-- ========================= -->
-
-<!-- Hero -->
-<section class="px-6 pt-16 pb-12 max-w-7xl mx-auto">
-  <div class="flex flex-col md:flex-row items-center gap-12">
-    <div class="flex-1">
-      <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-3 block">FINANZAS PERSONALES</span>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-headline text-on-surface mb-6 leading-tight">Workbook de<br/><span class="text-primary italic">Finanzas con Propósito</span></h1>
-      <p class="text-base md:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-lg">No es un libro para subrayar y olvidar. Es una guía práctica para hacer — con ejercicios reales, principios bíblicos y herramientas adaptadas al contexto mexicano. Porque administrar bien es mayordomía, no matemáticas.</p>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <a href="#precios" class="bg-primary text-white font-semibold py-4 px-8 rounded text-center shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">Ver Paquetes y Precios →</a>
-        <a href="index.html#lead-magnet" class="border border-outline-variant text-on-surface font-medium py-4 px-8 rounded text-center hover:border-primary hover:text-primary transition-all">¿Aún no estás listo? Módulo 1 Gratis</a>
+      <div class="hidden md:flex flex-1 justify-center items-center gap-8">
+        <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide"
+          href="blog.html">Blog</a>
+        <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide"
+          href="podcast.html">Podcast</a>
+        <a class="text-primary font-medium text-sm tracking-wide" href="workbook.html">Workbook</a>
+        <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide"
+          href="recursos.html">Recursos</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="login.html"
+          class="hidden md:inline-flex text-on-surface hover:text-primary font-medium text-sm transition-colors items-center gap-2 mr-2">
+          <span class="material-symbols-outlined text-[1.1rem]">account_circle</span> Mi Cuenta
+        </a>
+        <a href="index.html#lead-magnet"
+          class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">Módulo
+          1 Gratis</a>
       </div>
     </div>
-    <div class="flex-1 max-w-sm">
-      <div class="warm-card rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
-        
-        <div class="relative z-10 text-center">
-          <span class="material-symbols-outlined text-primary text-7xl mb-4 block" style="font-variation-settings:'FILL' 1">menu_book</span>
-          <p class="text-2xl font-headline text-on-surface mb-2">5 Módulos</p>
-          <p class="text-sm text-on-surface-variant">Módulos Interactivos + Recursos y Plantillas</p>
-          <div class="mt-6 flex flex-wrap justify-center gap-2">
-            <span class="bg-surface-container-high text-primary text-[0.55rem] font-medium px-3 py-1 rounded-full">Ejercicios Prácticos</span>
-            <span class="bg-surface-container-high text-secondary text-[0.55rem] font-medium px-3 py-1 rounded-full">Contexto Mexicano</span>
-            <span class="bg-surface-container-high text-tertiary text-[0.55rem] font-medium px-3 py-1 rounded-full">Principios Bíblicos</span>
+  </header>
+
+  <div id="nav-overlay" class="nav-overlay fixed inset-0 bg-black/30 z-[55]"></div>
+  <nav id="nav-drawer"
+    class="nav-drawer fixed inset-y-0 left-0 z-[60] flex flex-col bg-[#F9F9F6]/98 backdrop-blur-2xl h-full w-80 shadow-2xl shadow-black/10">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-10"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture"
+          class="h-10 w-auto"><button id="menu-close"
+          class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">close</button>
+      </div>
+      <div class="flex flex-col gap-2">
+        <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full"
+          href="index.html"><span class="material-symbols-outlined">home</span><span
+            class="font-medium font-body">Inicio</span></a>
+        <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full"
+          href="blog.html"><span class="material-symbols-outlined">article</span><span
+            class="font-medium font-body">Blog</span></a>
+        <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full"
+          href="podcast.html"><span class="material-symbols-outlined">mic</span><span
+            class="font-medium font-body">Podcast</span></a>
+        <a class="text-[#1A1C1B] bg-gradient-to-r from-primary/10 to-transparent px-4 py-3 flex items-center gap-4 rounded-full border border-primary/20"
+          href="workbook.html"><span class="material-symbols-outlined"
+            style="font-variation-settings:'FILL' 1">menu_book</span><span
+            class="font-medium font-body">Workbook</span></a>
+        <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full"
+          href="recursos.html"><span class="material-symbols-outlined">handyman</span><span
+            class="font-medium font-body">Recursos</span></a>
+        <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full"
+          href="login.html"><span class="material-symbols-outlined">login</span><span class="font-medium font-body">Mi
+            Cuenta</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="relative overflow-hidden">
+
+    <section class="px-6 pt-16 pb-12 max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="flex-1">
+          <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-3 block">MAYORDOMÍA
+            BÍBLICA</span>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-headline text-on-surface mb-6 leading-tight">Finanzas con
+            <span class="text-primary italic">Propósito</span>
+          </h1>
+          <p class="text-base md:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-lg">El workbook que te lleva
+            de "vivir al día" a tener presupuesto, salir de deudas e invertir — con principios bíblicos y herramientas
+            reales para México.</p>
+          <div class="flex">
+            <a href="#precios"
+              class="w-full sm:w-auto bg-primary text-white font-semibold py-4 px-8 rounded text-center shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">Ver Paquetes y Lista de Espera ↓</a>
+          </div>
+        </div>
+        <div class="flex-1 max-w-sm">
+          <div class="warm-card rounded-2xl p-8 border border-primary/20 relative overflow-hidden">
+
+            <div class="relative z-10 text-center">
+              <span class="material-symbols-outlined text-primary text-7xl mb-4 block"
+                style="font-variation-settings:'FILL' 1">menu_book</span>
+              <p class="text-2xl font-headline text-on-surface mb-2">5 Módulos</p>
+              <p class="text-sm text-on-surface-variant">Módulos Interactivos + Recursos y Plantillas</p>
+              <div class="mt-6 flex flex-wrap justify-center gap-2">
+                <span
+                  class="bg-surface-container-high text-primary text-[0.55rem] font-medium px-3 py-1 rounded-full">Ejercicios
+                  Prácticos</span>
+                <span
+                  class="bg-surface-container-high text-secondary text-[0.55rem] font-medium px-3 py-1 rounded-full">Contexto
+                  Mexicano</span>
+                <span
+                  class="bg-surface-container-high text-tertiary text-[0.55rem] font-medium px-3 py-1 rounded-full">Principios
+                  Bíblicos</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- Problem Stats -->
-<section class="px-6 py-16 max-w-7xl mx-auto">
-  <div class="text-center mb-12"><h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-4">El problema no es cuánto ganas</h2><p class="text-base text-on-surface-variant max-w-2xl mx-auto">La mayoría de los jóvenes mexicanos tiene productos financieros pero nunca recibió educación para usarlos. El resultado: deudas, cero ahorro, y mucha improvisación disfrazada de fe.</p></div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="warm-card rounded-xl p-5 border border-outline-variant/20 text-center"><span class="text-3xl font-headline text-primary block mb-1">76%</span><span class="text-[0.65rem] text-on-surface-variant uppercase tracking-wider block">Tiene productos financieros</span><span class="text-[0.5rem] text-on-surface-variant/40 mt-1 block">ENIF 2024</span></div>
-    <div class="warm-card rounded-xl p-5 border border-secondary/20 text-center"><span class="text-3xl font-headline text-secondary block mb-1">36%</span><span class="text-[0.65rem] text-on-surface-variant uppercase tracking-wider block">Hace presupuesto mensual</span><span class="text-[0.5rem] text-on-surface-variant/40 mt-1 block">ENSAFI 2024</span></div>
-    <div class="warm-card rounded-xl p-5 border border-outline-variant/20 text-center"><span class="text-3xl font-headline text-tertiary block mb-1">33%</span><span class="text-[0.65rem] text-on-surface-variant uppercase tracking-wider block">Sin ningún tipo de ahorro</span><span class="text-[0.5rem] text-on-surface-variant/40 mt-1 block">ENIF 2024</span></div>
-    <div class="warm-card rounded-xl p-5 border border-outline-variant/20 text-center"><span class="text-3xl font-headline text-primary block mb-1">&lt;8%</span><span class="text-[0.65rem] text-on-surface-variant uppercase tracking-wider block">Educación financiera formal</span><span class="text-[0.5rem] text-on-surface-variant/40 mt-1 block">Estimado</span></div>
-  </div>
-</section>
 
-<!-- 6 Modules -->
-<section class="px-6 py-16 max-w-7xl mx-auto">
-  <div class="text-center mb-12"><h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-4">5 Módulos Prácticos</h2><p class="text-base text-on-surface-variant max-w-2xl mx-auto">Cada módulo tiene un principio bíblico, contexto real y ejercicios que puedes aplicar esta misma semana — con lo que ya tienes.</p></div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
-    <!-- Modulo 1 -->
-    <div class="warm-card rounded-2xl p-6 border border-primary/20 lg:col-span-2 md:col-span-1">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-headline text-lg">01</span>
-        <span class="bg-primary/10 text-primary text-[0.5rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">Gratis</span>
+
+    <section class="px-6 py-16 max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="sr-only">Educación financiera basada en principios bíblicos</h2>
+        <h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-4"> De Cero a invertir: La Ruta Completa</h2>
+        <p class="text-base text-on-surface-variant max-w-2xl mx-auto">Cada módulo tiene un principio bíblico, contexto
+          real y ejercicios que puedes aplicar esta misma semana — con lo que ya tienes.</p>
       </div>
-      <h3 class="text-lg font-headline text-on-surface mb-2">Fundamentos Bíblicos del Dinero</h3>
-      <p class="text-sm text-on-surface-variant leading-relaxed">¿Qué dice la Biblia sobre el dinero — y qué no dice? Diagnóstico financiero personal y los principios que cambian tu relación con el dinero desde la raíz.</p>
-    </div>
-    <!-- Modulo 2 -->
-    <div class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-2 md:col-span-1">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary font-headline text-lg">02</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
+        <div class="warm-card rounded-2xl p-6 border border-primary/20 lg:col-span-2 md:col-span-1">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-headline text-lg">01</span>
+            <span
+              class="bg-primary/10 text-primary text-[0.55rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">Gratis</span>
+          </div>
+          <h3 class="text-lg font-headline text-on-surface mb-2">Finanzas Personales Cristianas en México: Fundamentos
+          </h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Descubre qué dice la Biblia del dinero, los
+            principios de mayordomía bíblica y cómo transformar tu relación con el dinero desde la fe.</p>
+        </div>
+        <div class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-2 md:col-span-1">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary font-headline text-lg">02</span>
+          </div>
+          <h3 class="text-lg font-headline text-on-surface mb-2">Cómo hacer un presupuesto mensual en México</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Un método práctico de presupuesto para jóvenes
+            mexicanos. Descubre apps para presupuesto en México y cómo dejar de vivir al día.</p>
+        </div>
+        <div
+          class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-2 md:col-span-2 lg:col-start-auto">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary font-headline text-lg">03</span>
+          </div>
+          <h3 class="text-lg font-headline text-on-surface mb-2">Cómo salir de deudas en México</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Crea tu plan para pagar deudas, incluyendo deudas
+            de tarjeta de crédito en México. Aplica el método bola de nieve y recupera tu paz.</p>
+        </div>
+        <div class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-3 md:col-span-1">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary font-headline text-lg">04</span>
+          </div>
+          <h3 class="text-lg font-headline text-on-surface mb-2">Cómo ahorrar dinero en México</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Aprende cuánto ahorrar al mes y dónde ahorrar
+            dinero en México de forma segura. Construye tu fondo de emergencia en México.</p>
+        </div>
+        <div class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-3 md:col-span-1">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary font-headline text-lg">05</span>
+          </div>
+          <h3 class="text-lg font-headline text-on-surface mb-2">Cómo invertir en México para principiantes</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">Guía paso a paso para tu primera inversión en
+            México (CETES para principiantes, GBM vs Fintual, y PPR) sin complicaciones.</p>
+        </div>
       </div>
-      <h3 class="text-lg font-headline text-on-surface mb-2">Manejo del Dinero</h3>
-      <p class="text-sm text-on-surface-variant leading-relaxed">Presupuesto mensual práctico, apps mexicanas, y cómo dejar de vivir al día sin necesitar ganar el doble.</p>
-    </div>
-    <!-- Modulo 3 -->
-    <div class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-2 md:col-span-2 lg:col-start-auto">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="w-10 h-10 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary font-headline text-lg">03</span>
+    </section>
+
+    <section class="px-6 pb-4 pt-4 max-w-7xl mx-auto">
+      <div class="max-w-4xl mx-auto">
+        <div class="warm-card rounded-2xl overflow-hidden flex flex-col md:flex-row">
+
+          <div
+            class="md:w-56 shrink-0 bg-primary flex flex-col items-center justify-center py-10 px-8 gap-5 relative overflow-hidden">
+            <span
+              class="absolute -bottom-4 -right-3 font-headline text-[7rem] text-white/5 leading-none select-none pointer-events-none">E</span>
+            <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white/20 shadow-xl relative z-10">
+              <img src="assets/edgar.jpg" alt="Edgar U. Chan — Autor del Workbook"
+                class="w-full h-full object-cover object-top">
+            </div>
+            <div class="text-center relative z-10">
+              <p class="font-headline italic text-white text-base leading-tight">Edgar U. Chan</p>
+              <p class="text-[0.6rem] text-white/50 uppercase tracking-widest mt-1">Autor del Workbook</p>
+              <div class="w-8 h-px bg-secondary/60 mx-auto mt-3"></div>
+              <p class="text-[0.6rem] text-white/40 uppercase tracking-widest mt-3 leading-relaxed">Teología<br>Ridley
+                College<br>Australia</p>
+            </div>
+          </div>
+
+          <div class="flex-1 px-8 py-8 flex flex-col justify-center gap-3">
+            <span class="text-[0.6rem] font-bold text-secondary uppercase tracking-widest">Quién está detrás de
+              esto</span>
+            <p class="text-sm text-on-surface leading-relaxed">
+              Empecé donde probablemente estás tú: con tarjetas, sin ahorro, y convencido de que <em>"Dios provee"</em>
+              era un plan financiero completo.
+            </p>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+              Estudié Teología en Ridley College (Australia), donde investigué durante años qué dice la Escritura sobre
+              dinero, mayordomía y decisiones sabias. Lo que encontré cambió cómo manejo mis finanzas. Eventualmente
+              decidí que era demasiado útil para
+              guardármelo.
+            </p>
+          </div>
+
+        </div>
       </div>
-      <h3 class="text-lg font-headline text-on-surface mb-2">Deudas: Salir y No Volver</h3>
-      <p class="text-sm text-on-surface-variant leading-relaxed">Estrategias para saldar tus deudas y el plan para no volver a caer en ellas. Sin drama, con método.</p>
-    </div>
-    <!-- Modulo 4 -->
-    <div class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-3 md:col-span-1">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary font-headline text-lg">04</span>
+    </section>
+
+    <section class="px-6 pt-6 pb-16 max-w-7xl mx-auto">
+      <div class="max-w-4xl mx-auto">
+        <div
+          class="bg-[#F4F4F1] rounded-2xl border border-outline-variant/20 px-8 py-8 md:px-10 relative overflow-hidden">
+
+          <div class="absolute left-0 top-6 bottom-6 w-1 bg-secondary rounded-full"></div>
+
+          <div class="flex items-center gap-3 mb-5 ml-3">
+            <span class="material-symbols-outlined text-secondary text-xl"
+              style="font-variation-settings:'FILL' 1">info</span>
+            <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest">Una nota importante antes de
+              continuar</span>
+          </div>
+
+          <div class="ml-3 flex flex-col gap-3">
+            <p class="text-sm text-on-surface leading-relaxed">
+              No soy asesor financiero certificado, ni contador, ni represento a ninguna institución
+              financiera.
+            </p>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+              Este workbook es <strong class="text-on-surface">educación — no asesoría personalizada</strong>. Los
+              principios funcionan. Los ejercicios están diseñados para que tomes decisiones más informadas. Pero las
+              decisiones son tuyas. Si tu situación financiera es compleja, un contador o asesor financiero certificado
+              es el complemento correcto a lo que aprendas aquí.
+            </p>
+            <p class="text-sm text-on-surface-variant leading-relaxed">
+              Lo que sí te puedo prometer: que cada principio está respaldado en la Palabra y probado en la vida real.
+              El resto — como siempre — depende de lo que decidas hacer con él.
+            </p>
+            <div class="flex items-center gap-3 mt-2 pt-4 border-t border-outline-variant/30">
+              <a href="aviso-legal.html" class="ml-auto text-[0.65rem] text-secondary hover:underline font-medium">
+                Ver aviso legal completo →
+              </a>
+            </div>
+          </div>
+
+        </div>
       </div>
-      <h3 class="text-lg font-headline text-on-surface mb-2">Ahorro y Fondo de Emergencia</h3>
-      <p class="text-sm text-on-surface-variant leading-relaxed">Cuánto ahorrar, dónde guardarlo en México, y cómo construir ese colchón que cambia todo cuando hay una emergencia.</p>
-    </div>
-    <!-- Modulo 5 -->
-    <div class="warm-card rounded-2xl p-6 border border-outline-variant/30 lg:col-span-3 md:col-span-1">
-      <div class="flex items-center gap-3 mb-4">
-        <span class="w-10 h-10 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary font-headline text-lg">05</span>
+    </section>
+
+    <section id="precios" class="px-6 py-16 max-w-7xl mx-auto">
+
+      <div class="text-center mb-4">
+        <h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-4">Próximamente: Elige tu paquete</h2>
+        <p class="text-base text-on-surface-variant max-w-2xl mx-auto">La base bíblica del Módulo 1 seguirá siendo gratuita. Regístrate en la lista de espera para asegurar tu precio preventa y ser el primero en tener acceso permanente a los módulos completos.</p>
       </div>
-      <h3 class="text-lg font-headline text-on-surface mb-2">Inversión: Hacer Crecer lo que Tienes</h3>
-      <p class="text-sm text-on-surface-variant leading-relaxed">CETES, fondos de inversión, PPR. Guía paso a paso para tu primera inversión — sin necesitar ser experto.</p>
-    </div>
-  </div>
-</section>
 
-<!-- Pricing -->
-<section id="precios" class="px-6 py-16 max-w-7xl mx-auto">
-  <div class="text-center mb-4"><h2 class="text-2xl md:text-3xl font-headline text-on-surface mb-4">Elige tu paquete</h2><p class="text-base text-on-surface-variant max-w-2xl mx-auto">Empieza gratis con la base bíblica o desbloquea los módulos que más necesitas. Todos incluyen acceso de por vida y progreso guardado en la nube.</p></div>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-
-    <!-- 2. Paquete Orden — M1-3 -->
-    <div class="warm-card rounded-2xl p-7 border border-outline-variant/30 flex flex-col">
-      <span class="bg-secondary/10 text-secondary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full w-fit mb-4">Paquete Orden</span>
-      <h3 class="text-lg font-headline text-on-surface mb-1">Módulos 1–3</h3>
-      <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Presupuesto + gastos + deudas. Lo esencial para poner orden en tus finanzas.</p>
-      <div class="mb-6">
-        <span class="text-4xl font-headline text-on-surface">$397</span>
-        <span class="text-sm text-on-surface-variant ml-1">MXN</span>
+      <div class="flex items-center justify-center gap-2 mt-6 mb-2">
+        <span class="material-symbols-outlined text-secondary text-base"
+          style="font-variation-settings:'FILL' 1">schedule</span>
+        <p class="text-[0.7rem] text-secondary font-semibold uppercase tracking-widest">Lanzamiento oficial próximamente · Asegura tu lugar en preventa</p>
       </div>
-      <ul class="flex-1 flex flex-col gap-2.5 mb-8">
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Base bíblica y mentalidad
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Manejo del dinero
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Deudas: salir y no volver
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Plantillas y ejercicios
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Versión imprimible
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Progreso guardado en la nube
-        </li>
-        <li class="flex items-start gap-2 text-sm font-medium text-on-surface mt-1">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">forum</span>Soporte directo por WhatsApp
-        </li>
-      </ul>
-      <a href="https://finanzasconproposito.lemonsqueezy.com/checkout/buy/ba59433d-c0f7-4a06-9e3f-3126e22326fc?checkout[custom][modules]=1,2,3" class="lemonsqueezy-button bg-secondary text-on-surface font-semibold py-3 rounded-lg text-center shadow-lg shadow-secondary/20 hover:scale-105 active:scale-95 transition-transform text-sm">Obtener Paquete Orden</a>
-    </div>
 
-    <!-- 3. Paquete Crecimiento — M4-5 -->
-    <div class="warm-card rounded-2xl p-7 border border-outline-variant/30 flex flex-col">
-      <span class="bg-tertiary/10 text-tertiary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full w-fit mb-4">Paquete Crecimiento</span>
-      <h3 class="text-lg font-headline text-on-surface mb-1">Módulos 4–5</h3>
-      <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Ahorro, fondo de emergencia e inversión. Para hacer crecer lo que tienes.</p>
-      <div class="mb-6">
-        <span class="text-4xl font-headline text-on-surface">$497</span>
-        <span class="text-sm text-on-surface-variant ml-1">MXN</span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+
+        <div class="warm-card rounded-2xl p-7 border border-outline-variant/30 flex flex-col relative overflow-hidden">
+          <div class="absolute top-3 right-3 bg-secondary/20 text-secondary text-[0.55rem] font-bold uppercase px-2 py-0.5 rounded">Próximamente</div>
+          <span
+            class="bg-secondary/10 text-secondary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full w-fit mb-4">Paquete
+            Orden</span>
+          <h3 class="text-xl font-headline text-on-surface mb-1">Módulos 1–3</h3>
+
+          <blockquote class="border-l-2 border-secondary/40 pl-3 my-3">
+            <p class="text-sm text-on-surface-variant italic leading-snug">"Estoy en deudas o sin presupuesto. Necesito
+              orden primero."</p>
+          </blockquote>
+          <span
+            class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant text-[0.6rem] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full w-fit mb-5">
+            <span class="material-symbols-outlined text-[0.8rem]">person</span>
+            Primera etapa financiera
+          </span>
+
+          <div class="flex items-baseline gap-2 mb-1 opacity-70">
+            <span class="text-4xl font-headline text-on-surface">$349</span>
+            <span class="text-sm text-on-surface-variant">MXN</span>
+          </div>
+          <p class="text-[0.65rem] text-on-surface-variant/60 line-through mb-5">Precio normal: $397 MXN</p>
+
+          <ul class="flex-1 flex flex-col gap-2.5 mb-8">
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Base bíblica y mentalidad
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Manejo del dinero
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Deudas: salir y no volver
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Plantillas y ejercicios
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Versión imprimible
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Progreso guardado en la nube
+            </li>
+            <li class="flex items-start gap-2 text-sm font-medium text-on-surface mt-1">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">forum</span>Soporte directo por WhatsApp
+            </li>
+          </ul>
+          <a href="#lista-espera"
+            class="bg-surface-container-highest text-on-surface-variant font-semibold py-3 rounded-lg text-center border border-outline-variant/40 hover:bg-primary hover:text-white transition-colors text-sm">Unirme a la lista de espera</a>
+        </div>
+
+        <div class="warm-card rounded-2xl p-7 border border-outline-variant/30 flex flex-col relative overflow-hidden">
+          <div class="absolute top-3 right-3 bg-tertiary/20 text-tertiary text-[0.55rem] font-bold uppercase px-2 py-0.5 rounded">Próximamente</div>
+          <span
+            class="bg-tertiary/10 text-tertiary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full w-fit mb-4">Paquete
+            Crecimiento</span>
+          <h3 class="text-xl font-headline text-on-surface mb-1">Módulos 4–5</h3>
+
+          <blockquote class="border-l-2 border-tertiary/40 pl-3 my-3">
+            <p class="text-sm text-on-surface-variant italic leading-snug">"Ya tengo mis gastos controlados. Quiero
+              aprender a ahorrar e invertir."</p>
+          </blockquote>
+          <span
+            class="inline-flex items-center gap-1 bg-surface-container text-on-surface-variant text-[0.6rem] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full w-fit mb-5">
+            <span class="material-symbols-outlined text-[0.8rem]">person</span>
+            Ya ordenado, quiere crecer
+          </span>
+
+          <div class="flex items-baseline gap-2 mb-1 opacity-70">
+            <span class="text-4xl font-headline text-on-surface">$449</span>
+            <span class="text-sm text-on-surface-variant">MXN</span>
+          </div>
+          <p class="text-[0.65rem] text-on-surface-variant/60 line-through mb-5">Precio normal: $497 MXN</p>
+
+          <ul class="flex-1 flex flex-col gap-2.5 mb-8">
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Ahorro y fondo de emergencia
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Inversión paso a paso
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Plantillas y ejercicios
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Versión imprimible
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Progreso guardado en la nube
+            </li>
+            <li class="flex items-start gap-2 text-sm font-medium text-on-surface mt-1">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">forum</span>Soporte directo por WhatsApp
+            </li>
+          </ul>
+          <a href="#lista-espera"
+            class="bg-surface-container-highest text-on-surface-variant font-semibold py-3 rounded-lg text-center border border-outline-variant/40 hover:bg-primary hover:text-white transition-colors text-sm">Unirme a la lista de espera</a>
+        </div>
+
+        <div class="warm-card rounded-2xl p-7 border-2 border-primary/40 ring-2 ring-primary/10 flex flex-col relative overflow-hidden">
+          <div class="absolute top-3 right-3 bg-primary/20 text-primary text-[0.55rem] font-bold uppercase px-2 py-0.5 rounded">Próximamente</div>
+          <span
+            class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[0.55rem] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-lg shadow-primary/30 whitespace-nowrap">Más
+            Popular</span>
+          <span
+            class="bg-primary/10 text-primary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full w-fit mb-4">Curso
+            Completo</span>
+          <h3 class="text-xl font-headline text-on-surface mb-1">Módulos 1–5</h3>
+
+          <blockquote class="border-l-2 border-primary/40 pl-3 my-3">
+            <p class="text-sm text-on-surface-variant italic leading-snug">"Quiero el camino completo, de cero a
+              invertir, sin saltar pasos."</p>
+          </blockquote>
+          <span
+            class="inline-flex items-center gap-1 bg-primary/10 text-primary text-[0.6rem] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full w-fit mb-5">
+            <span class="material-symbols-outlined text-[0.8rem]">person</span>
+            Decisión inteligente total
+          </span>
+
+          <div class="flex items-baseline gap-2 mb-1 opacity-70">
+            <span class="text-4xl font-headline text-on-surface">$649</span>
+            <span class="text-sm text-on-surface-variant">MXN</span>
+          </div>
+          <p class="text-[0.65rem] text-on-surface-variant/60 line-through mb-1">Precio normal: $747 MXN</p>
+          <p class="text-[0.65rem] text-primary font-semibold mb-5">Ahorra $98 en preventa · $147 vs. precio normal</p>
+
+          <ul class="flex-1 flex flex-col gap-2.5 mb-8">
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Los 5 módulos completos
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Plantillas y ejercicios
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Versión imprimible
+            </li>
+            <li class="flex items-start gap-2 text-sm text-on-surface-variant">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">check_circle</span>Progreso guardado en la nube
+            </li>
+            <li class="flex items-start gap-2 text-sm font-medium text-on-surface mt-1">
+              <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0"
+                style="font-variation-settings:'FILL' 1">forum</span>Soporte 1 a 1 por WhatsApp
+            </li>
+          </ul>
+          <a href="#lista-espera"
+            class="bg-primary text-white font-semibold py-3.5 rounded-lg text-center shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform text-sm">Unirme a la lista de espera</a>
+        </div>
+
       </div>
-      <ul class="flex-1 flex flex-col gap-2.5 mb-8">
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Ahorro y fondo de emergencia
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Inversión paso a paso
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Plantillas y ejercicios
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Versión imprimible
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Progreso guardado en la nube
-        </li>
-        <li class="flex items-start gap-2 text-sm font-medium text-on-surface mt-1">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">forum</span>Soporte directo por WhatsApp
-        </li>
-      </ul>
-      <a href="https://finanzasconproposito.lemonsqueezy.com/checkout/buy/42624c45-58ad-461f-9d15-6a1e45ef3712?checkout[custom][modules]=4,5" class="lemonsqueezy-button bg-tertiary text-white font-semibold py-3 rounded-lg text-center shadow-lg shadow-tertiary/20 hover:scale-105 active:scale-95 transition-transform text-sm">Obtener Paquete Crecimiento</a>
-    </div>
 
-    <!-- 4. Curso Completo — M1-5 (highlighted) -->
-    <div class="warm-card rounded-2xl p-7 border-2 border-primary/40 ring-2 ring-primary/10 flex flex-col relative">
-      <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[0.55rem] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-lg shadow-primary/30 whitespace-nowrap">Más Popular</span>
-      <span class="bg-primary/10 text-primary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full w-fit mb-4">Curso Completo</span>
-      <h3 class="text-lg font-headline text-on-surface mb-1">Módulos 1–5</h3>
-      <p class="text-sm text-on-surface-variant mb-4 leading-relaxed">Todo el camino: de cero a invertir. El mejor valor para transformar tus finanzas.</p>
-      <div class="mb-2">
-        <span class="text-4xl font-headline text-on-surface">$747</span>
-        <span class="text-sm text-on-surface-variant ml-1">MXN</span>
+      <div id="lista-espera" class="mt-16 max-w-2xl mx-auto bg-white border border-primary/20 rounded-2xl p-8 text-center shadow-xl scroll-mt-24">
+        <span class="material-symbols-outlined text-secondary text-5xl mb-3 block" style="font-variation-settings:'FILL' 1">mail</span>
+        <h3 class="text-2xl font-headline text-on-surface mb-2">Asegura tu precio especial de preventa</h3>
+        <p class="text-sm text-on-surface-variant mb-6 max-w-md mx-auto">Regístrate en nuestra lista de espera exclusiva. Serás el primero en enterarte del lanzamiento oficial y mantendrás el precio de descuento asegurado.</p>
+        <div id="waitlist-form-container">
+          <form id="waitlist-form" class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto relative">
+            <input type="email" id="waitlist-email" placeholder="Tu correo electrónico" required class="form-input flex-1 rounded border-outline-variant/60 focus:border-primary focus:ring-primary text-sm px-4 py-3 bg-surface-container-lowest text-on-surface">
+            <button type="submit" id="waitlist-submit" class="bg-primary text-white font-semibold py-3 px-6 rounded text-sm hover:scale-105 active:scale-95 transition-transform shadow-lg shadow-primary/20 disabled:opacity-70 disabled:pointer-events-none whitespace-nowrap min-w-[140px] flex items-center justify-center gap-2">
+              <span>Avisarme</span>
+            </button>
+            <div id="waitlist-message" class="absolute top-full left-0 right-0 mt-2 text-center text-xs font-medium hidden"></div>
+          </form>
+          <p class="text-[0.65rem] text-on-surface-variant/60 mt-4 max-w-md mx-auto">Al suscribirte, aceptas nuestro <a href="aviso-de-privacidad.html" class="underline hover:text-primary">Aviso de Privacidad</a>.</p>
+        </div>
+
+        <div id="waitlist-success-container" class="hidden text-center max-w-md mx-auto mt-4">
+          <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-secondary/10 text-secondary mb-3">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+          <h3 class="text-lg font-headline text-on-surface mb-2">¡Estás en la lista!</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">
+            Te avisaremos en cuanto el Workbook esté disponible y te enviaremos tu descuento especial.
+          </p>
+        </div>
+
+        <script>
+          document.getElementById('waitlist-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('waitlist-email');
+            const submitBtn = document.getElementById('waitlist-submit');
+            const msgBox = document.getElementById('waitlist-message');
+            const formContainer = document.getElementById('waitlist-form-container');
+            const successContainer = document.getElementById('waitlist-success-container');
+            const email = emailInput.value;
+
+            emailInput.disabled = true;
+            submitBtn.disabled = true;
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm" style="font-variation-settings: \'FILL\' 0;">progress_activity</span> Enviando...';
+            msgBox.classList.add('hidden');
+            msgBox.className = 'absolute top-full left-0 right-0 mt-2 text-center text-xs font-medium hidden';
+
+            try {
+              const res = await fetch('/.netlify/functions/subscribe', {
+                method: 'POST',
+                body: JSON.stringify({ email: email }),
+                headers: { 'Content-Type': 'application/json' }
+              });
+
+              const data = await res.json();
+
+              if (res.ok) {
+                formContainer.classList.add('hidden');
+                successContainer.classList.remove('hidden');
+                emailInput.value = '';
+              } else {
+                throw new Error(data.error || 'Error al suscribirse');
+              }
+            } catch (err) {
+              msgBox.textContent = "Hubo un problema. Intenta de nuevo más tarde.";
+              msgBox.classList.add('text-tertiary');
+              msgBox.classList.remove('hidden');
+              console.error('Error suscribiendo:', err);
+              emailInput.disabled = false;
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalBtnText;
+            }
+          });
+        </script>
       </div>
-      <p class="text-[0.65rem] text-primary font-semibold mb-6">Ahorras $147 vs. comprar por separado</p>
-      <ul class="flex-1 flex flex-col gap-2.5 mb-8">
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Los 5 módulos completos
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Plantillas y ejercicios
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Versión imprimible
-        </li>
-        <li class="flex items-start gap-2 text-sm text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">check_circle</span>Progreso guardado en la nube
-        </li>
-        <li class="flex items-start gap-2 text-sm font-medium text-on-surface mt-1">
-          <span class="material-symbols-outlined text-primary text-base mt-0.5 shrink-0" style="font-variation-settings:'FILL' 1">forum</span>Soporte 1 a 1 por WhatsApp
-        </li>
-      </ul>
-      <a href="https://finanzasconproposito.lemonsqueezy.com/checkout/buy/f1032444-ec8c-41f5-b26b-795da959d006?checkout[custom][modules]=1,2,3,4,5" class="lemonsqueezy-button bg-primary text-white font-semibold py-3.5 rounded-lg text-center shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform text-sm">Obtener Curso Completo</a>
-    </div>
 
-  </div>
+      <div
+        class="mt-12 max-w-4xl mx-auto bg-primary/5 border border-primary/20 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+        <div class="bg-primary/10 p-4 rounded-full text-primary shrink-0 flex items-center justify-center">
+          <span class="material-symbols-outlined text-4xl">forum</span>
+        </div>
+        <div>
+          <h4 class="text-lg md:text-xl font-headline text-on-surface mb-2">No estarás solo en este proceso</h4>
+          <p class="text-sm md:text-base text-on-surface-variant leading-relaxed">
+            Todos los paquetes incluirán <strong>seguimiento personalizado</strong> en su lanzamiento. Cada persona que adquiera el workbook tendrá acceso directo a mi WhatsApp — para preguntar, comentar sus ejercicios, y asegurarse de que lo que aprende realmente cambie algo.
+          </p>
+        </div>
+      </div>
 
-  <!-- WhatsApp Value Proposition Banner -->
-  <div class="mt-12 max-w-4xl mx-auto bg-primary/5 border border-primary/20 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-    <div class="bg-primary/10 p-4 rounded-full text-primary shrink-0 flex items-center justify-center">
-      <span class="material-symbols-outlined text-4xl">forum</span>
-    </div>
-    <div>
-      <h4 class="text-lg md:text-xl font-headline text-on-surface mb-2">No estás solo en este proceso</h4>
-      <p class="text-sm md:text-base text-on-surface-variant leading-relaxed">
-        Todos los paquetes incluyen <strong>seguimiento personalizado</strong>. Al adquirir cualquiera de los módulos, tendrás acceso directo a mi WhatsApp para resolver tus dudas, comentar tus ejercicios y asegurarnos de que apliques los principios bíblicos correctamente en tu vida financiera.
-      </p>
-    </div>
-  </div>
-
-</section>
+    </section>
 
 
+    <section id="faq" class="w-full bg-surface py-20 px-8 relative">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-headline text-on-surface mb-4">Preguntas Frecuentes</h2>
+          <p class="text-on-surface-variant text-lg">Resuelve tus dudas antes de comenzar tu transformación financiera.
+          </p>
+        </div>
 
-</main>
+        <div class="space-y-4">
+          <details
+            class="group bg-primary/5 border border-primary/20 rounded-xl p-6 [&_summary::-webkit-details-marker]:hidden">
+            <summary
+              class="flex justify-between items-center font-headline text-on-surface cursor-pointer list-none text-lg">
+              ¿El workbook es físico o digital?
+              <span class="transition group-open:rotate-180 material-symbols-outlined text-primary">expand_more</span>
+            </summary>
+            <p class="text-on-surface-variant mt-4 leading-relaxed">
+              Es 100% digital e interactivo. Recibirás acceso inmediato a un portal donde podrás ver los módulos,
+              descargar PDFs para imprimir y acceder a las plantillas en Google Sheets.
+            </p>
+          </details>
 
-<!-- Footer -->
-<footer class="bg-primary py-16">
-<div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
-  <img src="assets/Logo footer.png" alt="WiserPicture" class="h-24 w-auto mb-8">
+          <details
+            class="group bg-primary/5 border border-primary/20 rounded-xl p-6 [&_summary::-webkit-details-marker]:hidden">
+            <summary
+              class="flex justify-between items-center font-headline text-on-surface cursor-pointer list-none text-lg">
+              ¿Necesito saber de finanzas para aprovecharlo?
+              <span class="transition group-open:rotate-180 material-symbols-outlined text-primary">expand_more</span>
+            </summary>
+            <p class="text-on-surface-variant mt-4 leading-relaxed">
+              Para nada. Está diseñado para llevarte de cero a tu primera inversión, explicando todo de forma muy
+              sencilla, práctica y adaptada a la realidad de México.
+            </p>
+          </details>
 
-  <!-- Footer Navigation -->
-  <div class="flex flex-wrap justify-center gap-6 mb-8">
-    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="blog.html">Blog</a>
-    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="podcast.html">Podcast</a>
-    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="workbook.html">Workbook</a>
-    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="recursos.html">Recursos</a>
-    <a class="text-white/60 hover:text-white transition-colors text-sm font-medium border-l border-white/20 pl-6" href="login.html">Mi Cuenta</a>
-  </div>
+          <details
+            class="group bg-primary/5 border border-primary/20 rounded-xl p-6 [&_summary::-webkit-details-marker]:hidden">
+            <summary
+              class="flex justify-between items-center font-headline text-on-surface cursor-pointer list-none text-lg">
+              ¿Me quedaré solo si tengo dudas con los ejercicios?
+              <span class="transition group-open:rotate-180 material-symbols-outlined text-primary">expand_more</span>
+            </summary>
+            <p class="text-on-surface-variant mt-4 leading-relaxed">
+              No, todos los paquetes incluyen soporte directo por WhatsApp. Podrás escribirme para resolver tus dudas y
+              asegurarnos de que estás aplicando bien los principios.
+            </p>
+          </details>
+
+          <details
+            class="group bg-primary/5 border border-primary/20 rounded-xl p-6 [&_summary::-webkit-details-marker]:hidden">
+            <summary
+              class="flex justify-between items-center font-headline text-on-surface cursor-pointer list-none text-lg">
+              ¿Cuánto tiempo tengo para completar los módulos?
+              <span class="transition group-open:rotate-180 material-symbols-outlined text-primary">expand_more</span>
+            </summary>
+            <p class="text-on-surface-variant mt-4 leading-relaxed">
+              Tendrás acceso de por vida al portal y a los módulos que adquieras, incluyendo cualquier actualización
+              futura. Puedes avanzar a tu propio ritmo.
+            </p>
+          </details>
+
+          <details
+            class="group bg-primary/5 border border-primary/20 rounded-xl p-6 [&_summary::-webkit-details-marker]:hidden">
+            <summary
+              class="flex justify-between items-center font-headline text-on-surface cursor-pointer list-none text-lg">
+              ¿Cuándo podré adquirir los paquetes completos?
+              <span class="transition group-open:rotate-180 material-symbols-outlined text-primary">expand_more</span>
+            </summary>
+            <p class="text-on-surface-variant mt-4 leading-relaxed">
+              Muy pronto abriremos los accesos oficiales. Si te registras hoy en la lista de espera, asegurarás un precio especial exclusivo de lanzamiento y serás el primero en poder ingresar al contenido completo.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-primary py-16">
+    <div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
+      <img src="assets/Logo footer.png" alt="WiserPicture" class="h-24 w-auto mb-8">
+
+      <div class="flex flex-wrap justify-center gap-6 mb-8">
+        <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="blog.html">Blog</a>
+        <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="podcast.html">Podcast</a>
+        <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="workbook.html">Workbook</a>
+        <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="recursos.html">Recursos</a>
+        <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="aviso-de-privacidad.html">Aviso de Privacidad y Términos</a>
+        <a class="text-white/60 hover:text-white transition-colors text-sm font-medium border-l border-white/20 pl-6" href="login.html">Mi Cuenta</a>
+      </div>
 
 
 
-  <!-- Social -->
-  <div class="flex gap-6 mb-8">
-    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank" aria-label="WiserPicture en Instagram" rel="noopener">
-      <span class="material-symbols-outlined text-xl">photo_camera</span>
-      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
-    </a>
-    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank" aria-label="WiserPicture en Facebook" rel="noopener">
-      <span class="material-symbols-outlined text-xl">public</span>
-      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
-    </a>
-  </div>
+      <div class="flex gap-6 mb-8">
+        <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5"
+          href="https://www.instagram.com/wiserpicture/" target="_blank" aria-label="WiserPicture en Instagram"
+          rel="noopener">
+          <span class="material-symbols-outlined text-xl">photo_camera</span>
+          <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
+        </a>
+        <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5"
+          href="https://www.facebook.com/wiserpicture" target="_blank" aria-label="WiserPicture en Facebook"
+          rel="noopener">
+          <span class="material-symbols-outlined text-xl">public</span>
+          <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
+        </a>
+      </div>
 
-  <!-- Contact -->
-  <div class="mb-10">
-    <p class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/60 mb-2">Contacto</p>
-    <a class="text-white/80 hover:text-white transition-colors text-base" href="mailto:edgar@wiserpicture.com">
-      edgar@wiserpicture.com
-    </a>
-  </div>
+      <div class="mb-10">
+        <p class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/60 mb-2">Contacto</p>
+        <a class="text-white/80 hover:text-white transition-colors text-base" href="mailto:edgar@wiserpicture.com">
+          edgar@wiserpicture.com
+        </a>
+      </div>
 
-  <p class="text-[0.7rem] text-white/40">© 2026 WiserPicture. Todos los derechos reservados.</p>
-</div>
-</footer>
-
-<!-- Mobile Bottom Nav -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-outline-variant/30 z-50 flex justify-around items-center py-3 px-4 rounded-t-2xl">
-  <a href="index.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">home</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Inicio</span></a>
-  <a href="blog.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">article</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Blog</span></a>
-  <a href="podcast.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">mic</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Podcast</span></a>
-  <a href="workbook.html" class="flex flex-col items-center gap-0.5 text-primary relative"><div class="absolute -top-0.5 w-1 h-1 bg-primary rounded-full shadow-none"></div><span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1">menu_book</span><span class="text-[0.55rem] font-bold tracking-widest uppercase">Workbook</span></a>
-  <a href="recursos.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-xl">handyman</span><span class="text-[0.55rem] font-medium tracking-widest uppercase">Recursos</span></a>
-</nav>
-<div class="h-20 md:hidden"></div>
-
-<script>
-  const toggle=document.getElementById('menu-toggle'),drawer=document.getElementById('nav-drawer'),overlay=document.getElementById('nav-overlay'),closeBtn=document.getElementById('menu-close');
-  function openMenu(){drawer.classList.add('open');overlay.classList.add('open')}
-  function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('open')}
-  toggle.addEventListener('click',openMenu);closeBtn.addEventListener('click',closeMenu);overlay.addEventListener('click',closeMenu);
-</script>
-</body></html>
+      <p class="text-
