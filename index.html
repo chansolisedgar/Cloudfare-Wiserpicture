@@ -456,9 +456,11 @@
           const slides = track.querySelectorAll(':scope > div');
           let current = 0;
 
-          function goTo(index) {
+          function goTo(index, skipScroll = false) {
             current = Math.max(0, Math.min(index, slides.length - 1));
-            slides[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            if (!skipScroll) {
+              slides[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
             dots.forEach((d, i) => {
               const active = i === current;
               d.classList.toggle('bg-primary', active);
@@ -476,7 +478,7 @@
             entries.forEach(entry => {
               if (entry.isIntersecting) {
                 const idx = [...slides].indexOf(entry.target);
-                if (idx !== -1) goTo(idx);
+                if (idx !== -1) goTo(idx, true);
               }
             });
           }, { root: track, threshold: 0.6 });
