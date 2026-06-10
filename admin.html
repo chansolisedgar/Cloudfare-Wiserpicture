@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Admin — WiserPicture</title>
+<meta name="robots" content="noindex, nofollow">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#6B705C",
+          "on-surface": "#1A1C1B",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .warm-card { background: #FFFFFF; border: 1px solid #E8E8E5; box-shadow: 0 1px 3px rgba(45,51,25,0.06), 0 1px 2px rgba(45,51,25,0.04); }
+</style>
+<link rel="icon" type="image/png" href="/assets/favicon.png" />
+</head>
+<body class="font-body flex flex-col min-h-screen">
+
+<header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 border-b border-outline-variant/30">
+  <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+    <div class="flex items-center gap-3">
+      <a href="index.html"><img src="assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto"></a>
+      <span class="hidden md:inline-block ml-4 pl-4 border-l border-outline-variant/50 text-sm font-semibold text-tertiary uppercase tracking-widest">Dashboard Admin</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="portal.html" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">Mi Portal</a>
+      <a href="#" id="sign-out-btn" class="flex items-center gap-2 text-on-surface-variant hover:text-tertiary transition-colors text-sm font-medium">
+        <span class="material-symbols-outlined text-xl">logout</span>
+        <span class="hidden sm:inline">Cerrar Sesión</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Loading -->
+<div id="admin-loading" class="flex-1 flex items-center justify-center">
+  <div class="text-center">
+    <div class="inline-block w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+    <p class="text-sm text-on-surface-variant">Cargando dashboard...</p>
+  </div>
+</div>
+
+<!-- Denied -->
+<div id="admin-denied" class="hidden flex-1 flex items-center justify-center px-6">
+  <div class="text-center max-w-md">
+    <span class="material-symbols-outlined text-tertiary text-6xl mb-4 block">gpp_bad</span>
+    <h1 class="text-2xl font-headline text-on-surface mb-2">Acceso restringido</h1>
+    <p class="text-sm text-on-surface-variant mb-6" id="denied-message">Esta página es solo para el administrador del sitio.</p>
+    <a href="index.html" class="text-primary text-sm font-semibold hover:underline">← Volver al inicio</a>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<main id="admin-content" class="hidden flex-1 w-full max-w-7xl mx-auto px-6 py-12">
+
+  <section class="mb-10">
+    <span class="text-[0.65rem] font-bold text-secondary uppercase tracking-widest mb-2 block">Panel de control</span>
+    <h1 class="text-3xl md:text-4xl font-headline text-on-surface mb-2">Dashboard de Módulos</h1>
+    <p class="text-sm text-on-surface-variant">Última actualización: <span id="generated-at">—</span></p>
+  </section>
+
+  <!-- Stat cards -->
+  <section class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+    <div class="warm-card rounded-2xl p-5">
+      <p class="text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Usuarios totales</p>
+      <p class="text-3xl font-headline text-on-surface" id="stat-users">—</p>
+    </div>
+    <div class="warm-card rounded-2xl p-5">
+      <p class="text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Compradores</p>
+      <p class="text-3xl font-headline text-primary" id="stat-buyers">—</p>
+    </div>
+    <div class="warm-card rounded-2xl p-5">
+      <p class="text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Solo Módulo 1</p>
+      <p class="text-3xl font-headline text-secondary" id="stat-free">—</p>
+    </div>
+    <div class="warm-card rounded-2xl p-5">
+      <p class="text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Trabajando workbook</p>
+      <p class="text-3xl font-headline text-on-surface" id="stat-active">—</p>
+    </div>
+    <div class="warm-card rounded-2xl p-5">
+      <p class="text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Respuestas guardadas</p>
+      <p class="text-3xl font-headline text-on-surface" id="stat-fields">—</p>
+    </div>
+  </section>
+
+  <!-- Access per module -->
+  <section class="mb-12">
+    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-outline-variant/30">
+      <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1">bar_chart</span>
+      <h2 class="text-xl font-headline text-on-surface">Acceso por módulo</h2>
+    </div>
+    <div id="module-bars" class="flex flex-col gap-4"></div>
+  </section>
+
+  <!-- Users table -->
+  <section>
+    <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline-variant/30">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1">group</span>
+        <h2 class="text-xl font-headline text-on-surface">Usuarios</h2>
+      </div>
+      <input type="text" id="user-search" placeholder="Buscar por email o nombre..." class="form-input rounded-lg border-outline-variant/60 focus:border-primary focus:ring-primary text-sm px-4 py-2 bg-white w-64">
+    </div>
+    <div class="warm-card rounded-2xl overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left border-b border-outline-variant/30 text-[0.65rem] uppercase tracking-widest text-on-surface-variant">
+            <th class="px-5 py-4 font-bold">Usuario</th>
+            <th class="px-5 py-4 font-bold">Módulos</th>
+            <th class="px-5 py-4 font-bold">Última compra</th>
+            <th class="px-5 py-4 font-bold">Último acceso</th>
+            <th class="px-5 py-4 font-bold text-right">Progreso</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/supabase-auth.js"></script>
+<script>
+  const MODULE_NAMES = { 1: 'Fundamentos', 2: 'Presupuesto', 3: 'Deudas', 4: 'Ahorro', 5: 'Inversión' };
+  let allUsersData = [];
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function show(id) {
+    ['admin-loading', 'admin-denied', 'admin-content'].forEach(x => {
+      document.getElementById(x).classList.toggle('hidden', x !== id);
+    });
+  }
+
+  function renderUsers(users) {
+    const tbody = document.getElementById('users-tbody');
+    if (users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="px-5 py-8 text-center text-on-surface-variant">Sin resultados</td></tr>';
+      return;
+    }
+    tbody.innerHTML = users.map(u => {
+      const badges = (u.modules || []).map(m =>
+        `<span class="inline-block bg-primary/10 text-primary text-[0.6rem] font-bold px-2 py-0.5 rounded mr-1" title="${MODULE_NAMES[m] || ''}">M${m}</span>`
+      ).join('');
+      const roleBadge = u.role === 'admin'
+        ? '<span class="inline-block bg-tertiary/10 text-tertiary text-[0.6rem] font-bold px-2 py-0.5 rounded ml-2 uppercase">Admin</span>'
+        : '';
+      return `<tr class="border-b border-outline-variant/20 hover:bg-surface-container-lowest transition-colors">
+        <td class="px-5 py-4">
+          <p class="font-semibold text-on-surface">${u.name || '—'}${roleBadge}</p>
+          <p class="text-xs text-on-surface-variant">${u.email}</p>
+        </td>
+        <td class="px-5 py-4">${badges || '<span class="text-xs text-on-surface-variant">Sin acceso</span>'}</td>
+        <td class="px-5 py-4 text-on-surface-variant">${fmtDate(u.purchasedAt)}${u.lastProduct ? `<p class="text-[0.65rem] opacity-70">${u.lastProduct}</p>` : ''}</td>
+        <td class="px-5 py-4 text-on-surface-variant">${fmtDate(u.lastSignInAt)}</td>
+        <td class="px-5 py-4 text-right font-semibold ${u.progressFields > 0 ? 'text-primary' : 'text-on-surface-variant'}">${u.progressFields} campos</td>
+      </tr>`;
+    }).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const session = await WP.getSession();
+    if (!session) {
+      sessionStorage.setItem('wp_redirect_after_login', window.location.href);
+      window.location.href = '/login.html';
+      return;
+    }
+
+    document.getElementById('sign-out-btn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await WP.signOut();
+    });
+
+    try {
+      const res = await fetch('/api/admin-stats', {
+        headers: { 'Authorization': 'Bearer ' + session.access_token }
+      });
+
+      if (res.status === 401 || res.status === 403) {
+        const body = await res.json().catch(() => ({}));
+        document.getElementById('denied-message').textContent = body.error || 'Esta página es solo para el administrador del sitio.';
+        show('admin-denied');
+        return;
+      }
+      if (!res.ok) throw new Error('Error ' + res.status);
+
+      const data = await res.json();
+      allUsersData = data.users || [];
+
+      document.getElementById('generated-at').textContent = new Date(data.generatedAt).toLocaleString('es-MX');
+      document.getElementById('stat-users').textContent = data.totals.users;
+      document.getElementById('stat-buyers').textContent = data.totals.buyers;
+      document.getElementById('stat-free').textContent = data.totals.freeUsers;
+      document.getElementById('stat-active').textContent = data.totals.activeWorkbookUsers;
+      document.getElementById('stat-fields').textContent = data.totals.progressFieldsSaved;
+
+      // Module bars
+      const max = Math.max(1, ...Object.values(data.moduleCounts));
+      document.getElementById('module-bars').innerHTML = [1, 2, 3, 4, 5].map(m => {
+        const count = data.moduleCounts[m] || 0;
+        const pct = Math.round((count / max) * 100);
+        return `<div class="flex items-center gap-4">
+          <span class="w-40 text-sm font-semibold text-on-surface shrink-0">Módulo ${m} · ${MODULE_NAMES[m]}</span>
+          <div class="flex-1 bg-surface-container rounded-full h-5 overflow-hidden">
+            <div class="bg-primary h-full rounded-full transition-all" style="width:${pct}%"></div>
+          </div>
+          <span class="w-12 text-right text-sm font-bold text-primary">${count}</span>
+        </div>`;
+      }).join('');
+
+      renderUsers(allUsersData);
+
+      document.getElementById('user-search').addEventListener('input', (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        renderUsers(allUsersData.filter(u =>
+          (u.email || '').toLowerCase().includes(q) || (u.name || '').toLowerCase().includes(q)
+        ));
+      });
+
+      show('admin-content');
+    } catch (err) {
+      document.getElementById('denied-message').textContent = 'Error al cargar el dashboard: ' + err.message;
+      show('admin-denied');
+    }
+  });
+</script>
+
+</body>
+</html>
