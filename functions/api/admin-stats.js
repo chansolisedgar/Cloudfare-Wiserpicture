@@ -48,6 +48,13 @@ export async function onRequestGet({ request, env }) {
       return json({ error: 'Acceso restringido al administrador' }, 403);
     }
 
+    if (!env.SUPABASE_SERVICE_KEY) {
+      return json({
+        error: 'Falta configuración en el servidor',
+        detail: 'La variable SUPABASE_SERVICE_KEY no existe en Cloudflare Pages. Agrégala en: dash.cloudflare.com → Workers & Pages → tu proyecto → Settings → Variables and Secrets. El valor es el "service_role" key de Supabase (Project Settings → API keys).'
+      }, 500);
+    }
+
     const supabaseAdmin = createClient(env.SUPABASE_URL || FRONTEND_SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
 
     // Auto-grant: asegura que el admin tenga rol y acceso completo a los módulos
@@ -68,7 +75,12 @@ export async function onRequestGet({ request, env }) {
     let page = 1;
     while (page <= 10) {
       const { data: { users }, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage: 1000 });
-      if (error) throw error;
+      if (error) {
+        return json({
+          error: 'No se pudo leer la lista de usuarios de Supabase',
+          detail: `${error.message || error}. Verifica que SUPABASE_SERVICE_KEY en Cloudflare sea el "service_role" key correcto del proyecto.`
+        }, 500);
+      }
       if (!users || users.length === 0) break;
       allUsers.push(...users);
       if (users.length < 1000) break;

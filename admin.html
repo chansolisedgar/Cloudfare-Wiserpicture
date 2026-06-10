@@ -204,15 +204,14 @@
         headers: { 'Authorization': 'Bearer ' + session.access_token }
       });
 
-      if (res.status === 401 || res.status === 403) {
+      if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         document.getElementById('denied-message').textContent =
-          (body.error || 'Esta página es solo para el administrador del sitio.') +
-          (body.detail ? ` (${body.detail})` : '');
+          (body.error || 'Error ' + res.status) +
+          (body.detail ? ` — ${body.detail}` : '');
         show('admin-denied');
         return;
       }
-      if (!res.ok) throw new Error('Error ' + res.status);
 
       const data = await res.json();
       allUsersData = data.users || [];
