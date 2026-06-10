@@ -12,6 +12,19 @@ import { createClient } from '@supabase/supabase-js';
 // Public (anon) key — same one shipped in js/supabase-auth.js
 export const DEFAULT_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3Y2FnZGxzbGt4cnpxbmd5c3RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3OTkyNDMsImV4cCI6MjA5NDM3NTI0M30.rI6-hkEDvs9m_TJDVAc3eaPygo_1GRNUVyg9QbTvNJc';
 
+// API URL del proyecto (la misma que usa el frontend)
+export const DEFAULT_SUPABASE_URL = 'https://qwcagdlslkxrzqngystj.supabase.co';
+
+/**
+ * Devuelve la URL del API de Supabase. Si la env var está vacía o tiene un
+ * valor inválido (ej. el link del dashboard en vez del API URL), usa la
+ * URL correcta del proyecto.
+ */
+export function getSupabaseUrl(env) {
+  const raw = (env.SUPABASE_URL || '').trim().replace(/\/+$/, '');
+  return /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(raw) ? raw : DEFAULT_SUPABASE_URL;
+}
+
 export const MODULE_NAMES = {
   1: 'Fundamentos',
   2: 'Presupuesto',
@@ -47,8 +60,9 @@ export function parseModules(modulesValue) {
 export async function provisionUserAccess({ email, name, modules, productName, env }) {
   const siteUrl = env.SITE_URL || 'https://wiserpicture.com';
 
-  const supabaseAdmin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
-  const supabaseAnon = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY || DEFAULT_ANON_KEY);
+  const supabaseUrl = getSupabaseUrl(env);
+  const supabaseAdmin = createClient(supabaseUrl, env.SUPABASE_SERVICE_KEY);
+  const supabaseAnon = createClient(supabaseUrl, env.SUPABASE_ANON_KEY || DEFAULT_ANON_KEY);
 
   async function findUserByEmail(targetEmail) {
     const target = targetEmail.toLowerCase();

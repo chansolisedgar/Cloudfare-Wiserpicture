@@ -8,10 +8,7 @@
  * completo a los 5 módulos y el rol "admin" en su cuenta.
  */
 import { createClient } from '@supabase/supabase-js';
-import { DEFAULT_ANON_KEY } from '../_lib/provision.js';
-
-// Mismo proyecto que usa el frontend (js/supabase-auth.js)
-const FRONTEND_SUPABASE_URL = 'https://qwcagdlslkxrzqngystj.supabase.co';
+import { DEFAULT_ANON_KEY, DEFAULT_SUPABASE_URL as FRONTEND_SUPABASE_URL, getSupabaseUrl } from '../_lib/provision.js';
 // Siempre admins, aunque ADMIN_EMAILS no esté configurada en Cloudflare
 const FALLBACK_ADMINS = ['chansolis.edgar@gmail.com', 'edgar@wiserpicture.com'];
 
@@ -55,7 +52,7 @@ export async function onRequestGet({ request, env }) {
       }, 500);
     }
 
-    const supabaseAdmin = createClient(env.SUPABASE_URL || FRONTEND_SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
+    const supabaseAdmin = createClient(getSupabaseUrl(env), env.SUPABASE_SERVICE_KEY);
 
     // Auto-grant: asegura que el admin tenga rol y acceso completo a los módulos
     const meta = caller.user_metadata || {};
