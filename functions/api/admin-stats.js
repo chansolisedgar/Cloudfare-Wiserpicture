@@ -8,7 +8,6 @@
  * completo a los 5 módulos y el rol "admin" en su cuenta.
  */
 import { createClient } from '@supabase/supabase-js';
-import { DEFAULT_ANON_KEY } from '../_lib/provision.js';
 
 const FALLBACK_ADMIN = 'chansolis.edgar@gmail.com';
 
@@ -20,11 +19,13 @@ export async function onRequestGet({ request, env }) {
       return json({ error: 'No autorizado' }, 401);
     }
 
-    const supabaseAnon = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY || DEFAULT_ANON_KEY);
-    const { data: { user: caller }, error: authError } = await supabaseAnon.auth.getUser(token);
+    // Valida el token con el service key (evita fallos si el anon key del
+    // entorno no coincide con el del frontend)
+    const supabaseAdmin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
+    const { data: { user: caller }, error: authError } = await supabaseAdmin.auth.getUser(token);
 
     if (authError || !caller) {
-      return json({ error: 'Sesión inválida' }, 401);
+      return json({ error: 'Sesión inválida', detail: authError?.message || 'sin usuario' }, 401);
     }
 
     const adminEmails = (env.ADMIN_EMAILS || FALLBACK_ADMIN)
@@ -35,8 +36,6 @@ export async function onRequestGet({ request, env }) {
     if (!adminEmails.includes((caller.email || '').toLowerCase())) {
       return json({ error: 'Acceso restringido al administrador' }, 403);
     }
-
-    const supabaseAdmin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
 
     // Auto-grant: asegura que el admin tenga rol y acceso completo a los módulos
     const meta = caller.user_metadata || {};

@@ -206,7 +206,9 @@
 
       if (res.status === 401 || res.status === 403) {
         const body = await res.json().catch(() => ({}));
-        document.getElementById('denied-message').textContent = body.error || 'Esta página es solo para el administrador del sitio.';
+        document.getElementById('denied-message').textContent =
+          (body.error || 'Esta página es solo para el administrador del sitio.') +
+          (body.detail ? ` (${body.detail})` : '');
         show('admin-denied');
         return;
       }

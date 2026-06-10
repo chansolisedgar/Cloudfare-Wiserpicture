@@ -23,9 +23,9 @@ window.WP_LAUNCH = {
   // Cada Payment Link debe tener metadata: modules = "1,2,3" / "4,5" / "1,2,3,4,5"
   // Si los dejas vacíos, el botón de OXXO simplemente no se muestra.
   oxxo: {
-    orden: '',
-    crecimiento: '',
-    completo: ''
+    orden:       'https://buy.stripe.com/dRm8wPftt05o4FF1tJ4Rq00',
+    crecimiento: 'https://buy.stripe.com/6oU3cv3KL6tMgon2xN4Rq01',
+    completo:    'https://buy.stripe.com/5kQ9ATa9919s1tt8Wb4Rq02'
   }
 };
 
