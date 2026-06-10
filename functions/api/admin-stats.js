@@ -8,8 +8,12 @@
  * completo a los 5 módulos y el rol "admin" en su cuenta.
  */
 import { createClient } from '@supabase/supabase-js';
+import { DEFAULT_ANON_KEY } from '../_lib/provision.js';
 
-const FALLBACK_ADMIN = 'chansolis.edgar@gmail.com';
+// Mismo proyecto que usa el frontend (js/supabase-auth.js)
+const FRONTEND_SUPABASE_URL = 'https://qwcagdlslkxrzqngystj.supabase.co';
+// Siempre admins, aunque ADMIN_EMAILS no esté configurada en Cloudflare
+const FALLBACK_ADMINS = ['chansolis.edgar@gmail.com', 'edgar@wiserpicture.com'];
 
 export async function onRequestGet({ request, env }) {
   try {
@@ -19,23 +23,32 @@ export async function onRequestGet({ request, env }) {
       return json({ error: 'No autorizado' }, 401);
     }
 
-    // Valida el token con el service key (evita fallos si el anon key del
-    // entorno no coincide con el del frontend)
-    const supabaseAdmin = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
-    const { data: { user: caller }, error: authError } = await supabaseAdmin.auth.getUser(token);
+    // Valida la sesión directamente contra el proyecto del frontend,
+    // sin depender de SUPABASE_URL/keys del entorno de Cloudflare
+    const userRes = await fetch(`${FRONTEND_SUPABASE_URL}/auth/v1/user`, {
+      headers: {
+        'apikey': DEFAULT_ANON_KEY,
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
-    if (authError || !caller) {
-      return json({ error: 'Sesión inválida', detail: authError?.message || 'sin usuario' }, 401);
+    if (!userRes.ok) {
+      const detail = (await userRes.text()).slice(0, 200);
+      return json({ error: 'Sesión inválida', detail: `auth ${userRes.status}: ${detail}` }, 401);
     }
 
-    const adminEmails = (env.ADMIN_EMAILS || FALLBACK_ADMIN)
-      .split(',')
-      .map(e => e.trim().toLowerCase())
-      .filter(Boolean);
+    const caller = await userRes.json();
+
+    const adminEmails = [...new Set([
+      ...FALLBACK_ADMINS,
+      ...(env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
+    ])];
 
     if (!adminEmails.includes((caller.email || '').toLowerCase())) {
       return json({ error: 'Acceso restringido al administrador' }, 403);
     }
+
+    const supabaseAdmin = createClient(env.SUPABASE_URL || FRONTEND_SUPABASE_URL, env.SUPABASE_SERVICE_KEY);
 
     // Auto-grant: asegura que el admin tenga rol y acceso completo a los módulos
     const meta = caller.user_metadata || {};

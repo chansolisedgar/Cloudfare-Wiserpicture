@@ -188,6 +188,29 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
   const firstName = (name || '').split(' ')[0] || 'Hola';
   const pkg = packageNameFor(modules);
 
+  // Seguimiento personalizado por WhatsApp (Edgar: 938 107 2211)
+  const WA_PHONE = '529381072211';
+  const waLink = (msg) => `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(msg)}`;
+  const waButton = (href, label) => `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:12px auto 4px;"><tr><td style="background:#25D366;border-radius:8px;">
+    <a href="${href}" style="display:inline-block;padding:12px 28px;color:#FFFFFF;font-weight:600;text-decoration:none;font-size:14px;">💬 ${label}</a>
+  </td></tr></table>`;
+
+  const waBlockCompra = `
+      <div style="background:#F4F4F1;border-radius:12px;padding:18px 20px;margin:20px 0;text-align:center;">
+        <p style="margin:0;font-weight:700;color:#334F2B;">Tu compra incluye seguimiento personalizado 🤝</p>
+        <p style="margin:8px 0 0;font-size:13px;color:#6B705C;">Escríbeme directamente por WhatsApp y te acompaño en tu proceso:</p>
+        ${waButton(waLink(`¡Hola Edgar! Soy ${firstName !== 'Hola' ? firstName : ''} y acabo de adquirir el ${pkg}. Me gustaría comenzar mi seguimiento personalizado. 🙌`), 'Escribir a Edgar por WhatsApp')}
+        <p style="margin:6px 0 0;font-size:12px;color:#6B705C;">938 107 2211 · Edgar U. Chan</p>
+      </div>`;
+
+  const waBlockFollowup = `
+      <div style="background:#F4F4F1;border-radius:12px;padding:18px 20px;margin:20px 0;text-align:center;">
+        <p style="margin:0;font-weight:700;color:#334F2B;">¿Dudas o quieres revisar tu avance juntos?</p>
+        <p style="margin:8px 0 0;font-size:13px;color:#6B705C;">Tu seguimiento personalizado está incluido — mándame un WhatsApp:</p>
+        ${waButton(waLink(`¡Hola Edgar! Soy ${firstName !== 'Hola' ? firstName : ''} y estoy trabajando mi ${pkg}. Tengo una pregunta sobre mi proceso. 🙏`), 'Escribir a Edgar por WhatsApp')}
+        <p style="margin:6px 0 0;font-size:12px;color:#6B705C;">938 107 2211 · Edgar U. Chan</p>
+      </div>`;
+
   const modulesList = modules
     .map(m => `<li style="margin-bottom:6px;"><strong>Módulo ${m}:</strong> ${MODULE_NAMES[m] || ''}</li>`)
     .join('');
@@ -208,8 +231,9 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
       </div>
       <p>${accessNote}</p>
       ${ctaButton(siteUrl + '/login.html', 'Acceder a mi portal')}
+      ${waBlockCompra}
       <p style="font-size:13px;color:#6B705C;">En el portal encontrarás los cuadernos interactivos (tu progreso se guarda en la nube), los PDFs imprimibles y las plantillas descargables.</p>
-      <p style="font-size:13px;color:#6B705C;">¿Dudas o problemas con tu acceso? Responde a este correo y te ayudo personalmente.</p>
+      <p style="font-size:13px;color:#6B705C;">¿Dudas o problemas con tu acceso? Responde a este correo o escríbeme por WhatsApp y te ayudo personalmente.</p>
       <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
     `, siteUrl)
   });
@@ -225,8 +249,9 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
       <p>Un consejo práctico: <strong>agenda 20 minutos esta semana</strong> para trabajar tu cuaderno. La constancia pequeña vence a la motivación grande.</p>
       <p style="background:#F4F4F1;border-left:3px solid #C9A84C;border-radius:0 8px 8px 0;padding:12px 16px;font-style:italic;color:#6B705C;">"Los planes del diligente ciertamente tienden a la abundancia." — Proverbios 21:5</p>
       ${ctaButton(siteUrl + '/login.html', 'Continuar mi workbook')}
+      ${waBlockFollowup}
       <p style="font-size:13px;color:#6B705C;">Recuerda: tu progreso se guarda automáticamente en la nube, puedes avanzar a tu ritmo desde cualquier dispositivo.</p>
-      <p style="font-size:13px;color:#6B705C;">Si algo no funciona o tienes preguntas sobre el contenido, solo responde a este correo.</p>
+      <p style="font-size:13px;color:#6B705C;">Si algo no funciona o tienes preguntas sobre el contenido, responde a este correo o mándame WhatsApp.</p>
       <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
     `, siteUrl)
   });
