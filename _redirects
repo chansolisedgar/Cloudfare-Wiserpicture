@@ -1,3 +1,3 @@
-/login /login.html 200
-/portal /portal.html 200
-/admin /admin.html 200
+# Cloudflare Pages sirve /login, /portal y /admin automáticamente (pretty URLs).
+# No agregar reglas "200" aquí: Pages las convierte en redirects que entran en
+# loop con la normalización automática de URLs (.html -> sin extensión).
