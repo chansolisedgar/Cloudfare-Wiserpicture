@@ -122,37 +122,30 @@
       <p class="text-lg text-on-surface-variant max-w-md mb-10 leading-relaxed font-body">
         Finanzas personales con fundamento bíblico para jóvenes en México. Con herramientas reales.
       </p>
-      <a href="https://open.spotify.com/show/wiserpicture" target="_blank" rel="noopener" class="inline-flex items-center gap-3 bg-[#1DB954] text-white font-bold py-4 px-8 rounded-full text-sm shadow-xl shadow-[#1DB954]/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95">
+      <a id="hero-spotify-link" href="https://open.spotify.com/show/wiserpicture" target="_blank" rel="noopener" class="inline-flex items-center gap-3 bg-[#1DB954] text-white font-bold py-4 px-8 rounded-full text-sm shadow-xl shadow-[#1DB954]/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95">
         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
         Escuchar en Spotify
       </a>
     </div>
 
-    <!-- Right Column: Featured Episode (Ep 8) -->
+    <!-- Right Column: Featured Episode (dinámico desde el RSS feed) -->
     <div class="lg:col-span-7">
-      <div class="relative">
+      <div class="relative" id="featured-wrap">
         <div class="absolute inset-0 bg-primary/5 rounded-2xl transform translate-x-4 translate-y-4 -z-10"></div>
-        <a href="podcast/ep8-haz-el-bien-sin-mirar-a-quien.html" class="block warm-card rounded-2xl p-8 md:p-12 border border-outline-variant/30 group hover:border-primary/50 transition-all duration-500 overflow-hidden relative shadow-lg hover:shadow-2xl">
-          <div class="absolute -right-8 -top-8 text-primary/5 font-headline text-[12rem] leading-none select-none transition-transform duration-500 group-hover:scale-110">8</div>
-          
-          <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-start">
-            <div class="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-primary text-white flex items-center justify-center flex-shrink-0 shadow-2xl shadow-primary/30 group-hover:rotate-3 transition-transform duration-500">
-              <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
-            </div>
-            
-            <div class="flex-1 text-center md:text-left">
-              <span class="inline-block bg-primary/10 text-primary text-[0.65rem] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Último Episodio</span>
-              <h3 class="text-2xl md:text-3xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-tight">Haz El Bien Sin Mirar A Quien</h3>
-              <p class="text-base text-on-surface-variant leading-relaxed mb-6">Reflexionamos sobre la justicia, la corrupción y el trato hacia los inmigrantes. Vivir en integridad y amor hacia el prójimo.</p>
-              
-              <div class="flex items-center justify-center md:justify-start gap-4">
-                <span class="text-xs text-on-surface-variant/70 uppercase tracking-wider font-semibold">Nov 26, 2023</span>
-                <span class="w-1.5 h-1.5 rounded-full bg-outline-variant/50"></span>
-                <span class="text-xs text-primary font-bold uppercase tracking-wider flex items-center gap-1 group-hover:underline underline-offset-4">Reproducir <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
-              </div>
+        <!-- Estado de carga -->
+        <div id="featured-loading" class="block warm-card rounded-2xl p-8 md:p-12 border border-outline-variant/30 shadow-lg">
+          <div class="flex flex-col md:flex-row gap-8 items-center md:items-start animate-pulse">
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-primary/10 flex-shrink-0"></div>
+            <div class="flex-1 w-full space-y-4">
+              <div class="h-4 bg-primary/10 rounded-full w-32"></div>
+              <div class="h-7 bg-on-surface-variant/10 rounded-lg w-3/4"></div>
+              <div class="h-4 bg-on-surface-variant/10 rounded-full w-full"></div>
+              <div class="h-4 bg-on-surface-variant/10 rounded-full w-2/3"></div>
             </div>
           </div>
-        </a>
+        </div>
+        <!-- El episodio destacado se inyecta aquí -->
+        <div id="featured-episode" class="hidden"></div>
       </div>
     </div>
   </div>
@@ -162,10 +155,33 @@
 <section class="bg-surface-container-low py-20 px-6 border-t border-outline-variant/20 mt-10">
   <div class="max-w-7xl mx-auto">
     <div class="flex items-center justify-between mb-12 border-b border-outline-variant/20 pb-4">
-      <h2 class="text-3xl font-headline italic text-on-surface">Todos los Episodios</h2>
+      <h2 class="text-3xl font-headline italic text-on-surface">Nueva Temporada</h2>
+      <span id="episodes-count" class="hidden text-xs text-on-surface-variant uppercase tracking-widest font-semibold"></span>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Episodios nuevos (dinámicos desde el RSS de Spotify) -->
+    <div id="episodes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- skeletons mientras carga -->
+      <div class="warm-card rounded-2xl p-8 border border-outline-variant/30 animate-pulse h-56"></div>
+      <div class="warm-card rounded-2xl p-8 border border-outline-variant/30 animate-pulse h-56"></div>
+      <div class="warm-card rounded-2xl p-8 border border-outline-variant/30 animate-pulse h-56"></div>
+    </div>
+
+    <!-- Estado vacío / error -->
+    <div id="episodes-empty" class="hidden text-center py-16">
+      <span class="material-symbols-outlined text-on-surface-variant/40 text-5xl mb-4 block">podcasts</span>
+      <p class="text-on-surface-variant mb-2">Pronto nuevos episodios.</p>
+      <a href="#" id="empty-spotify-link" target="_blank" rel="noopener" class="text-primary text-sm font-semibold hover:underline">Escúchalo en Spotify →</a>
+    </div>
+
+    <!-- ======== TEMPORADAS ANTERIORES (archivo) ======== -->
+    <details class="mt-16 group">
+      <summary class="cursor-pointer list-none flex items-center justify-center gap-3 py-4 border-t border-outline-variant/20 text-on-surface-variant hover:text-primary transition-colors">
+        <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+        <span class="text-sm font-semibold uppercase tracking-widest">Temporadas anteriores · 2023</span>
+      </summary>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
 
       <!-- Ep 8 -->
       <a href="podcast/ep8-haz-el-bien-sin-mirar-a-quien.html" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
@@ -335,7 +351,8 @@
         </div>
       </a>
 
-    </div>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -402,6 +419,103 @@
   toggle.addEventListener('click', openMenu);
   closeBtn.addEventListener('click', closeMenu);
   overlay.addEventListener('click', closeMenu);
+</script>
+
+<!-- ======== Carga dinámica de episodios desde el RSS de Spotify ======== -->
+<script>
+  const SPOTIFY_ICON = '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>';
+
+  function esc(s) {
+    return (s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  function featuredHTML(ep) {
+    const num = ep.displayNumber || '';
+    const tile = ep.image
+      ? `<img src="${esc(ep.image)}" alt="${esc(ep.title)}" class="w-24 h-24 md:w-32 md:h-32 rounded-2xl object-cover flex-shrink-0 shadow-2xl shadow-primary/30 group-hover:rotate-3 transition-transform duration-500">`
+      : `<div class="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-primary text-white flex items-center justify-center flex-shrink-0 shadow-2xl shadow-primary/30 group-hover:rotate-3 transition-transform duration-500"><span class="material-symbols-outlined text-5xl" style="font-variation-settings:'FILL' 1;">play_arrow</span></div>`;
+    return `<a href="${esc(ep.link)}" target="_blank" rel="noopener" class="block warm-card rounded-2xl p-8 md:p-12 border border-outline-variant/30 group hover:border-primary/50 transition-all duration-500 overflow-hidden relative shadow-lg hover:shadow-2xl">
+      <div class="absolute -right-8 -top-8 text-primary/5 font-headline text-[12rem] leading-none select-none transition-transform duration-500 group-hover:scale-110">${num}</div>
+      <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-start">
+        ${tile}
+        <div class="flex-1 text-center md:text-left">
+          <span class="inline-block bg-primary/10 text-primary text-[0.65rem] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Último Episodio</span>
+          <h3 class="text-2xl md:text-3xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-tight">${esc(ep.title)}</h3>
+          <p class="text-base text-on-surface-variant leading-relaxed mb-6">${esc(ep.description)}</p>
+          <div class="flex items-center justify-center md:justify-start gap-4">
+            <span class="text-xs text-on-surface-variant/70 uppercase tracking-wider font-semibold">${esc(ep.dateLabel)}</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-outline-variant/50"></span>
+            <span class="text-xs text-primary font-bold uppercase tracking-wider flex items-center gap-1 group-hover:underline underline-offset-4">Reproducir <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+          </div>
+        </div>
+      </div>
+    </a>`;
+  }
+
+  function cardHTML(ep) {
+    const num = ep.displayNumber || '';
+    return `<a href="${esc(ep.link)}" target="_blank" rel="noopener" class="warm-card rounded-2xl p-8 border border-outline-variant/30 group hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-md hover:shadow-xl">
+      <div class="absolute -right-4 -bottom-8 text-on-surface-variant/5 font-headline text-8xl leading-none select-none transition-transform duration-500 group-hover:scale-110">${num}</div>
+      <div class="relative z-10 flex flex-col h-full">
+        <div class="flex items-center justify-between mb-6">
+          <span class="text-[0.65rem] text-on-surface-variant/70 uppercase tracking-widest font-semibold block">${esc(ep.dateLabel)}</span>
+          <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+            <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">play_arrow</span>
+          </div>
+        </div>
+        <h3 class="text-xl font-headline text-on-surface mb-3 group-hover:text-primary transition-colors leading-snug">${esc(ep.title)}</h3>
+        <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-3 mb-8 flex-grow">${esc(ep.description)}</p>
+        <div class="mt-auto border-t border-outline-variant/20 pt-5 flex items-center justify-between">
+          <span class="text-xs text-on-surface-variant font-medium">Episodio ${pad2(num)}</span>
+          <span class="text-[#1DB954] opacity-0 group-hover:opacity-100 transition-opacity duration-300">${SPOTIFY_ICON}</span>
+        </div>
+      </div>
+    </a>`;
+  }
+
+  function showEmpty(spotifyLink) {
+    document.getElementById('featured-loading').classList.add('hidden');
+    document.getElementById('episodes-grid').classList.add('hidden');
+    const empty = document.getElementById('episodes-empty');
+    empty.classList.remove('hidden');
+    if (spotifyLink) document.getElementById('empty-spotify-link').href = spotifyLink;
+  }
+
+  (async function loadEpisodes() {
+    try {
+      const res = await fetch('/api/podcast-feed', { headers: { 'Accept': 'application/json' } });
+      const data = await res.json();
+
+      // Link real del show de Spotify (derivado de los episodios del feed)
+      const spotifyShow = data.show && (data.show.spotify || data.show.link);
+      if (data.show && data.show.spotify) {
+        document.getElementById('hero-spotify-link').href = data.show.spotify;
+      }
+
+      const eps = (data.episodes || []);
+      if (eps.length === 0) {
+        showEmpty(spotifyShow);
+        return;
+      }
+
+      // Hero: episodio más reciente
+      const featured = document.getElementById('featured-episode');
+      featured.innerHTML = featuredHTML(eps[0]);
+      document.getElementById('featured-loading').classList.add('hidden');
+      featured.classList.remove('hidden');
+
+      // Cuadrícula: toda la temporada nueva
+      document.getElementById('episodes-grid').innerHTML = eps.map(cardHTML).join('');
+
+      const countEl = document.getElementById('episodes-count');
+      countEl.textContent = eps.length + (eps.length === 1 ? ' episodio' : ' episodios');
+      countEl.classList.remove('hidden');
+    } catch (err) {
+      console.error('No se pudieron cargar los episodios:', err);
+      showEmpty();
+    }
+  })();
 </script>
 </body>
 </html>

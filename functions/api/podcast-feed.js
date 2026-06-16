@@ -1,0 +1,238 @@
+/**
+ * Podcast feed — lee el RSS de "Consejos Gratis" (Spotify for Creators)
+ * y lo devuelve como JSON limpio para que podcast.html se arme solo.
+ *
+ * GET /api/podcast-feed
+ *
+ * Configuración (Cloudflare Pages → Settings → Variables):
+ *   PODCAST_RSS_URL   → el RSS feed de tu show. Ej:
+ *                       https://anchor.fm/s/XXXXXXXX/podcast/rss
+ *   PODCAST_SEASON_CUTOFF (opcional) → solo se muestran episodios publicados
+ *                       en/después de esta fecha ISO (ej "2025-01-01").
+ *                       Sirve para que los episodios viejos de 2023 NO
+ *                       aparezcan aquí (ya viven en la sección de archivo).
+ *
+ * Si PODCAST_RSS_URL no está configurada, usa DEFAULT_RSS_URL de abajo.
+ * El resultado se cachea 30 min en el edge de Cloudflare.
+ */
+
+// Feed de "Consejos Gratis" en Spotify for Creators.
+const DEFAULT_RSS_URL = 'https://anchor.fm/s/dff04af8/podcast/rss';
+
+// La nueva temporada es la 2. Los episodios de temporada 1 (2023) quedan
+// ocultos aquí — viven en la sección "Temporadas anteriores" de la página.
+// Configurable con PODCAST_MIN_SEASON.
+const DEFAULT_MIN_SEASON = 2;
+
+// Respaldo: si algún episodio no trae número de temporada, se muestra solo si
+// es de esta fecha en adelante. Configurable con PODCAST_SEASON_CUTOFF.
+const DEFAULT_SEASON_CUTOFF = '2026-01-01';
+
+const CACHE_SECONDS = 1800; // 30 minutos
+
+export async function onRequestGet({ request, env }) {
+  const rssUrl = (env.PODCAST_RSS_URL || DEFAULT_RSS_URL || '').trim();
+  if (!rssUrl) {
+    return json({
+      error: 'Falta el RSS feed del podcast',
+      detail: 'Configura la variable PODCAST_RSS_URL en Cloudflare Pages con el feed de Spotify for Creators (Settings → RSS Distribution).',
+      episodes: []
+    }, 200);
+  }
+
+  // Caché en el edge: evita pegarle al feed en cada visita
+  const cache = caches.default;
+  const cacheKey = new Request(new URL(request.url).origin + '/api/podcast-feed', request);
+  const cached = await cache.match(cacheKey);
+  if (cached) return cached;
+
+  let xml;
+  try {
+    const res = await fetch(rssUrl, {
+      headers: { 'User-Agent': 'WiserPicture-PodcastBot/1.0' },
+      cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true }
+    });
+    if (!res.ok) {
+      return json({ error: `El feed respondió ${res.status}`, episodes: [] }, 200);
+    }
+    xml = await res.text();
+  } catch (err) {
+    return json({ error: 'No se pudo leer el feed: ' + err.message, episodes: [] }, 200);
+  }
+
+  const cutoffStr = (env.PODCAST_SEASON_CUTOFF || DEFAULT_SEASON_CUTOFF || '').trim();
+  const cutoff = cutoffStr ? new Date(cutoffStr).getTime() : 0;
+  const minSeason = parseInt(env.PODCAST_MIN_SEASON, 10) || DEFAULT_MIN_SEASON;
+
+  const parsed = parseFeed(xml);
+  let episodes = parsed.items
+    .map((it, idx) => normalizeItem(it, idx, parsed.channelImage))
+    .filter(ep => {
+      // Si el episodio trae número de temporada, eso manda (lo más confiable).
+      if (ep.season) return ep.season >= minSeason;
+      // Si no trae temporada, caemos al respaldo por fecha.
+      return !cutoff || !ep.timestamp || ep.timestamp >= cutoff;
+    });
+
+  // Ordena de más nuevo a más viejo
+  episodes.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+  // Renumera de forma consistente para la nueva temporada (más nuevo = mayor)
+  const total = episodes.length;
+  episodes = episodes.map((ep, i) => ({
+    ...ep,
+    displayNumber: ep.episode || (total - i)
+  }));
+
+  // El <link> del canal apunta al sitio web, no a Spotify. Derivamos el link
+  // del show a partir de un episodio para el botón "Escuchar en Spotify".
+  const spotifyShow = deriveSpotifyShow(episodes);
+
+  const body = {
+    show: {
+      title: parsed.channelTitle || 'Consejos Gratis',
+      link: parsed.channelLink || '',
+      spotify: spotifyShow,
+      image: parsed.channelImage || ''
+    },
+    count: episodes.length,
+    generatedAt: new Date().toISOString(),
+    episodes
+  };
+
+  const response = json(body, 200, {
+    'Cache-Control': `public, max-age=${CACHE_SECONDS}`
+  });
+  // Guarda en el edge (clona porque el body se consume una vez)
+  await cache.put(cacheKey, response.clone());
+  return response;
+}
+
+// ---------- Parser de RSS ----------
+
+function parseFeed(xml) {
+  const channelHead = xml.split(/<item[\s>]/i)[0] || xml;
+  const channelTitle = clean(extractTag(channelHead, 'title'));
+  const channelLink = clean(extractTag(channelHead, 'link'));
+  const channelImage =
+    extractAttr(channelHead, 'itunes:image', 'href') ||
+    clean(extractFirst(channelHead, /<image>[\s\S]*?<url>([\s\S]*?)<\/url>/i));
+
+  const items = [];
+  const itemRegex = /<item[\s>]([\s\S]*?)<\/item>/gi;
+  let m;
+  while ((m = itemRegex.exec(xml)) !== null) {
+    items.push(m[1]);
+  }
+  return { channelTitle, channelLink, channelImage, items };
+}
+
+function normalizeItem(block, idx, fallbackImage) {
+  const title = clean(extractTag(block, 'title'));
+  const rawDesc =
+    extractTag(block, 'description') ||
+    extractTag(block, 'itunes:summary') ||
+    extractTag(block, 'content:encoded') || '';
+  const description = truncate(stripHtml(clean(rawDesc)), 220);
+  const pubDate = clean(extractTag(block, 'pubDate'));
+  const timestamp = pubDate ? new Date(pubDate).getTime() : 0;
+  const link =
+    clean(extractTag(block, 'link')) ||
+    extractAttr(block, 'enclosure', 'url') || '';
+  const episode = parseInt(clean(extractTag(block, 'itunes:episode')), 10) || null;
+  const season = parseInt(clean(extractTag(block, 'itunes:season')), 10) || null;
+  const image = extractAttr(block, 'itunes:image', 'href') || fallbackImage || '';
+  const duration = clean(extractTag(block, 'itunes:duration'));
+
+  return {
+    title,
+    description,
+    pubDate,
+    dateLabel: formatDate(timestamp),
+    timestamp: timestamp || 0,
+    link,
+    episode,
+    season,
+    image,
+    duration
+  };
+}
+
+function deriveSpotifyShow(episodes) {
+  for (const ep of episodes) {
+    if (!ep.link) continue;
+    // podcasters/creators.spotify.com/pod/show/<slug>  ó  open.spotify.com/show/<id>
+    const m = ep.link.match(/^(https?:\/\/[^/]*spotify\.com\/(?:pod\/(?:show|profile)|show)\/[^/?#]+)/i);
+    if (m) {
+      return m[1]
+        .replace('podcasters.spotify.com/pod/show', 'creators.spotify.com/pod/profile');
+    }
+  }
+  return '';
+}
+
+function extractTag(xml, tag) {
+  // soporta <tag>...</tag> y <tag><![CDATA[...]]></tag>
+  const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i');
+  const m = xml.match(re);
+  return m ? m[1] : '';
+}
+
+function extractAttr(xml, tag, attr) {
+  const re = new RegExp(`<${tag}[^>]*\\b${attr}="([^"]*)"`, 'i');
+  const m = xml.match(re);
+  return m ? m[1] : '';
+}
+
+function extractFirst(xml, regex) {
+  const m = xml.match(regex);
+  return m ? m[1] : '';
+}
+
+function clean(str) {
+  if (!str) return '';
+  return str
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+    .trim();
+}
+
+function stripHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function truncate(str, max) {
+  if (!str || str.length <= max) return str;
+  return str.slice(0, max).replace(/\s+\S*$/, '') + '…';
+}
+
+function formatDate(ts) {
+  if (!ts) return '';
+  try {
+    return new Date(ts).toLocaleDateString('es-MX', {
+      day: 'numeric', month: 'short', year: 'numeric'
+    });
+  } catch {
+    return '';
+  }
+}
+
+function json(body, status = 200, extraHeaders = {}) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Origin': '*',
+      ...extraHeaders
+    }
+  });
+}

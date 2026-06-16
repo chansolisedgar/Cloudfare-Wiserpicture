@@ -22,3 +22,6 @@ __pycache__/
 env/
 venv/
 ENV/
+
+# Config local de Claude Code
+.claude/
