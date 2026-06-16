@@ -13,11 +13,17 @@
  *                       aparezcan aquí (ya viven en la sección de archivo).
  *
  * Si PODCAST_RSS_URL no está configurada, usa DEFAULT_RSS_URL de abajo.
- * El resultado se cachea 30 min en el edge de Cloudflare.
+ * El resultado se cachea 10 min en el edge de Cloudflare (solo si hay
+ * episodios — un resultado vacío nunca se cachea).
  */
 
 // Feed de "Consejos Gratis" en Spotify for Creators.
 const DEFAULT_RSS_URL = 'https://anchor.fm/s/dff04af8/podcast/rss';
+
+// Página pública del show para oyentes (botón "Escuchar en Spotify").
+// Ojo: NO usar creators.spotify.com/pod/profile/... — esa es la consola del
+// creador, no la página pública. Configurable con PODCAST_SPOTIFY_URL.
+const DEFAULT_SPOTIFY_SHOW_URL = 'https://open.spotify.com/show/3gZnwhumRcHcT3RxxpwQyq';
 
 // La nueva temporada es la 2. Los episodios de temporada 1 (2023) quedan
 // ocultos aquí — viven en la sección "Temporadas anteriores" de la página.
@@ -28,7 +34,11 @@ const DEFAULT_MIN_SEASON = 2;
 // es de esta fecha en adelante. Configurable con PODCAST_SEASON_CUTOFF.
 const DEFAULT_SEASON_CUTOFF = '2026-01-01';
 
-const CACHE_SECONDS = 1800; // 30 minutos
+const CACHE_SECONDS = 600; // 10 minutos — un episodio nuevo no debe tardar en verse
+
+// Sube esta versión si cambias la forma del JSON o quieres forzar que todo el
+// mundo recalcule de inmediato (invalida cualquier respuesta vieja cacheada).
+const CACHE_VERSION = 'v2';
 
 export async function onRequestGet({ request, env }) {
   const rssUrl = (env.PODCAST_RSS_URL || DEFAULT_RSS_URL || '').trim();
@@ -42,15 +52,19 @@ export async function onRequestGet({ request, env }) {
 
   // Caché en el edge: evita pegarle al feed en cada visita
   const cache = caches.default;
-  const cacheKey = new Request(new URL(request.url).origin + '/api/podcast-feed', request);
+  const cacheKey = new Request(`${new URL(request.url).origin}/api/podcast-feed?${CACHE_VERSION}`, request);
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
 
   let xml;
   try {
+    // Importante: NO usar cacheEverything/cacheTtl aquí. Si Cloudflare cachea
+    // esta sub-petición a nivel de red, un episodio recién publicado puede
+    // quedar "atascado" hasta 30 min con la versión vieja del feed. Nuestro
+    // propio caché de abajo (con TTL corto) ya controla la frecuencia.
     const res = await fetch(rssUrl, {
       headers: { 'User-Agent': 'WiserPicture-PodcastBot/1.0' },
-      cf: { cacheTtl: CACHE_SECONDS, cacheEverything: true }
+      cf: { cacheTtl: 0, cacheEverything: false }
     });
     if (!res.ok) {
       return json({ error: `El feed respondió ${res.status}`, episodes: [] }, 200);
@@ -65,16 +79,25 @@ export async function onRequestGet({ request, env }) {
   const minSeason = parseInt(env.PODCAST_MIN_SEASON, 10) || DEFAULT_MIN_SEASON;
 
   const parsed = parseFeed(xml);
-  let episodes = parsed.items
+  const allItems = parsed.items
     .map((it, idx) => normalizeItem(it, idx, parsed.channelImage))
-    .filter(ep => {
-      // Si el episodio trae número de temporada, eso manda (lo más confiable).
-      if (ep.season) return ep.season >= minSeason;
-      // Si no trae temporada, caemos al respaldo por fecha.
-      return !cutoff || !ep.timestamp || ep.timestamp >= cutoff;
-    });
+    .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
-  // Ordena de más nuevo a más viejo
+  let episodes = allItems.filter(ep => {
+    // Si el episodio trae número de temporada, eso manda (lo más confiable).
+    if (ep.season) return ep.season >= minSeason;
+    // Si no trae temporada, caemos al respaldo por fecha.
+    return !cutoff || !ep.timestamp || ep.timestamp >= cutoff;
+  });
+
+  // Salvaguarda: si el filtro deja todo vacío pero el feed sí tiene
+  // episodios (ej. el más nuevo aún no trae bien el tag de temporada),
+  // mostramos al menos el más reciente. Mejor eso que una página en blanco.
+  if (episodes.length === 0 && allItems.length > 0) {
+    episodes = [allItems[0]];
+  }
+
+  // Ordena de más nuevo a más viejo (allItems ya viene ordenado, esto es por claridad)
   episodes.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 
   // Renumera de forma consistente para la nueva temporada (más nuevo = mayor)
@@ -84,9 +107,10 @@ export async function onRequestGet({ request, env }) {
     displayNumber: ep.episode || (total - i)
   }));
 
-  // El <link> del canal apunta al sitio web, no a Spotify. Derivamos el link
-  // del show a partir de un episodio para el botón "Escuchar en Spotify".
-  const spotifyShow = deriveSpotifyShow(episodes);
+  // El <link> del canal apunta al sitio web, no a Spotify. Usamos la URL
+  // pública configurada (con fallback a deriveSpotifyShow solo si alguien
+  // quita PODCAST_SPOTIFY_URL y el default).
+  const spotifyShow = (env.PODCAST_SPOTIFY_URL || DEFAULT_SPOTIFY_SHOW_URL || '').trim() || deriveSpotifyShow(episodes);
 
   const body = {
     show: {
@@ -103,8 +127,11 @@ export async function onRequestGet({ request, env }) {
   const response = json(body, 200, {
     'Cache-Control': `public, max-age=${CACHE_SECONDS}`
   });
-  // Guarda en el edge (clona porque el body se consume una vez)
-  await cache.put(cacheKey, response.clone());
+  // Solo cachea resultados con episodios. Si algo salió vacío (feed caído,
+  // RSS aún no propagado, etc.) no lo dejamos "atascado" hasta que expire.
+  if (episodes.length > 0) {
+    await cache.put(cacheKey, response.clone());
+  }
   return response;
 }
 
