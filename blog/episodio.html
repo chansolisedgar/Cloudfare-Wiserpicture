@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Episodio — Consejos Gratis | WiserPicture</title>
+<meta name="description" id="meta-desc" content="Escucha y lee los episodios del podcast Consejos Gratis: finanzas personales con fundamento bíblico para jóvenes en México.">
+<meta property="og:type" content="article">
+<meta property="og:title" id="og-title" content="Consejos Gratis — Podcast | WiserPicture">
+<meta property="og:description" id="og-desc" content="Finanzas personales con fundamento bíblico para jóvenes en México.">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "surface": "#FFFFFF",
+          "surface-container-lowest": "#F9F9F6",
+          "secondary": "#C9A84C",
+          "surface-container": "#F4F4F1",
+          "surface-container-low": "#F4F4F1",
+          "surface-container-high": "#E8E8E5",
+          "surface-container-highest": "#D8D8D5",
+          "primary": "#334F2B",
+          "background": "#F9F9F6",
+          "outline-variant": "#C8C8C5",
+          "on-surface-variant": "#666",
+          "on-surface": "#1A1C1B",
+          "secondary-fixed-dim": "#C9A84C",
+          "on-primary-container": "#2A3F22",
+          "on-primary": "#FFFFFF",
+          "tertiary": "#C0603A"
+        },
+        fontFamily: {
+          "headline": ["Lora", "serif"],
+          "body": ["Manrope", "sans-serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    }
+  }
+</script>
+<style>
+  body { background-color: #F9F9F6; color: #1A1C1B; min-height: 100dvh; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .warm-card { background: #FFFFFF; border: 1px solid #E8E8E5; box-shadow: 0 1px 3px rgba(45,51,25,0.06), 0 1px 2px rgba(45,51,25,0.04); }
+  .warm-card:hover { box-shadow: 0 4px 12px rgba(45,51,25,0.1); }
+  .nav-drawer { transform: translateX(-100%); transition: transform 0.3s ease; }
+  .nav-drawer.open { transform: translateX(0); }
+  .nav-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .nav-overlay.open { opacity: 1; pointer-events: auto; }
+  .prose h2 { font-family: 'Lora', serif; font-size: 1.75rem; color: #1A1C1B; margin-top: 2.5rem; margin-bottom: 1rem; font-style: italic; }
+  .prose h3 { font-family: 'Lora', serif; font-size: 1.35rem; color: #1A1C1B; margin-top: 2rem; margin-bottom: 0.75rem; }
+  .prose p { color: #444; line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.05rem; }
+  .prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; color: #444; line-height: 1.8; }
+  .prose li { margin-bottom: 0.5rem; }
+  .prose a { color: #334F2B; text-decoration: underline; text-underline-offset: 4px; }
+  .prose strong { color: #1A1C1B; }
+</style>
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+</head>
+<body class="font-body selection:bg-primary/20 selection:text-on-surface">
+
+<header class="bg-[#F9F9F6]/90 backdrop-blur-xl top-0 sticky z-50 shadow-[0_1px_3px_rgba(45,51,25,0.08)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+  <div class="flex items-center gap-3">
+    <button id="menu-toggle" class="material-symbols-outlined text-primary md:hidden">menu</button>
+    <a href="../index.html"><img src="../assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto"></a>
+  </div>
+  <div class="hidden md:flex flex-1 justify-center items-center gap-8">
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="../blog.html">Blog</a>
+    <a class="text-primary font-medium text-sm tracking-wide" href="../podcast.html">Podcast</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="../workbook.html">Workbook</a>
+    <a class="text-on-surface hover:text-primary transition-colors font-medium text-sm tracking-wide" href="../recursos.html">Recursos</a>
+  </div>
+  <a href="../index.html#lead-magnet" class="hidden md:inline-flex bg-primary text-white font-semibold py-2 px-5 rounded text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">Módulo Gratis</a>
+</div>
+</header>
+
+<div id="nav-overlay" class="nav-overlay fixed inset-0 bg-black/30 z-[55]"></div>
+<nav id="nav-drawer" class="nav-drawer fixed inset-y-0 left-0 z-[60] flex flex-col bg-[#F9F9F6]/98 backdrop-blur-2xl h-full w-80 shadow-2xl shadow-black/10">
+<div class="p-8">
+  <div class="flex justify-between items-center mb-10"><img src="../assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-14 w-auto"><button id="menu-close" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">close</button></div>
+  <div class="flex flex-col gap-2">
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../index.html"><span class="material-symbols-outlined">home</span><span class="font-medium font-body">Inicio</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../blog.html"><span class="material-symbols-outlined">article</span><span class="font-medium font-body">Blog</span></a>
+    <a class="text-[#1A1C1B] bg-gradient-to-r from-primary/10 to-transparent px-4 py-3 flex items-center gap-4 rounded-full border border-primary/20" href="../podcast.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">mic</span><span class="font-medium font-body">Podcast</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../workbook.html"><span class="material-symbols-outlined">menu_book</span><span class="font-medium font-body">Workbook</span></a>
+    <a class="text-[#1A1C1B] opacity-80 px-4 py-3 flex items-center gap-4 hover:bg-[#E8E8E5] hover:text-primary transition-colors rounded-full" href="../recursos.html"><span class="material-symbols-outlined">handyman</span><span class="font-medium font-body">Recursos</span></a>
+  </div>
+</div>
+</nav>
+
+<main class="max-w-3xl mx-auto px-6 py-16">
+  <a href="../podcast.html" class="inline-flex items-center gap-2 text-primary text-sm mb-10 hover:underline"><span class="material-symbols-outlined text-base">arrow_back</span>Volver al Podcast</a>
+
+  <!-- Loading -->
+  <div id="ep-loading" class="py-16 text-center">
+    <div class="inline-block w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+    <p class="text-sm text-on-surface-variant">Cargando episodio…</p>
+  </div>
+
+  <!-- Error / no encontrado -->
+  <div id="ep-error" class="hidden py-16 text-center">
+    <span class="material-symbols-outlined text-on-surface-variant/40 text-5xl mb-4 block">sentiment_dissatisfied</span>
+    <h1 class="text-2xl font-headline text-on-surface mb-2">No encontramos ese episodio</h1>
+    <p class="text-sm text-on-surface-variant mb-6">Puede que aún no esté publicado o el enlace cambió.</p>
+    <a href="../podcast.html" class="text-primary text-sm font-semibold hover:underline">← Ver todos los episodios</a>
+  </div>
+
+  <!-- Artículo -->
+  <article id="ep-article" class="hidden">
+    <div class="mb-6 flex items-center gap-3">
+      <span class="bg-primary/10 text-primary text-[0.55rem] font-bold uppercase tracking-wider px-3 py-1 rounded-full inline-flex items-center gap-1">
+        <span class="material-symbols-outlined text-[0.85rem]" style="font-variation-settings:'FILL' 1">mic</span> Podcast · Consejos Gratis
+      </span>
+      <span id="ep-number" class="text-[0.65rem] text-on-surface-variant uppercase tracking-widest font-semibold"></span>
+    </div>
+
+    <h1 id="ep-title" class="text-3xl md:text-4xl font-headline text-on-surface mb-4 leading-tight"></h1>
+    <p class="text-on-surface-variant text-sm mb-8">Por <strong class="text-on-surface">Edgar U. Chan</strong> · <span id="ep-date"></span></p>
+
+    <!-- Reproductor de audio -->
+    <div class="warm-card rounded-2xl p-5 mb-8 border border-primary/15">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">headphones</span>
+        <span class="text-xs font-bold text-on-surface uppercase tracking-widest">Escucha el episodio</span>
+      </div>
+      <audio id="ep-audio" controls preload="none" class="w-full"></audio>
+      <a id="ep-spotify" href="#" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 bg-[#1DB954] text-white font-bold py-2.5 px-5 rounded-full text-sm shadow-lg shadow-[#1DB954]/20 hover:scale-105 active:scale-95 transition-transform">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        Escuchar en Spotify
+      </a>
+    </div>
+
+    <!-- Versículo del episodio -->
+    <div id="ep-verse-wrap" class="hidden mb-8 border-l-4 border-tertiary pl-5 py-1">
+      <p class="text-[0.6rem] font-bold text-tertiary uppercase tracking-widest mb-1">Versículo del episodio</p>
+      <p id="ep-verse" class="font-headline italic text-lg text-on-surface"></p>
+    </div>
+
+    <!-- Notas / contenido del episodio -->
+    <div id="ep-body" class="prose max-w-none"></div>
+
+    <!-- CTA -->
+    <div class="warm-card rounded-2xl p-8 mt-16 border border-primary/20 text-center">
+      <p class="text-xs font-bold text-primary uppercase tracking-widest mb-2">Lleva esto a la práctica</p>
+      <h3 class="text-xl font-headline text-on-surface mb-3">Descarga el Módulo 1 del Workbook de Finanzas — Gratis</h3>
+      <a href="../index.html#lead-magnet" class="inline-flex bg-primary text-white font-semibold py-3 px-8 rounded shadow-lg shadow-primary/20 hover:scale-105 transition-transform text-sm">Módulo 1 Gratis →</a>
+    </div>
+  </article>
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-[#C0603A] py-16 mt-16">
+<div class="flex flex-col items-center text-center w-full px-8 max-w-7xl mx-auto">
+  <img src="../assets/Wiserpicure Logo.png" alt="WiserPicture" class="h-12 w-auto mb-8">
+  <div class="flex flex-wrap justify-center gap-6 mb-8">
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../blog.html">Blog</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../podcast.html">Podcast</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../workbook.html">Workbook</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../recursos.html">Recursos</a>
+    <a class="text-white/80 hover:text-white transition-colors text-sm font-medium" href="../aviso-de-privacidad.html">Aviso de Privacidad y Términos</a>
+  </div>
+  <div class="flex gap-6 mb-8">
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.instagram.com/wiserpicture/" target="_blank" rel="noopener">
+      <span class="material-symbols-outlined text-xl">photo_camera</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Instagram</span>
+    </a>
+    <a class="text-white/70 hover:text-white transition-all flex flex-col items-center gap-1.5" href="https://www.facebook.com/wiserpicture" target="_blank" rel="noopener">
+      <span class="material-symbols-outlined text-xl">public</span>
+      <span class="text-[0.6rem] font-medium uppercase tracking-widest">Facebook</span>
+    </a>
+  </div>
+  <div class="mb-10">
+    <p class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-white/60 mb-2">Contacto</p>
+    <a class="text-white/80 hover:text-white transition-colors text-base" href="mailto:edgar@wiserpicture.com">edgar@wiserpicture.com</a>
+  </div>
+  <p class="text-[0.7rem] text-white/40">© 2026 WiserPicture. Todos los derechos reservados.</p>
+</div>
+</footer>
+
+<script>
+  // Menú móvil
+  const toggle=document.getElementById('menu-toggle'),drawer=document.getElementById('nav-drawer'),overlay=document.getElementById('nav-overlay'),closeBtn=document.getElementById('menu-close');
+  function openMenu(){drawer.classList.add('open');overlay.classList.add('open')}
+  function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('open')}
+  toggle.addEventListener('click',openMenu);closeBtn.addEventListener('click',closeMenu);overlay.addEventListener('click',closeMenu);
+
+  function show(id){
+    ['ep-loading','ep-error','ep-article'].forEach(x=>document.getElementById(x).classList.toggle('hidden', x!==id));
+  }
+
+  (async function loadEpisode(){
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    if(!id){ show('ep-error'); return; }
+
+    try {
+      const res = await fetch('/api/podcast-feed', { headers:{ 'Accept':'application/json' } });
+      const data = await res.json();
+      const eps = data.episodes || [];
+      const ep = eps.find(e => e.slug === id);
+      if(!ep){ show('ep-error'); return; }
+
+      // Texto y metadatos
+      document.getElementById('ep-title').textContent = ep.title;
+      document.getElementById('ep-date').textContent = ep.dateLabel || '';
+      document.getElementById('ep-number').textContent = ep.displayNumber ? ('Episodio ' + String(ep.displayNumber).padStart(2,'0')) : '';
+      document.title = ep.title + ' — Consejos Gratis | WiserPicture';
+      const metaDesc = (ep.description || '').slice(0,155);
+      document.getElementById('meta-desc').setAttribute('content', metaDesc);
+      document.getElementById('og-title').setAttribute('content', ep.title + ' — Consejos Gratis');
+      document.getElementById('og-desc').setAttribute('content', metaDesc);
+
+      // Audio + Spotify
+      const audio = document.getElementById('ep-audio');
+      if (ep.audio) { audio.src = ep.audio; } else { audio.classList.add('hidden'); }
+      const sp = document.getElementById('ep-spotify');
+      if (ep.link) { sp.href = ep.link; } else { sp.classList.add('hidden'); }
+
+      // Versículo
+      if (ep.verse) {
+        document.getElementById('ep-verse').textContent = ep.verse;
+        document.getElementById('ep-verse-wrap').classList.remove('hidden');
+      }
+
+      // Cuerpo (notas del episodio, HTML ya saneado por la API)
+      document.getElementById('ep-body').innerHTML = ep.descriptionHtml || ('<p>' + (ep.description||'') + '</p>');
+
+      show('ep-article');
+    } catch(err) {
+      console.error('Error cargando episodio:', err);
+      show('ep-error');
+    }
+  })();
+</script>
+</body>
+</html>

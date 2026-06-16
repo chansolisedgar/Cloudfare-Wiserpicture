@@ -133,29 +133,72 @@ function normalizeItem(block, idx, fallbackImage) {
     extractTag(block, 'description') ||
     extractTag(block, 'itunes:summary') ||
     extractTag(block, 'content:encoded') || '';
-  const description = truncate(stripHtml(clean(rawDesc)), 220);
+  const cleanDesc = clean(rawDesc);
+  const plain = stripHtml(cleanDesc);
+  const description = truncate(plain, 220);          // texto plano para tarjetas
+  const descriptionHtml = sanitizeHtml(cleanDesc);   // HTML para el cuerpo del blog
   const pubDate = clean(extractTag(block, 'pubDate'));
   const timestamp = pubDate ? new Date(pubDate).getTime() : 0;
   const link =
     clean(extractTag(block, 'link')) ||
     extractAttr(block, 'enclosure', 'url') || '';
+  const audio = extractAttr(block, 'enclosure', 'url') || '';
   const episode = parseInt(clean(extractTag(block, 'itunes:episode')), 10) || null;
   const season = parseInt(clean(extractTag(block, 'itunes:season')), 10) || null;
   const image = extractAttr(block, 'itunes:image', 'href') || fallbackImage || '';
   const duration = clean(extractTag(block, 'itunes:duration'));
+  const slug = slugFor(link, title, idx);
+  const verse = extractVerse(plain);
 
   return {
     title,
+    slug,
     description,
+    descriptionHtml,
+    verse,
     pubDate,
     dateLabel: formatDate(timestamp),
     timestamp: timestamp || 0,
     link,
+    audio,
     episode,
     season,
     image,
     duration
   };
+}
+
+// Slug único y estable: usa el final del link de Spotify (trae un id), o el
+// título "slugificado" como respaldo.
+function slugFor(link, title, idx) {
+  if (link) {
+    const m = link.match(/\/episodes\/([^/?#]+)/i) || link.match(/\/([^/?#]+)\/?$/);
+    if (m && m[1]) return m[1];
+  }
+  const s = (title || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return s || ('episodio-' + idx);
+}
+
+// Sanitiza el HTML de las notas del episodio (contenido propio, pero por si acaso).
+function sanitizeHtml(s) {
+  if (!s) return '';
+  return s
+    .replace(/<\/?(?:script|style|iframe|object|embed|form|input)[^>]*>/gi, '')
+    .replace(/\son\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/\son\w+\s*=\s*'[^']*'/gi, '')
+    .replace(/javascript:/gi, '')
+    .trim();
+}
+
+// Detecta una referencia bíblica del tipo "Versículo del episodio: Proverbios 21:20".
+function extractVerse(plain) {
+  if (!plain) return '';
+  const m = plain.match(/vers[ií]culo[^:]*:\s*([0-9]?\s?[A-Za-zÁÉÍÓÚÑáéíóúñ.]+\s+\d+:\d+(?:[-,]\d+)?(?:\s+[A-Z]{2,4})?)/i);
+  return m ? m[1].trim() : '';
 }
 
 function deriveSpotifyShow(episodes) {
