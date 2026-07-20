@@ -9,7 +9,7 @@
  *   - Si configuraste links de Stripe abajo, aparece "Pagar en OXXO"
  */
 window.WP_LAUNCH = {
-  launched: false, // ← CAMBIAR A true EL DÍA DEL LANZAMIENTO
+  launched: true, // 🚀 LANZADO — 16 jun 2026
 
   // Checkouts de LemonSqueezy (tarjeta, PayPal, Apple/Google Pay)
   checkout: {
