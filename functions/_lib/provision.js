@@ -199,7 +199,11 @@ function ctaButton(href, label) {
  */
 export async function sendPurchaseEmails({ email, name, modules, env, isNewUser }) {
   const siteUrl = env.SITE_URL || 'https://wiserpicture.com';
-  const firstName = (name || '').split(' ')[0] || 'Hola';
+  // Nombre de pila real, o vacío si no hay (algunas órdenes traen el email
+  // como "nombre", o ninguno — ej. checkouts gratuitos que solo piden email).
+  const rawFirst = (name || '').trim().split(/\s+/)[0] || '';
+  const firstName = rawFirst && !rawFirst.includes('@') ? rawFirst : '';
+  const greetName = firstName ? `, ${firstName}` : '';
   const pkg = packageNameFor(modules);
 
   // Seguimiento personalizado por WhatsApp (Edgar: 938 107 2211)
@@ -213,7 +217,7 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
       <div style="background:#F4F4F1;border-radius:12px;padding:18px 20px;margin:20px 0;text-align:center;">
         <p style="margin:0;font-weight:700;color:#334F2B;">Tu compra incluye seguimiento personalizado 🤝</p>
         <p style="margin:8px 0 0;font-size:13px;color:#6B705C;">Escríbeme directamente por WhatsApp y te acompaño en tu proceso:</p>
-        ${waButton(waLink(`¡Hola Edgar! Soy ${firstName !== 'Hola' ? firstName : ''} y acabo de adquirir el ${pkg}. Me gustaría comenzar mi seguimiento personalizado. 🙌`), 'Escribir a Edgar por WhatsApp')}
+        ${waButton(waLink(`¡Hola Edgar! ${firstName ? `Soy ${firstName} y acabo` : 'Acabo'} de adquirir el ${pkg}. Me gustaría comenzar mi seguimiento personalizado. 🙌`), 'Escribir a Edgar por WhatsApp')}
         <p style="margin:6px 0 0;font-size:12px;color:#6B705C;">938 107 2211 · Edgar U. Chan</p>
       </div>`;
 
@@ -221,7 +225,7 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
       <div style="background:#F4F4F1;border-radius:12px;padding:18px 20px;margin:20px 0;text-align:center;">
         <p style="margin:0;font-weight:700;color:#334F2B;">¿Dudas o quieres revisar tu avance juntos?</p>
         <p style="margin:8px 0 0;font-size:13px;color:#6B705C;">Tu seguimiento personalizado está incluido — mándame un WhatsApp:</p>
-        ${waButton(waLink(`¡Hola Edgar! Soy ${firstName !== 'Hola' ? firstName : ''} y estoy trabajando mi ${pkg}. Tengo una pregunta sobre mi proceso. 🙏`), 'Escribir a Edgar por WhatsApp')}
+        ${waButton(waLink(`¡Hola Edgar! ${firstName ? `Soy ${firstName} y estoy` : 'Estoy'} trabajando mi ${pkg}. Tengo una pregunta sobre mi proceso. 🙏`), 'Escribir a Edgar por WhatsApp')}
         <p style="margin:6px 0 0;font-size:12px;color:#6B705C;">938 107 2211 · Edgar U. Chan</p>
       </div>`;
 
@@ -237,7 +241,7 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
     to: [email],
     subject: `✅ Tu compra está confirmada — ${pkg}`,
     html: emailShell(`
-      <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¡Gracias por tu compra, ${firstName}! 🎉</h1>
+      <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¡Gracias por tu compra${greetName}! 🎉</h1>
       <p>Tu pago fue confirmado y tu acceso ya está activo:</p>
       <div style="background:#F4F4F1;border-radius:12px;padding:16px 20px;margin:16px 0;">
         <p style="margin:0 0 8px;font-weight:700;color:#334F2B;">${pkg}</p>
@@ -255,10 +259,10 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
   // Follow-up 3 días después
   await sendResendEmail(env, {
     to: [email],
-    subject: `${firstName}, ¿ya empezaste tu Módulo ${modules[0]}?`,
+    subject: firstName ? `${firstName}, ¿ya empezaste tu Módulo ${modules[0]}?` : `¿Ya empezaste tu Módulo ${modules[0]}?`,
     scheduled_at: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
     html: emailShell(`
-      <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¿Cómo vas, ${firstName}?</h1>
+      <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¿Cómo vas${greetName}?</h1>
       <p>Hace unos días obtuviste tu <strong>${pkg}</strong>. Quería escribirte personalmente para animarte a dar el primer paso (o el siguiente).</p>
       <p>Un consejo práctico: <strong>agenda 20 minutos esta semana</strong> para trabajar tu cuaderno. La constancia pequeña vence a la motivación grande.</p>
       <p style="background:#F4F4F1;border-left:3px solid #C9A84C;border-radius:0 8px 8px 0;padding:12px 16px;font-style:italic;color:#6B705C;">"Los planes del diligente ciertamente tienden a la abundancia." — Proverbios 21:5</p>
