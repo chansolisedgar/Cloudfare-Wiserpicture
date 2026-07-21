@@ -1,3 +1,5 @@
+import { sendLeadMagnetEmails } from '../_lib/provision.js';
+
 export async function onRequestPost({ request, env }) {
   try {
     const { email, tags = [] } = await request.json();
@@ -190,7 +192,22 @@ export async function onRequestPost({ request, env }) {
     const subscriberHash = md5(email.toLowerCase());
 
     const url = `https://${datacenter}.api.mailchimp.com/3.0/lists/${audienceId}/members/${subscriberHash}`;
-    
+
+    // ¿Ya existía este contacto? Si es nuevo le mandamos la secuencia de
+    // bienvenida; si ya estaba, no repetimos los correos.
+    let isNewSubscriber = true;
+    try {
+      const existing = await fetch(url, {
+        headers: { 'Authorization': `apikey ${apiKey}` }
+      });
+      isNewSubscriber = existing.status === 404;
+    } catch (lookupErr) {
+      // Si la consulta falla, preferimos NO mandar la secuencia antes que
+      // arriesgarnos a enviarla repetida.
+      console.warn('No se pudo verificar si el contacto existía:', lookupErr.message);
+      isNewSubscriber = false;
+    }
+
     const memberData = JSON.stringify({
       email_address: email,
       status_if_new: 'subscribed'
@@ -231,6 +248,17 @@ export async function onRequestPost({ request, env }) {
 
     if (!tagsResponse.ok) {
       console.error('Error agregando etiquetas:', await tagsResponse.text());
+    }
+
+    // Secuencia de bienvenida (Resend): PDF al instante + nurture a los 3 y 7
+    // días. Solo para contactos nuevos. Si falla, la suscripción igual cuenta
+    // como exitosa — el usuario ya tiene su descarga en pantalla.
+    if (isNewSubscriber) {
+      try {
+        await sendLeadMagnetEmails({ email, env });
+      } catch (emailErr) {
+        console.error('Error enviando la secuencia del lead magnet:', emailErr.message);
+      }
     }
 
     return new Response(JSON.stringify({ success: true, message: '¡Te has suscrito exitosamente!' }), { status: 200 });

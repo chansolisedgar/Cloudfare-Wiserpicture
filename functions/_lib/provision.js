@@ -275,6 +275,94 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
   });
 }
 
+/**
+ * Secuencia de bienvenida para quien descarga el Módulo 1 gratis (lead magnet).
+ *   Email 1 → al instante (entrega el PDF por correo)
+ *   Email 2 → +3 días (empujón para que lo trabaje)
+ *   Email 3 → +7 días (puente a la compra de los Módulos 2–5)
+ *
+ * Se llama solo para suscriptores NUEVOS, para no repetir la secuencia a
+ * quien vuelve a descargar el PDF.
+ */
+export async function sendLeadMagnetEmails({ email, env }) {
+  const siteUrl = env.SITE_URL || 'https://wiserpicture.com';
+  const pdfUrl = `${siteUrl}/assets/pdfs/modulo-1.pdf`;
+
+  // Botón dorado (descarga del PDF) — el verde lo da ctaButton()
+  const goldButton = (href, label) => `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px auto;"><tr><td style="background:#C9A84C;border-radius:8px;">
+    <a href="${href}" style="display:inline-block;padding:14px 32px;color:#1A1C1B;font-weight:700;text-decoration:none;font-size:14px;">${label}</a>
+  </td></tr></table>`;
+
+  // Nota de baja: estos son correos de marketing, no transaccionales.
+  const unsubNote = `<p style="font-size:11px;color:#9AA08C;margin-top:22px;border-top:1px solid #E8E8E5;padding-top:14px;">Recibes este correo porque descargaste el Módulo 1 gratuito en wiserpicture.com. Si no quieres recibir más, responde <strong>BAJA</strong> a este correo y te saco de la lista.</p>`;
+
+  const marketingHeaders = {
+    'List-Unsubscribe': `<mailto:${env.REPLY_TO_EMAIL || 'Chansolis.edgar@gmail.com'}?subject=BAJA>`
+  };
+
+  const inDays = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000).toISOString();
+
+  // ---------- Email 1 — inmediato ----------
+  await sendResendEmail(env, {
+    to: [email],
+    subject: 'Aquí está tu Módulo 1 📘 (y por dónde empezar)',
+    headers: marketingHeaders,
+    html: emailShell(`
+      <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¡Aquí está tu Módulo 1! 📘</h1>
+      <p>Gracias por dar el primer paso. Acabas de hacer algo que la mayoría posterga: <strong>tomar en serio tus finanzas con propósito</strong>.</p>
+      <p>Este es tu <strong>Módulo 1: Fundamentos</strong> — la base bíblica y práctica para ordenar tu dinero. Descárgalo aquí y guárdalo:</p>
+      ${goldButton(pdfUrl, '⬇ Descargar mi Módulo 1 (PDF)')}
+      <p style="font-size:14px;"><strong>Un consejo para que no se quede en descargas:</strong> agenda 15 minutos esta semana —hoy si puedes— para hacer los primeros ejercicios. La constancia pequeña vence a la motivación grande.</p>
+      <p style="font-size:14px;">Soy <strong>Edgar</strong>. Si te gusta aprender escuchando, mi podcast te va a encantar:</p>
+      ${ctaButton(siteUrl + '/podcast', '🎙️ Escuchar "Consejos Gratis"')}
+      <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
+      ${unsubNote}
+    `, siteUrl)
+  });
+
+  // ---------- Email 2 — +3 días ----------
+  await sendResendEmail(env, {
+    to: [email],
+    subject: '¿Ya abriste tu Módulo 1?',
+    scheduled_at: inDays(3),
+    headers: marketingHeaders,
+    html: emailShell(`
+      <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¿Ya abriste tu Módulo 1?</h1>
+      <p>Sin presión — sé que la vida va rápido. Pero quería recordarte por qué vale la pena abrir ese PDF hoy:</p>
+      <p style="background:#F4F4F1;border-radius:12px;padding:16px 20px;margin:16px 0;">El <strong>70% de los mexicanos</strong> no tiene ahorros formales. No es porque ganen poco — es porque nadie les enseñó un <strong>sistema</strong>. El Módulo 1 es ese sistema, desde el principio.</p>
+      <p><strong>Reto de 15 minutos:</strong> abre el Módulo 1 y completa solo la primera sección. Nada más. Ese pequeño arranque es el que cambia todo.</p>
+      ${goldButton(pdfUrl, '⬇ Abrir mi Módulo 1')}
+      <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
+      ${unsubNote}
+    `, siteUrl)
+  });
+
+  // ---------- Email 3 — +7 días ----------
+  await sendResendEmail(env, {
+    to: [email],
+    subject: 'Si el Módulo 1 te movió algo, esto es lo que sigue',
+    scheduled_at: inDays(7),
+    headers: marketingHeaders,
+    html: emailShell(`
+      <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">Lo que sigue después del Módulo 1</h1>
+      <p>El Módulo 1 te dio los <strong>fundamentos</strong>. Pero los fundamentos sin acción se quedan en teoría. Los otros 4 módulos son el camino completo, paso a paso:</p>
+      <div style="background:#F4F4F1;border-radius:12px;padding:16px 20px;margin:16px 0;">
+        <ul style="margin:0;padding-left:20px;color:#1A1C1B;">
+          <li style="margin-bottom:6px;"><strong>Módulo 2:</strong> Presupuesto que sí funciona</li>
+          <li style="margin-bottom:6px;"><strong>Módulo 3:</strong> Salir de deudas</li>
+          <li style="margin-bottom:6px;"><strong>Módulo 4:</strong> Ahorro y fondo de emergencia</li>
+          <li style="margin-bottom:6px;"><strong>Módulo 5:</strong> Tu primera inversión</li>
+        </ul>
+      </div>
+      <p>Cuadernos interactivos con tu progreso guardado en la nube, PDFs imprimibles y <strong>seguimiento personalizado por WhatsApp conmigo</strong>. Puedes empezar con un solo paquete o llevarte el curso completo (y pagar en OXXO si prefieres efectivo).</p>
+      ${ctaButton(siteUrl + '/workbook', 'Ver los paquetes →')}
+      <p style="font-size:13px;color:#6B705C;">¿Tienes dudas antes de decidir? Responde a este correo, te leo yo directamente.</p>
+      <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
+      ${unsubNote}
+    `, siteUrl)
+  });
+}
+
 // ============================================================
 // MAILCHIMP
 // ============================================================
