@@ -117,6 +117,39 @@
     <div id="module-bars" class="flex flex-col gap-4"></div>
   </section>
 
+  <!-- Enviar correo de la secuencia a un lead -->
+  <section class="mb-12">
+    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-outline-variant/30">
+      <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1">forward_to_inbox</span>
+      <h2 class="text-xl font-headline text-on-surface">Enviar correo del Módulo 1 gratis</h2>
+    </div>
+    <div class="warm-card rounded-2xl p-6">
+      <p class="text-sm text-on-surface-variant mb-5">Para alcanzar a quien descargó el Módulo 1 <strong>antes</strong> de que existiera la secuencia automática. Se envía de inmediato.</p>
+      <div class="flex flex-col md:flex-row gap-3 md:items-end">
+        <div class="flex-1">
+          <label class="block text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mb-1.5">Email del lead</label>
+          <input type="email" id="lead-email" placeholder="persona@ejemplo.com" class="form-input w-full rounded-lg border-outline-variant/60 focus:border-primary focus:ring-primary text-sm px-4 py-2.5 bg-white">
+        </div>
+        <div>
+          <label class="block text-[0.65rem] font-bold text-on-surface-variant uppercase tracking-widest mb-1.5">Correo</label>
+          <select id="lead-which" class="form-select rounded-lg border-outline-variant/60 focus:border-primary focus:ring-primary text-sm px-4 py-2.5 bg-white">
+            <option value="1">1 — Bienvenida + PDF</option>
+            <option value="2">2 — ¿Ya lo abriste?</option>
+            <option value="3" selected>3 — Lo que sigue (venta)</option>
+          </select>
+        </div>
+        <button id="lead-send-btn" class="bg-primary text-white font-semibold py-2.5 px-6 rounded-lg text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform disabled:opacity-60 disabled:pointer-events-none whitespace-nowrap">
+          Enviar correo
+        </button>
+      </div>
+      <label class="flex items-center gap-2 mt-4 text-sm text-on-surface-variant cursor-pointer">
+        <input type="checkbox" id="lead-intro" checked class="form-checkbox rounded border-outline-variant/60 text-primary focus:ring-primary">
+        Agregar párrafo de contexto ("Hace unos días descargaste el Módulo 1…")
+      </label>
+      <p id="lead-result" class="hidden mt-4 text-sm font-medium"></p>
+    </div>
+  </section>
+
   <!-- Users table -->
   <section>
     <div class="flex items-center justify-between mb-6 pb-4 border-b border-outline-variant/30">
@@ -244,6 +277,54 @@
         renderUsers(allUsersData.filter(u =>
           (u.email || '').toLowerCase().includes(q) || (u.name || '').toLowerCase().includes(q)
         ));
+      });
+
+      // ---- Enviar correo de la secuencia a un lead ----
+      const leadBtn = document.getElementById('lead-send-btn');
+      const leadResult = document.getElementById('lead-result');
+      leadBtn.addEventListener('click', async () => {
+        const email = document.getElementById('lead-email').value.trim();
+        const which = document.getElementById('lead-which').value;
+        const withIntro = document.getElementById('lead-intro').checked;
+
+        if (!email) {
+          leadResult.textContent = 'Escribe el email del lead.';
+          leadResult.className = 'mt-4 text-sm font-medium text-tertiary';
+          return;
+        }
+        if (!confirm(`¿Enviar el correo ${which} a ${email}?\n\nEsto manda un correo real de inmediato.`)) return;
+
+        const original = leadBtn.textContent;
+        leadBtn.disabled = true;
+        leadBtn.textContent = 'Enviando…';
+        leadResult.classList.add('hidden');
+
+        try {
+          const r = await fetch('/api/send-lead-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + session.access_token
+            },
+            body: JSON.stringify({ email, which, withIntro })
+          });
+          const body = await r.json();
+          if (r.ok) {
+            leadResult.textContent = `✅ ${body.message} — asunto: "${body.subject}"`;
+            leadResult.className = 'mt-4 text-sm font-medium text-primary';
+            document.getElementById('lead-email').value = '';
+          } else {
+            leadResult.textContent = `❌ ${body.error || 'Error ' + r.status}${body.detail ? ' — ' + body.detail : ''}`;
+            leadResult.className = 'mt-4 text-sm font-medium text-tertiary';
+          }
+        } catch (err) {
+          leadResult.textContent = '❌ Error de red: ' + err.message;
+          leadResult.className = 'mt-4 text-sm font-medium text-tertiary';
+        } finally {
+          leadBtn.disabled = false;
+          leadBtn.textContent = original;
+          leadResult.classList.remove('hidden');
+        }
       });
 
       show('admin-content');

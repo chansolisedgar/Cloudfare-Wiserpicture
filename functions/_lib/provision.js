@@ -284,8 +284,18 @@ export async function sendPurchaseEmails({ email, name, modules, env, isNewUser 
  * Se llama solo para suscriptores NUEVOS, para no repetir la secuencia a
  * quien vuelve a descargar el PDF.
  */
-export async function sendLeadMagnetEmails({ email, env }) {
-  const siteUrl = env.SITE_URL || 'https://wiserpicture.com';
+function leadMarketingHeaders(env) {
+  return {
+    'List-Unsubscribe': `<mailto:${env.REPLY_TO_EMAIL || 'Chansolis.edgar@gmail.com'}?subject=BAJA>`
+  };
+}
+
+/**
+ * Construye los 3 correos de la secuencia.
+ * `introNote` permite anteponer un párrafo de contexto (útil al mandar un
+ * correo suelto a alguien que descargó antes de que existiera la automatización).
+ */
+function buildLeadEmails({ siteUrl, introNote = '' }) {
   const pdfUrl = `${siteUrl}/assets/pdfs/modulo-1.pdf`;
 
   // Botón dorado (descarga del PDF) — el verde lo da ctaButton()
@@ -296,19 +306,13 @@ export async function sendLeadMagnetEmails({ email, env }) {
   // Nota de baja: estos son correos de marketing, no transaccionales.
   const unsubNote = `<p style="font-size:11px;color:#9AA08C;margin-top:22px;border-top:1px solid #E8E8E5;padding-top:14px;">Recibes este correo porque descargaste el Módulo 1 gratuito en wiserpicture.com. Si no quieres recibir más, responde <strong>BAJA</strong> a este correo y te saco de la lista.</p>`;
 
-  const marketingHeaders = {
-    'List-Unsubscribe': `<mailto:${env.REPLY_TO_EMAIL || 'Chansolis.edgar@gmail.com'}?subject=BAJA>`
-  };
-
-  const inDays = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000).toISOString();
-
-  // ---------- Email 1 — inmediato ----------
-  await sendResendEmail(env, {
-    to: [email],
-    subject: 'Aquí está tu Módulo 1 📘 (y por dónde empezar)',
-    headers: marketingHeaders,
-    html: emailShell(`
+  return {
+    1: {
+      delayDays: 0,
+      subject: 'Aquí está tu Módulo 1 📘 (y por dónde empezar)',
+      html: emailShell(`
       <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¡Aquí está tu Módulo 1! 📘</h1>
+      ${introNote}
       <p>Gracias por dar el primer paso. Acabas de hacer algo que la mayoría posterga: <strong>tomar en serio tus finanzas con propósito</strong>.</p>
       <p>Este es tu <strong>Módulo 1: Fundamentos</strong> — la base bíblica y práctica para ordenar tu dinero. Descárgalo aquí y guárdalo:</p>
       ${goldButton(pdfUrl, '⬇ Descargar mi Módulo 1 (PDF)')}
@@ -318,16 +322,14 @@ export async function sendLeadMagnetEmails({ email, env }) {
       <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
       ${unsubNote}
     `, siteUrl)
-  });
+    },
 
-  // ---------- Email 2 — +3 días ----------
-  await sendResendEmail(env, {
-    to: [email],
-    subject: '¿Ya abriste tu Módulo 1?',
-    scheduled_at: inDays(3),
-    headers: marketingHeaders,
-    html: emailShell(`
+    2: {
+      delayDays: 3,
+      subject: '¿Ya abriste tu Módulo 1?',
+      html: emailShell(`
       <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">¿Ya abriste tu Módulo 1?</h1>
+      ${introNote}
       <p>Sin presión — sé que la vida va rápido. Pero quería recordarte por qué vale la pena abrir ese PDF hoy:</p>
       <p style="background:#F4F4F1;border-radius:12px;padding:16px 20px;margin:16px 0;">El <strong>70% de los mexicanos</strong> no tiene ahorros formales. No es porque ganen poco — es porque nadie les enseñó un <strong>sistema</strong>. El Módulo 1 es ese sistema, desde el principio.</p>
       <p><strong>Reto de 15 minutos:</strong> abre el Módulo 1 y completa solo la primera sección. Nada más. Ese pequeño arranque es el que cambia todo.</p>
@@ -335,16 +337,14 @@ export async function sendLeadMagnetEmails({ email, env }) {
       <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
       ${unsubNote}
     `, siteUrl)
-  });
+    },
 
-  // ---------- Email 3 — +7 días ----------
-  await sendResendEmail(env, {
-    to: [email],
-    subject: 'Si el Módulo 1 te movió algo, esto es lo que sigue',
-    scheduled_at: inDays(7),
-    headers: marketingHeaders,
-    html: emailShell(`
+    3: {
+      delayDays: 7,
+      subject: 'Si el Módulo 1 te movió algo, esto es lo que sigue',
+      html: emailShell(`
       <h1 style="font-size:22px;color:#334F2B;margin:0 0 16px;">Lo que sigue después del Módulo 1</h1>
+      ${introNote}
       <p>El Módulo 1 te dio los <strong>fundamentos</strong>. Pero los fundamentos sin acción se quedan en teoría. Los otros 4 módulos son el camino completo, paso a paso:</p>
       <div style="background:#F4F4F1;border-radius:12px;padding:16px 20px;margin:16px 0;">
         <ul style="margin:0;padding-left:20px;color:#1A1C1B;">
@@ -360,7 +360,50 @@ export async function sendLeadMagnetEmails({ email, env }) {
       <p style="margin-top:24px;">Con propósito,<br><strong>Edgar U. Chan</strong></p>
       ${unsubNote}
     `, siteUrl)
+    }
+  };
+}
+
+export async function sendLeadMagnetEmails({ email, env }) {
+  const siteUrl = env.SITE_URL || 'https://wiserpicture.com';
+  const emails = buildLeadEmails({ siteUrl });
+  const inDays = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000).toISOString();
+
+  for (const n of [1, 2, 3]) {
+    const m = emails[n];
+    await sendResendEmail(env, {
+      to: [email],
+      subject: m.subject,
+      headers: leadMarketingHeaders(env),
+      ...(m.delayDays ? { scheduled_at: inDays(m.delayDays) } : {}),
+      html: m.html
+    });
+  }
+}
+
+/**
+ * Envía UN solo correo de la secuencia, de inmediato. Sirve para alcanzar a
+ * leads que descargaron antes de que existiera la automatización.
+ * `withIntro` antepone un párrafo que reconoce el contexto.
+ */
+export async function sendSingleLeadEmail({ email, which, env, withIntro = false }) {
+  const siteUrl = env.SITE_URL || 'https://wiserpicture.com';
+  const introNote = withIntro
+    ? `<p>Hace unos días descargaste el <strong>Módulo 1</strong> de Finanzas con Propósito. Quería escribirte para ver cómo te ha ido con él — y contarte lo que sigue.</p>`
+    : '';
+
+  const emails = buildLeadEmails({ siteUrl, introNote });
+  const m = emails[which];
+  if (!m) throw new Error(`Correo inválido: ${which} (usa 1, 2 o 3)`);
+
+  await sendResendEmail(env, {
+    to: [email],
+    subject: m.subject,
+    headers: leadMarketingHeaders(env),
+    html: m.html
   });
+
+  return { subject: m.subject };
 }
 
 // ============================================================
