@@ -1,3 +1,43 @@
 # Cloudflare Pages sirve /login, /portal y /admin automáticamente (pretty URLs).
 # No agregar reglas "200" aquí: Pages las convierte en redirects que entran en
 # loop con la normalización automática de URLs (.html -> sin extensión).
+
+# ------------------------------------------------------------------
+# URLs del sitio viejo (WordPress, 2023) -> páginas nuevas.
+# Google todavía las tiene guardadas; sin estas reglas mostraban una
+# copia del inicio y causaban "Duplicada" en Search Console.
+# La primera regla que coincide gana, así que lo específico va arriba.
+# ------------------------------------------------------------------
+
+# Episodios del podcast (con y sin "/" final)
+/2023/:m/:d/ep-1-el-que-a-buen-arbol-se-arrima-buena-sombra-le-acobija/   /podcast/ep1-el-que-a-buen-arbol-se-arrima-buena-sombra-le-acobija   301
+/2023/:m/:d/ep-1-el-que-a-buen-arbol-se-arrima-buena-sombra-le-acobija    /podcast/ep1-el-que-a-buen-arbol-se-arrima-buena-sombra-le-acobija   301
+/2023/:m/:d/ep-2-de-tal-palo-tal-astilla/                                 /podcast/ep2-de-tal-palo-tal-astilla                                 301
+/2023/:m/:d/ep-2-de-tal-palo-tal-astilla                                  /podcast/ep2-de-tal-palo-tal-astilla                                 301
+/2023/:m/:d/ep-3-dime-de-que-presumes-y-te-dire-de-que-careces/           /podcast/ep3-dime-de-que-presumes-y-te-dire-de-que-careces           301
+/2023/:m/:d/ep-3-dime-de-que-presumes-y-te-dire-de-que-careces            /podcast/ep3-dime-de-que-presumes-y-te-dire-de-que-careces           301
+/2023/:m/:d/ep-4-mas-vale-prevenir-que-lamentar/                          /podcast/ep4-mas-vale-prevenir-que-lamentar                          301
+/2023/:m/:d/ep-4-mas-vale-prevenir-que-lamentar                           /podcast/ep4-mas-vale-prevenir-que-lamentar                          301
+/2023/:m/:d/ep-5-el-valiente-vive-hasta-que-el-cobarde-quiere/            /podcast/ep5-el-valiente-vive-hasta-que-el-cobarde-quiere            301
+/2023/:m/:d/ep-5-el-valiente-vive-hasta-que-el-cobarde-quiere             /podcast/ep5-el-valiente-vive-hasta-que-el-cobarde-quiere            301
+/2023/:m/:d/ep-6-hombre-prevenido-vale-por-dos/                           /podcast/ep6-hombre-prevenido-vale-por-dos                           301
+/2023/:m/:d/ep-6-hombre-prevenido-vale-por-dos                            /podcast/ep6-hombre-prevenido-vale-por-dos                           301
+/2023/:m/:d/no-porque-hay-lodo-hay-que-atascarse/                         /podcast/ep7-no-porque-hay-lodo-hay-que-atascarse                    301
+/2023/:m/:d/no-porque-hay-lodo-hay-que-atascarse                          /podcast/ep7-no-porque-hay-lodo-hay-que-atascarse                    301
+/2023/:m/:d/ep-7-no-porque-hay-lodo-hay-que-atascarse/                    /podcast/ep7-no-porque-hay-lodo-hay-que-atascarse                    301
+/2023/:m/:d/ep-7-no-porque-hay-lodo-hay-que-atascarse                     /podcast/ep7-no-porque-hay-lodo-hay-que-atascarse                    301
+/2023/:m/:d/ep-8-haz-el-bien-sin-mirar-a-quien/                           /podcast/ep8-haz-el-bien-sin-mirar-a-quien                           301
+/2023/:m/:d/ep-8-haz-el-bien-sin-mirar-a-quien                            /podcast/ep8-haz-el-bien-sin-mirar-a-quien                           301
+
+# Cualquier otra URL vieja con fecha (incluye basura como .../blog.html o .../login.html)
+/2023/*        /podcast   301
+/2024/*        /podcast   301
+
+# Otras rutas típicas de WordPress
+/edgar-chan    /          301
+/edgar-chan/   /          301
+/category/*    /blog      301
+/tag/*         /blog      301
+/author/*      /          301
+/feed          /podcast   301
+/feed/*        /podcast   301
