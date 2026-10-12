@@ -8,7 +8,7 @@
 <meta name="description" content="Herramientas gratuitas: calculadoras, plantillas y guías prácticas para mejorar tus finanzas personales.">
 <meta property="og:image" content="assets/Wiserpicure Logo.png">
 <meta property="og:title" content="Recursos — WiserPicture">
-<meta property="og:description" content="Plantillas, calculadoras y guías listas para usar. Sin costo, sin registro.">
+<meta property="og:description" content="Plantillas, calculadoras y guías listas para usar. Gratis.">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -118,7 +118,7 @@
   <span class="text-[0.65rem] font-bold text-tertiary uppercase tracking-widest mb-3 block">HERRAMIENTAS</span>
   <h1 class="text-4xl md:text-5xl font-headline italic text-on-surface mb-4">Recursos</h1>
   <p class="text-base text-on-surface-variant max-w-lg mx-auto">
-    Plantillas, calculadoras y guías listas para usar. Sin costo, sin registro.
+    Plantillas, calculadoras y guías listas para usar. Sin costo: déjanos tu correo y te las entregamos al instante.
   </p>
 </section>
 
@@ -127,7 +127,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
     <!-- Plantilla Presupuesto -->
-    <div class="warm-card rounded-2xl p-8 border border-primary/20 group hover:border-primary/40 transition-all">
+    <div id="presupuesto" class="warm-card rounded-2xl p-8 border border-primary/20 group hover:border-primary/40 transition-all scroll-mt-24">
       <div class="flex items-start gap-4 mb-6">
         <div class="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
           <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings:'FILL' 1">account_balance_wallet</span>
@@ -140,13 +140,13 @@
       <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
         Organiza tus ingresos y gastos mensuales con categorías claras. Haz clic para guardar una copia en tu propio Google Drive y comenzar a editar inmediatamente.
       </p>
-      <a href="https://docs.google.com/spreadsheets/d/1RcwczRL3m2JtzYXtuCf3peJsv_39UEBbkqnVqGDV3-g/copy" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold py-3 px-6 rounded text-sm border border-primary/20 hover:bg-primary hover:text-white transition-all">
+      <a href="#presupuesto" data-resource="presupuesto" class="wp-gated inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold py-3 px-6 rounded text-sm border border-primary/20 hover:bg-primary hover:text-white transition-all">
         <span class="material-symbols-outlined text-base">add_circle</span> Hacer una Copia
       </a>
     </div>
 
     <!-- Reto de 30 días -->
-    <div class="warm-card rounded-2xl p-8 border border-tertiary/20 group hover:border-tertiary/40 transition-all">
+    <div id="reto-30-dias" class="warm-card rounded-2xl p-8 border border-tertiary/20 group hover:border-tertiary/40 transition-all scroll-mt-24">
       <div class="flex items-start gap-4 mb-6">
         <div class="w-14 h-14 rounded-xl bg-tertiary/10 border border-tertiary/20 flex items-center justify-center flex-shrink-0 group-hover:bg-tertiary/20 transition-colors">
           <span class="material-symbols-outlined text-tertiary text-2xl" style="font-variation-settings:'FILL' 1">event_available</span>
@@ -159,7 +159,7 @@
       <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
         Sigue tu progreso diario y establece hábitos financieros sólidos durante 30 días. Haz clic para guardar tu propia copia privada en Google Drive.
       </p>
-      <a href="https://docs.google.com/spreadsheets/d/12zRFLbaJ7Y3dVtGDgqQSy9yYiM-qKgrcVfwRUkzWswQ/copy" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-tertiary/10 text-tertiary font-semibold py-3 px-6 rounded text-sm border border-tertiary/20 hover:bg-tertiary hover:text-white transition-all">
+      <a href="#reto-30-dias" data-resource="reto" class="wp-gated inline-flex items-center gap-2 bg-tertiary/10 text-tertiary font-semibold py-3 px-6 rounded text-sm border border-tertiary/20 hover:bg-tertiary hover:text-white transition-all">
         <span class="material-symbols-outlined text-base">add_circle</span> Hacer una Copia
       </a>
     </div>
@@ -263,4 +263,90 @@
   function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('open')}
   toggle.addEventListener('click',openMenu);closeBtn.addEventListener('click',closeMenu);overlay.addEventListener('click',closeMenu);
 </script>
+<!-- Recursos con correo: modal -->
+<div id="rg-modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/40 px-4" role="dialog" aria-modal="true" aria-labelledby="rg-title">
+  <div class="bg-[#F9F9F6] rounded-2xl p-8 w-full max-w-md shadow-2xl relative">
+    <button type="button" id="rg-close" class="material-symbols-outlined absolute top-4 right-4 text-on-surface-variant hover:text-primary" aria-label="Cerrar">close</button>
+    <div id="rg-form-box">
+      <span class="text-[0.65rem] font-bold text-primary uppercase tracking-widest mb-2 block">GRATIS</span>
+      <h3 id="rg-title" class="text-xl font-headline text-on-surface mb-2"></h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-5">Escribe tu correo y te damos acceso a tu copia al instante.</p>
+      <form id="rg-form" class="flex flex-col gap-3">
+        <input type="email" id="rg-email" required placeholder="tu@email.com" autocomplete="email"
+          class="bg-white border border-outline-variant/40 rounded py-3 px-4 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm disabled:opacity-50">
+        <button type="submit" id="rg-submit" class="bg-primary text-white font-semibold py-3 px-6 rounded shadow-lg shadow-primary/20 text-sm disabled:opacity-70 disabled:pointer-events-none">Obtener mi copia</button>
+        <p id="rg-msg" class="text-sm text-tertiary hidden"></p>
+      </form>
+      <p class="text-[0.65rem] text-on-surface-variant/60 mt-3">Al continuar aceptas nuestro <a href="aviso-de-privacidad.html" class="underline hover:text-primary">Aviso de Privacidad</a>. Te registramos a nuestro boletín y, si eres nuevo, también te enviamos el Módulo 1 de regalo. Puedes darte de baja cuando quieras.</p>
+    </div>
+    <div id="rg-success" class="hidden text-center">
+      <span class="material-symbols-outlined text-primary text-4xl mb-2 block" style="font-variation-settings:'FILL' 1">check_circle</span>
+      <h3 class="text-lg font-headline text-on-surface mb-2">¡Listo!</h3>
+      <p class="text-sm text-on-surface-variant mb-6">Da clic para guardar tu copia en tu Google Drive.</p>
+      <a id="rg-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-secondary text-on-surface font-semibold py-3.5 px-8 rounded shadow-lg shadow-secondary/20 text-sm">
+        <span class="material-symbols-outlined">add_circle</span> Hacer mi copia
+      </a>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var RES = {
+    presupuesto: { title: 'Plantilla de Presupuesto Mensual', tag: 'Recurso: Plantilla de Presupuesto',
+      url: 'https://docs.google.com/spreadsheets/d/1RcwczRL3m2JtzYXtuCf3peJsv_39UEBbkqnVqGDV3-g/copy' },
+    reto: { title: 'Reto de 30 días', tag: 'Recurso: Reto de 30 días',
+      url: 'https://docs.google.com/spreadsheets/d/12zRFLbaJ7Y3dVtGDgqQSy9yYiM-qKgrcVfwRUkzWswQ/copy' }
+  };
+  var KEY = 'wp_lead_email', current = null;
+  var modal = document.getElementById('rg-modal'), form = document.getElementById('rg-form'),
+      email = document.getElementById('rg-email'), btn = document.getElementById('rg-submit'),
+      msg = document.getElementById('rg-msg'), formBox = document.getElementById('rg-form-box'),
+      ok = document.getElementById('rg-success'), link = document.getElementById('rg-link');
+  function saved(){ try { return localStorage.getItem(KEY); } catch(e){ return null; } }
+  function subscribe(addr, tag){
+    return fetch('/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: addr, tags: [tag] }) });
+  }
+  function open(id){
+    current = RES[id]; if (!current) return;
+    document.getElementById('rg-title').textContent = current.title;
+    link.href = current.url;
+    formBox.classList.remove('hidden'); ok.classList.add('hidden'); msg.classList.add('hidden');
+    email.disabled = false; btn.disabled = false; btn.textContent = 'Obtener mi copia';
+    var prev = saved();
+    if (prev) { // ya dejó su correo antes: solo se registra el recurso nuevo
+      subscribe(prev, current.tag).catch(function(){});
+      formBox.classList.add('hidden'); ok.classList.remove('hidden');
+    }
+    modal.classList.remove('hidden'); modal.classList.add('flex');
+    if (!prev) email.focus();
+  }
+  function close(){ modal.classList.add('hidden'); modal.classList.remove('flex'); }
+  document.querySelectorAll('.wp-gated').forEach(function(a){
+    a.addEventListener('click', function(e){ e.preventDefault(); open(a.getAttribute('data-resource')); });
+  });
+  document.getElementById('rg-close').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var addr = email.value.trim();
+    email.disabled = true; btn.disabled = true; btn.textContent = 'Enviando...'; msg.classList.add('hidden');
+    subscribe(addr, current.tag).then(function(r){
+      if (!r.ok) throw new Error('subscribe ' + r.status);
+      try { localStorage.setItem(KEY, addr); } catch(err){}
+      formBox.classList.add('hidden'); ok.classList.remove('hidden');
+    }).catch(function(err){
+      console.error(err);
+      msg.textContent = 'Hubo un problema. Intenta de nuevo en un momento.'; msg.classList.remove('hidden');
+      email.disabled = false; btn.disabled = false; btn.textContent = 'Obtener mi copia';
+    });
+  });
+  // Enlace directo para el podcast: wiserpicture.com/recursos#presupuesto abre el formulario
+  var h = location.hash.replace('#','');
+  if (h === 'presupuesto') open('presupuesto');
+  if (h === 'reto-30-dias') open('reto');
+})();
+</script>
+
 </body></html>
