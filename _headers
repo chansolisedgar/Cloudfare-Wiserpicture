@@ -2,3 +2,13 @@
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+
+# La dirección gratuita de Cloudflare (*.pages.dev) sirve una copia idéntica del sitio.
+# Esto le dice a Google que NO la indexe, para que no compita con wiserpicture.com
+# (causaba "Duplicada: Google ha elegido una versión canónica diferente").
+# Estas reglas solo aplican a pages.dev; el dominio real no se ve afectado.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex
